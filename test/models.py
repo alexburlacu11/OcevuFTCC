@@ -41,14 +41,19 @@ class Watcher(models.Model):
         self.sensor_value = serial_port.readline()
         
     def to_string(self):
-        print "This is the superclass watcher"
-    
+        print "Last value of watcher: \n"
+
+
+
+
+
+
 class WeatherWatcher(Watcher):
     def to_string(self):       
-        print "Last value of rain sensor: \n" + self.sensor_value;
+        print "Last value of rain sensor: \n" + str(self.sensor_value)
         
 class SiteWatcher(Watcher):
     def to_string(self):
-        print "Last value of distance sensor: \n" + self.sensor_value
+        print "Last value of distance sensor: \n" + str(self.sensor_value)
         
         

@@ -1,6 +1,7 @@
 from django.test import TestCase
 from models import *
 from django.db.models.sql.datastructures import DateTime
+from array import array
 # Create your tests here.
 
 # datetime.date.today()
@@ -58,4 +59,39 @@ class SiteWatcherTestCase(TestCase):
         aux_new.to_string()
         self.assertEqual(aux_new.sensor_value, aux_old.sensor_value)
         print "site watcher db access success ! \n" 
+        
+class WatcherTestCase(TestCase):
+      def test_polymorphism(self):
+        print "polymorphism test: \n"
+        w = WeatherWatcher(
+             port='/dev/ttyACM0', 
+             date=datetime.date.today(), 
+             sensor_value=0
+        )
+        s = SiteWatcher(
+             port='/dev/ttyACM1', 
+             date=datetime.date.today(), 
+             sensor_value=0
+        )  
+        ww = Watcher(
+             port='/dev/ttyACM0', 
+             date=datetime.date.today(), 
+             sensor_value=0
+        )
+        watchers = [w,s]        
+        
+        for q in watchers:
+            q.read_serial()
+            q.save()
+            
+        for q in watchers:
+            print "watcher says: \n"
+            print q.to_string() 
+      
+    
+    
+    
+    
+    
+     
         
