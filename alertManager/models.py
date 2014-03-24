@@ -25,7 +25,7 @@ class Alert_Main(models.Model):
     position_3d_value1_unit = models.CharField(max_length=20)
     position_3d_value2_unit = models.CharField(max_length=20)
     position_3d_value3_unit = models.CharField(max_length=20)
-    
+     
  
 class Alert_Concepts(models.Model):
     concept_name = models.CharField(max_length=100)
