@@ -17,26 +17,23 @@ class Watcher(models.Model):
         self.port = port
         
     def read_serial(self):
-        try:
-           self.sensor_value = serial.Serial(self.port, 9600).readline()
-        except ValueError:
-           print "Error in reading from serial \n"        
-           self.sensor_value = 0
+        self.sensor_value = str(serial.Serial(self.port, 9600).readline())
+        print "Sensor value: %s" % str(self.sensor_value)
            
     def to_string(self):
-        print "Last value of watcher: \n"
+        pass
 
 class WeatherWatcher(Watcher):
     def to_string(self):       
-        print "Last value of weather station: \n" + str(self.sensor_value)
+        print "Last value of weather station: %s \n" % str(self.sensor_value)
         
 class SiteWatcher(Watcher):
     def to_string(self):
-        print "Last value of site sensor: \n" + str(self.sensor_value)
+        print "Last value of site sensor: %s \n" % str(self.sensor_value)
         
 class SecurityWatcher(Watcher):
     def to_string(self):
-        print "Last value of security sensor: \n" + str(self.sensor_value) 
+        print "Last value of security sensor: %s \n" % str(self.sensor_value) 
 
 
                
@@ -86,9 +83,9 @@ class Guardian(Agent):
         if (self.site_flag == True):
             print "Site status is GOOD ! \n"    
         else:
-            print "Site status is BAD ! \n"  
-            
-        if (self.weather_flag == True):
+            print "Site status is BAD ! \n"
+                        
+        if (self.security_flag == True):
             print "Security status is GOOD ! \n"    
         else:
             print "Security status is BAD ! \n"  

@@ -13,4 +13,7 @@ urlpatterns = patterns('',
     url(r'^guardian/', 'guardian.views.index', name='index'),
     url(r'^guardian/status', 'guardian.views.status', name='status'),
     url(r'^guardian/history', 'guardian.views.history', name='history'),
+    url(r'^voeventvisualizer/$', 'alertManager.views.index', name='index'),
+    
+                       
 )

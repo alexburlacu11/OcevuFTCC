@@ -8,10 +8,12 @@
 # in order to request info about the watchers
 
 from django.shortcuts import render
+from django.http import HttpResponse
+import datetime
 
 def index(self):
     #returns watcher conditions from guardian database (boolean values)
-    guardian = Guardian.objects.first()
+    #guardian = Guardian.objects.first()
     html = "<html><body>Guardian status: </br>%s.</body></html>"# % guardian.to_string()
     return HttpResponse(html)
         
