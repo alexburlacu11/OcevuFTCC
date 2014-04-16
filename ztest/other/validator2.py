@@ -18,10 +18,11 @@ if __name__ == "__main__":
     
     xsd_11 = "/home/ros/voevent/VOEvent-v1.1.xsd"
     xsd_20 = "/home/ros/voevent/VOEvent-v2.0.xsd"
-    simple_xsd = "/home/ros/voevent/simple_xsd.xsd"                                                  
+    simple_xsd = "/home/ros/voevent/simple_xsd.xsd"        
+    xsd_filename_mini = "/home/ros/Downloads/VOEventMini-v1.1.xsd"                                          
                                                                   
                                                                                 
-    with open(xsd_20) as f:                                                
+    with open(v11_2) as f:                                                
         doc = etree.parse(f)                                                    
                                                                                 
     print "Validating schema ... "                                              
@@ -33,12 +34,12 @@ if __name__ == "__main__":
                                                                                 
     print "Schema OK"                                                           
                                                                                 
-    with open(v20) as f:                                                
+    with open(v11_2) as f:                                                
         doc = etree.parse(f)                                                    
                                                                                 
     print "Validating document ..."                                             
     try:                                                                        
-        schema.assertValid(v20)                                                 
+        schema.assertValid(v11_2)                                                 
     except lxml.etree.DocumentInvalid as e:                                     
         print e                                                                 
         exit(1)                                                                 

@@ -7,6 +7,7 @@ f1 = "/home/ros/voevent/voeventex.xml"
 f2 = "/home/ros/voevent/one.xml"
 
 xsd_filename = "/home/ros/voevent/VOEvent-v2.0.xsd"
+xsd_filename_mini = "/home/ros/Downloads/VOEventMini-v1.1.xsd"
 
 
 

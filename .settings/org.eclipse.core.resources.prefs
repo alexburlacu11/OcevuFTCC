@@ -1,2 +1,5 @@
 eclipse.preferences.version=1
-encoding//test/other/validator2.py=utf-8
+encoding//alertManager/forms.py=utf-8
+encoding//routineManager/forms.py=utf-8
+encoding//ztest/other/request.py=utf-8
+encoding//ztest/other/validator2.py=utf-8

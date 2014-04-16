@@ -4,7 +4,7 @@ import copy
 import voeparse
 from lxml import etree as ET
 
-xml_filename = "/home/ros/voevent/voeventex.xml"
+xml_filename = "/home/ros/voevent/v20.xml"
 
 with open (xml_filename, "r") as myfile:
     data=myfile.read()

@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
+PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -36,16 +36,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'alertManager',
     'routineManager',
-    'systemManager',
-    'conductor',
-    'executor',
+    'alertManager',
+    'dashboard',
     'guardian',
-    'planner',
-    'imageManager',
-    'observationManager', 
-    'test',       
+    'ztest',       
   #  'django_jenkins',    
 )
 
@@ -112,4 +107,14 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     '/static/',
+)
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+#     'django.template.loaders.eggs.load_template_source',
+)
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates/'),
 )
