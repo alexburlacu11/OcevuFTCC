@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  {% load staticfiles %}
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+   
+    <title>Ocevu Fast Telescope Control Center</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href={% static "bootstrap/css/bootstrap.min.css" %} rel="stylesheet">
+    
+    <style>
+		td {padding:50px;}
+		
+		a:link {text-decoration:none;}
+		a {color:darkgreen;}
+		
+		
+	</style>
+
+
+  </head>
+
+   <body>
+     
+    <center>
+	
+    <div class="container" style="padding-top: 200px;">
+    
+	   <div class="row">
+	   			<h2>{{ title }}</h2>
+	   			<hr>
+	   <table>
+		<tr>
+		<td>	            
+			<a href="alertmanager/main"><h3>Alert Manager</h3></a>
+		</td>
+		<td>
+		 	<a href="routinemanager/main"><h3>Routine Manager</h3></a>
+		</td>
+		<td>
+		 	<a href="ztest/main"><h3>For testing purposes</h3></a>
+		</td>
+		</tr>
+		</table>
+		 
+	    </div>
+	</div>
+	
+	
+</center>	
+	
+      
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src={% static "bootstrap/js/bootstrap.min.js" %}></script>
+    
+  </body>
+</html>

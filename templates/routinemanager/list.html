@@ -1,0 +1,51 @@
+ {% extends "base_templates/base.html" %} 
+ 
+  {% block title %}	List of Routine Requests in the Database {% endblock %}
+ 
+ {% block content %}
+	   
+<div class="row">
+
+	<div class="col-lg-12">
+		
+		<div class="table-responsive">
+			<table
+				class="table table-bordered table-hover table-striped tablesorter">
+				<thead>
+					<tr>
+						<th> &nbsp</th>
+						<th>Name <i class="fa fa-sort"></i></th>
+						<th>Laboratory <i class="fa fa-sort"></i></th>
+						<th>Alert <i class="fa fa-sort"></i></th>
+						<th>Date <i class="fa fa-sort"></i></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for row in requests %}
+					<tr>					
+						<td>
+					<form action="view" method="post"
+						enctype="multipart/form-data">
+							{% csrf_token %} 							
+							<input type="hidden" value="{{ row.id }}" name="id"/>
+							<center>
+							<input type="submit" class="btn btn-primary" value="View Details" />
+							</center>
+							</form>											
+						</td>
+			     		<td>{{ row.name }}</td> 
+			     		<td>{{ row.laboratory }}</td> 
+			     		<td>{{ row.request_is_ALERT }}</td> 
+			     		<td>{{ row.date }}</td> 
+					
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>	
+    
+          
+	      	
+	{% endblock %}

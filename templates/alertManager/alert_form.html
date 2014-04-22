@@ -1,0 +1,14 @@
+ {% extends "base_templates/base.html" %} 
+ 
+ {% block title %}Alert List django with default view{% endblock %} 
+ 
+ 
+ {% block content %}
+
+<form action="/ztest/insert" method="post">{% csrf_token %}
+{{ form.as_table }}
+<input type="submit" value="Submit" />
+</form>
+					
+					
+ {% endblock %}

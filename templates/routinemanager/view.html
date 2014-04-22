@@ -1,0 +1,77 @@
+ {% extends "base_templates/base.html" %} 
+ 
+  {% block title %}	Routine Request Details {% endblock %}
+ 
+ {% block content %}
+	   
+	
+    <div class="row">
+          <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title">Owner</h3>
+              </div>
+              
+              <div class="panel-body">
+                {{a.name}}
+              </div>
+              <div class="panel-body">
+                {{a.laboratory}}
+              </div>
+              <div class="panel-body">
+                {{a.telnumber}}
+              </div>
+              <div class="panel-body">
+                {{a.email}}
+              </div>
+              <div class="panel-body">
+                {{a.creation_date}}
+              </div>
+              <div class="panel-body">
+                {{a.request_is_ALERT}}
+              </div>
+              <div class="panel-body">
+                {{a.seq_number}}
+              </div>
+            </div>
+    </div>
+    
+    <div class="row">
+          <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title">Sequences</h3>
+              </div>
+              <div class="panel-body">
+                Seq 1
+              </div>
+              <div class="panel-body">
+                Seq 2
+              </div>
+              <div class="panel-body">
+                Seq 3
+              </div>
+            </div>
+    </div>
+    
+    <div class="row">    	
+          <div class="col-lg-1">
+          	<form action="delete" method="post"
+				enctype="multipart/form-data">
+				{% csrf_token %} 							
+				<input type="hidden" value="{{ id }}" name="id"/>
+				<input type="submit" class="btn btn-primary" value="Delete" />
+			</form>		
+          </div>
+          
+          <div class="col-lg-1">
+          	<form action="edit" method="post"
+				enctype="multipart/form-data">
+				{% csrf_token %} 							
+				<input type="hidden" value="{{ id }}" name="id"/>
+				<input type="submit" class="btn btn-primary" value="Edit" />
+			</form>		
+          </div>
+    </div>
+    
+          
+	      	
+	{% endblock %}
