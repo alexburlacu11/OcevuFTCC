@@ -31,27 +31,122 @@
      
     <center>
 	
-    <div class="container" style="padding-top: 200px;">
+    <div class="container" style="padding-top: 100px;">
     
 	   <div class="row">
-	   			<h2>{{ title }}</h2>
+	   			<h2>Welcome to the Ocevu Fast Telescope Control Center</h2>
 	   			<hr>
-	   <table>
-		<tr>
-		<td>	            
-			<a href="alertmanager/main"><h3>Alert Manager</h3></a>
-		</td>
-		<td>
-		 	<a href="routinemanager/main"><h3>Routine Manager</h3></a>
-		</td>
-		<td>
-		 	<a href="ztest/main"><h3>For testing purposes</h3></a>
-		</td>
-		</tr>
-		</table>
+	   	
+	   	
+
+			
+			   <div class="row">
+			   
+			   {% if error %} 
+			   <div class="alert alert-dismissable alert-danger">
+			   {% endif %}
+			   {% if info %}
+			   <div class="alert alert-dismissable alert-success">
+			   {% endif %}
+				  
+				  {{ state|safe }}
+				  
+				</div>
+			
+							
+				
+			   </div>
+			  
+			  
+              
+			<div class="form-group">
+			<form action="/dashboard/login" method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+				{% if next %}
+				<input class="form-control" type="hidden" name="next" value="{{ next }}" />
+				{% endif %}
+				
+				<div class="col-lg-5 text-left">
+					<div class="row">	
+						<h3>Log in</h3>
+						<hr>
+					</div>
+					<div class="row">
+						<label>Username</label>
+						<input class="form-control" type="text" name="username" value="{{ username}}" /><br />
+					</div>
+					<div class="row">	
+						<label>Password</label>
+						<input class="form-control" type="password" name="password" value="" /><br />
+					</div>
+					<div class="row">
+						<input class="btn btn-primary" type="submit" value="Log In" />
+					</div>
+				</div>
+			</form>
+			
+			<div class="col-lg-2 text-left">
+			
+			</div>
+				
+			<form action=/dashboard/create" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				
+				<div class="col-lg-5 text-left" >				
+					<div class="row">	
+						<h3>Create a new user</h3>
+						<hr>
+					</div>
+					<div class="row">
+						<label>E-mail</label>
+						<input class="form-control" type="text" name="email" value="" /><br />
+					</div>
+					<div class="row">	
+						<label>Password</label>
+						<input class="form-control" type="password" name="password" value="" /><br />	
+					</div>					
+					<div class="row">
+						<label>Firstname</label>
+						<input class="form-control" type="text" name="firstname" value="" /><br />
+					</div>
+					<div class="row">
+						<label>Lastname</label>
+						<input class="form-control" type="text" name="lastname" value="" /><br />
+					</div>
+					<div class="row">
+						<label>Laboratory</label>
+						<input class="form-control" type="text" name="laboratory" value="" /><br />
+					</div>
+					<div class="row">
+						<label>Telephone number</label>
+						<input class="form-control" type="text" name="number" value="" /><br />
+					</div>					
+					<div class="row">
+						<input class="btn btn-primary" type="submit" value="Create" />
+					</div>
+				</div>				
+			</form>
+			</div>
+              
 		 
 	    </div>
+	    <div class="row">
+	    <p><br/></p>
+	    </div>
+	    <div class="row">
+			<div class="col-lg-12 text-center" >
+				OBSERVATOIRE MIDI-PYRENEES - 14, avenue Edouard Belin - 31400 TOULOUSE 
+				Tél. +33 (0)5 61 33 29 29 - Fax : +33 (0)5 61 33 28 88
+				Copyright © 2013 OMP - Tous droits réservés. 
+				Service web OMP - Mentions légales
+			</div>	
+		</div>
+		<div class="row">
+	    <p><br/></p>
+	    </div>
+	
 	</div>
+	
 	
 	
 </center>	

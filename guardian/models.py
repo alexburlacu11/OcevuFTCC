@@ -1,6 +1,6 @@
 from django.db import models
 import datetime
-import serial
+
 
 
 class Watcher(models.Model):

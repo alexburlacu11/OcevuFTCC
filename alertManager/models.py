@@ -1,6 +1,6 @@
 from django.db import models
 import copy
-import voeparse
+
 from lxml import etree as ET
 import datetime
 import os
@@ -8,8 +8,8 @@ from uuid import uuid4
 import sys
 import os
 import getopt
-import VOEvent
-import Vutil
+import VOEventLib.VOEvent
+import VOEventLib.Vutil
 
 try:
     from cStringIO import StringIO

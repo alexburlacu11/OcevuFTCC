@@ -13,6 +13,12 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+#     url(r'^admin_tools/', include('admin_tools.urls')),
+    
+    url(r'^$', 'dashboard.views.index', name='index'),   
+    url(r'^dashboard/login', 'dashboard.views.login_user', name='login_user'),
+    url(r'^dashboard/logout', 'dashboard.views.logout_user', name='logout_user'),
+    url(r'^dashboard/main', 'dashboard.views.main', name='main'),
     
     url(r'^ztest/main', GenericView.as_view() ),
     url(r'^ztest/insert', GenericView.as_view() ),
@@ -47,5 +53,5 @@ urlpatterns = patterns('',
     url(r'^alertmanager/update_to_db', 'alertManager.views.update_to_db', name='update_to_db'),
     url(r'^alertmanager/upload_file', 'alertManager.views.upload_file', name='upload_file'),
     
-    url(r'^$', 'dashboard.views.index', name='index'),   
+
 )
