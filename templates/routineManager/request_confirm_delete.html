@@ -10,7 +10,7 @@
     Are you sure you want to delete "{{ object }}" ?
     <input type="submit" value="Yes" />
 </form>
-<form action="/alertmanager/view/{{object.id}}/" method="get">{% csrf_token %}    
+<form action="/routinemanager/view/{{object.id}}/" method="get">{% csrf_token %}    
     <input type="submit" value="No" />
 </form>
 

@@ -1,0 +1,46 @@
+ {% extends "base_templates/base.html" %} 
+ 
+ {% block title %}Routine Manager{% endblock %}
+ 
+ 
+ {% block content %}
+
+
+{% if success %}
+<div class="alert alert-dismissable alert-success">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  Success !
+</div>
+{% endif %}
+
+	
+
+<div class="row">
+	<a href="create">
+	<div class="col-lg-5">
+		<h3>Submit new Routine Observation Request </h3>
+	</div>
+	</a>
+</div>
+
+
+<div class="row">
+	<a href="list">
+	<div class="col-lg-5">
+		<h3>List of Routine Requests in the database </h3>	
+	</div>
+	</a>
+</div>
+
+<div class="row">
+	<a href="loadfromfile">
+	<div class="col-lg-5">
+		<h3>Load Routine Request from file </h3>	
+	</div>
+	</a>
+</div>
+
+
+
+ 	 
+{% endblock %}	

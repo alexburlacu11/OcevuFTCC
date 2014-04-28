@@ -12,7 +12,7 @@ import getopt
 
 
 # Create your models here.
-class RoutineRequest(models.Model):
+class Request(models.Model):
     name = models.CharField(max_length=100)
     laboratory = models.CharField(max_length=100)
     telnumber = models.CharField(max_length=100)
@@ -23,7 +23,8 @@ class RoutineRequest(models.Model):
     date = models.DateTimeField(auto_now_add=True, blank=True,)
     
 
-    
+    def get_absolute_url(self):
+        return "/routinemanager/view/%i/" % self.id
             
     def get(self, id_):        
         v = RoutineRequest.objects.get(pk=id_)
@@ -44,7 +45,7 @@ class RoutineRequest(models.Model):
             
 #         v = voeparse.loads(data, False)
 
-        r = RoutineRequest()        
+        r = Request()        
         a = r.format_to_html(xml_filename)
                 
         return data 
@@ -52,7 +53,12 @@ class RoutineRequest(models.Model):
     def format_to_html(self, xml_filename):
         aa = "not yet implemented"
         return aa
-       
+
+class Sequence(models.Model):       
+    request = models.ForeignKey(Request)
+    name = models.CharField(max_length=100) 
+    
+    
   
 class Document(models.Model):
         

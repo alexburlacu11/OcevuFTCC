@@ -1,9 +1,16 @@
  {% extends "base_templates/base.html" %} 
  
- {% block title %}Routine Manager{% endblock %}
+ {% block title %}Alert Manager{% endblock %} 
  
  
  {% block content %}
+
+{% if success_delete %}
+<div class="alert alert-dismissable alert-info">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  The VOEvent has been successfully deleted
+</div>
+{% endif %}
 
 
 {% if success %}
@@ -13,12 +20,14 @@
 </div>
 {% endif %}
 
-	
+
+
+
 
 <div class="row">
-	<a href="add">
+	<a href="create">
 	<div class="col-lg-5">
-		<h3>Submit new Routine Observation Request </h3>
+		<h3>Create new VOEvent </h3>	
 	</div>
 	</a>
 </div>
@@ -27,20 +36,22 @@
 <div class="row">
 	<a href="list">
 	<div class="col-lg-5">
-		<h3>List of Routine Requests in the database </h3>	
+		<h3>List of VOEvents in the database </h3>	
 	</div>
 	</a>
 </div>
+
 
 <div class="row">
 	<a href="loadfromfile">
 	<div class="col-lg-5">
-		<h3>Load Routine Request from file </h3>	
+		<h3>Load VOEvent from file </h3>
 	</div>
 	</a>
 </div>
 
 
-
- 	 
-{% endblock %}	
+					
+					
+					
+{% endblock %}

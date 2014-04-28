@@ -1,10 +1,10 @@
 from django.shortcuts import render
-
+from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from forms import RegistrationForm, LoginForm
 
 from django.core.urlresolvers import reverse
@@ -18,9 +18,7 @@ def index(request):
     
     context = RequestContext(request, {          
         'info': "info",  
-        'state':state,
-        
-        
+        'state':state,        
     })
 
     return HttpResponse(template.render(context))
@@ -38,6 +36,7 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
+                request.session['user'] = username
                 state = "You're successfully logged in!"
                 template = loader.get_template('dashboard/main.html')
                 context = RequestContext(request, { 'state':state  })            
@@ -60,9 +59,17 @@ def main(request):
 
 
 
-def logout_view(request):
+def logout_user(request):
     logout(request)
+    state = "Please log in or create a new account."
+    template = loader.get_template('dashboard/index.html')    
     
+    context = RequestContext(request, {          
+        'info': "info",  
+        'state':state,        
+    })
+
+    return HttpResponse(template.render(context))
 
     
     

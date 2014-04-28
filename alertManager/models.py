@@ -23,6 +23,10 @@ class Alert(models.Model):
     role = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now_add=True, blank=True,)
+    
+    def get_absolute_url(self):
+        return "/alertmanager/view/%i/" % self.id
+
 #     importance = models.FloatField(null=True, blank=True,)
 #     expires = models.DateTimeField(auto_now_add=True, null=True, blank=True,)
 #     observation_astro_coord_system_id = models.IntegerField(null=True, blank=True,)

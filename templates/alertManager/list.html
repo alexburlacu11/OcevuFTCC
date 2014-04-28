@@ -1,11 +1,9 @@
  {% extends "base_templates/base.html" %} 
  
- {% block title %}Alert List{% endblock %} 
- 
+  {% block title %}	List of VOEvents in the database {% endblock %}
  
  {% block content %}
-
-
+	   
 <div class="row">
 
 	<div class="col-lg-12">
@@ -23,10 +21,10 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for row in page_obj %}
+					{% for row in events %}
 					<tr>					
 						<td>
-					<form action="view/{{row.id}}/" method="get"
+					<form action="view" method="post"
 						enctype="multipart/form-data">
 							{% csrf_token %} 							
 							<input type="hidden" value="{{ row.id }}" name="id"/>
@@ -44,32 +42,10 @@
 					{% endfor %}
 				</tbody>
 			</table>
-			<div class="pagination">
-		        <span class="step-links">
-		            {% if page_obj.has_previous %}
-		                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-		            {% endif %}
-		
-		            <span class="current">
-		                Page {{ page_obj.number }} of {{ paginator.num_pages }}.
-		            </span>
-		
-		            {% if page_obj.has_next %}
-		                <a href="?page={{ page_obj.next_page_number }}">next</a>
-		            {% endif %}
-		        </span>
-		    </div>
-			
 		</div>
 	</div>
 </div>	
-
     
-
-   
-
-
-					
-					
-					
-{% endblock %}
+          
+	      	
+	{% endblock %}

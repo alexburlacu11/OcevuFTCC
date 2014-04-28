@@ -1,0 +1,21 @@
+ {% extends "base_templates/base.html" %} 
+ 
+ {% block title %}Request Details{% endblock %} 
+ 
+ 
+ {% block content %}
+
+<form action="/routinemanager/update/{{object.id}}/" method="get">{% csrf_token %}
+	<p>name: {{ object.name }}</p>
+	<p>lab: {{ object.laboratory }}</p>
+	<p>tel: {{ object.telnumber }}</p>
+	
+	<input type="submit" class="btn btn-primary" value="Update" />
+</form>
+
+<form action="/routinemanager/delete/{{object.id}}/" method="get">{% csrf_token %}
+	<input type="submit" class="btn btn-primary" value="Delete" />
+</form>
+					
+					
+ {% endblock %}

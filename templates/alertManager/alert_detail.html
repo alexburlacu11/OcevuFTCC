@@ -1,0 +1,21 @@
+ {% extends "base_templates/base.html" %} 
+ 
+ {% block title %}VOEvent Details{% endblock %} 
+ 
+ 
+ {% block content %}
+
+<form action="/alertmanager/update/{{object.id}}/" method="get">{% csrf_token %}
+	<p>{{ object.ivorn }}</p>
+	<p>author: {{ object.author }}</p>
+	<p>role: {{ object.role }}</p>
+	
+	<input type="submit" class="btn btn-primary" value="Update" />
+</form>
+
+<form action="/alertmanager/delete/{{object.id}}/" method="get">{% csrf_token %}
+	<input type="submit" class="btn btn-primary" value="Delete" />
+</form>
+					
+					
+ {% endblock %}
