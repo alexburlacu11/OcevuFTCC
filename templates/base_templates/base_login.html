@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  {% load staticfiles %}
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+   
+    <title>Ocevu Fast Telescope Control Center</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href={% static "bootstrap/css/bootstrap.min.css" %} rel="stylesheet">
+    
+    <style>
+		td {padding:50px;}
+		
+		a:link {text-decoration:none;}
+		a {color:darkgreen;}
+		
+		
+	</style>
+
+
+  </head>
+
+   <body>
+     
+    
+	
+    <div class="container" style="padding-top: 50px;">
+    	   
+	 <center>	   
+	
+		
+	<div class="row">
+	   			
+	   			
+	   		  <div class="jumbotron">
+	   		   <a href="/">
+                <h2>Welcome to the Ocevu Fast Telescope Control Center</h2>     
+               </a>           
+              </div>
+              
+              <hr>
+	   	
+	   	
+
+			
+			   <div class="row">
+			   
+			   {% if error %} 
+			   <div class="alert alert-dismissable alert-danger">
+			   {% endif %}
+			   {% if info %}
+			   <div class="alert alert-dismissable alert-success">
+			   {% endif %}
+				  
+				  {{ state|safe }}
+				  
+				</div>
+			
+							
+				
+			   </div>
+			   
+    
+    	{% block content %}
+		   
+		   
+		{% endblock %}
+		
+		</div>
+	    <div class="row">
+	    <p><br/></p>
+	    </div>
+	    <div class="row">
+			<div class="col-lg-12 text-center" >
+				OBSERVATOIRE MIDI-PYRENEES - 14, avenue Edouard Belin - 31400 TOULOUSE 
+				Tél. +33 (0)5 61 33 29 29 - Fax : +33 (0)5 61 33 28 88
+				Copyright © 2013 OMP - Tous droits réservés. 
+				Service web OMP - Mentions légales
+			</div>	
+		</div>
+		<div class="row">
+	    <p><br/></p>
+	    </div>
+	
+	</div>
+	
+	</center>	
+    
+    </div>	
+	
+	
+	
+      
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src={% static "bootstrap/js/bootstrap.min.js" %}></script>
+    
+  </body>
+</html>

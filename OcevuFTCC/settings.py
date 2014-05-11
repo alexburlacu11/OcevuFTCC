@@ -26,14 +26,12 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+AUTH_USER_MODEL = 'dashboard.MyUser'
 # Application definition
 
 INSTALLED_APPS = (
                   
-    'admin_tools.theming',
-    'admin_tools.menu',
-    'admin_tools.dashboard',
+    
     'django.contrib.auth',
     'django.contrib.sites',
     'django.contrib.admin',
@@ -41,11 +39,13 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'jquery',
+    'djangoformsetjs',
     'routineManager',
     'alertManager',
     'dashboard',
     'guardian',
-  #  'ztest',       
+    'ztest',       
   #  'django_jenkins',    
 )
 

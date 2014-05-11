@@ -8,19 +8,7 @@
 <form action="" method="post">
 {% csrf_token %}
 
-{% for field in form %}
-    <div class="col-lg-3">
-          <div class="panel panel-info">
-              <div class="panel-heading">
-                <h3 class="panel-title">{{ field.label_tag }} </h3>
-              </div>
-              <div class="panel-body">
-              {{ field }}  
-              {{ field.errors }}
-              </div>
-            </div>
-    </div>
-     {% endfor %}
+{{ form.as_p }}
 
 <p><input type="submit" class="btn btn-primary" value="Save" /></p>
 </form>

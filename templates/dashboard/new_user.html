@@ -1,0 +1,47 @@
+
+    {% extends "base_templates/base_login.html" %} 
+    
+    {% block content %}
+		   
+		   
+	
+
+			  
+			  
+              
+		<div class="form-group">
+			
+			
+			
+				
+			<form action="/dashboard/create" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="col-lg-3 text-left" >
+				<p></p>
+				</div>
+				<div class="col-lg-6 text-left" >
+					<div class="row">	
+							<h3>Create a new user</h3>
+							<hr>
+					</div>
+				 {% for field in form %}
+				    <div class="row">
+				          
+				               <label> {{ field.label_tag }} </label>
+				              
+				              {{ field }}  
+				              {{ field.errors }}
+				    <br/>          
+				    </div>
+				    {% endfor %}
+				    <br>
+				    <p><input type="submit" class="btn btn-primary" value="Create" /></p>
+    			</div>
+    		</form>
+    		
+		</div>
+              
+		 
+	    
+	
+		{% endblock %}

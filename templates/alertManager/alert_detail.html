@@ -1,21 +1,45 @@
  {% extends "base_templates/base.html" %} 
  
- {% block title %}VOEvent Details{% endblock %} 
+ {% block title %}Alert Details{% endblock %} 
  
  
  {% block content %}
 
-<form action="/alertmanager/update/{{object.id}}/" method="get">{% csrf_token %}
-	<p>{{ object.ivorn }}</p>
-	<p>author: {{ object.author }}</p>
-	<p>role: {{ object.role }}</p>
-	
-	<input type="submit" class="btn btn-primary" value="Update" />
-</form>
 
-<form action="/alertmanager/delete/{{object.id}}/" method="get">{% csrf_token %}
-	<input type="submit" class="btn btn-primary" value="Delete" />
-</form>
-					
+ <div class="row">
+ 
+ 			<table class="table table-bordered table-hover table-striped tablesorter">
+				<thead>
+						<tr>
+						<th> &nbsp</th>
+						<th> &nbsp</th>
+						</tr>
+				</thead>
+				<tbody>
+						<tr><td>IVORN </td><td>{{ object.ivorn }}</td></tr>			     		
+						<tr><td>Author </td><td>{{ object.author }}</td></tr>	
+						<tr><td>Role </td><td>{{ object.role }}</td></tr>	
+						<tr><td>Date </td><td>{{ object.date }}</td></tr>							
+				</tbody>
+			</table>	
+	
+</div>
+ 
+ 
+ <div class="row">
+ 
+ 	<div class="col-lg-1 text-left" >
+ 		<form action="/alertmanager/update/{{object.id}}/" method="get">{% csrf_token %}
+		    <input type="submit" class="btn btn-primary" value="Update" />
+		</form>
+ 	</div>
+ 	
+ 	<div class="col-lg-1 text-right" >
+ 		<form action="/alertmanager/delete/{{object.id}}/" method="get">{% csrf_token %}
+		    <input type="submit" class="btn btn-primary" value="Delete" />
+		</form>
+ 	</div>
+ 
+ </div>				
 					
  {% endblock %}

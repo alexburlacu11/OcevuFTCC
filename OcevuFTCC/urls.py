@@ -9,6 +9,7 @@ from django.http.response import HttpResponseRedirect
 from alertManager.views import AlertDetailView, AlertIndexView, AlertDeleteView, AlertCreateView, AlertUpdateView, AlertListView
 from routineManager.views import RequestDetailView, RequestIndexView, RequestDeleteView, RequestCreateView, RequestUpdateView, RequestListView
 
+from ztest.views import RequestWizard
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -22,8 +23,13 @@ urlpatterns = patterns('',
     url(r'^$', 'dashboard.views.index', name='index'),   
     url(r'^dashboard/login', 'dashboard.views.login_user', name='login_user'),
     url(r'^dashboard/logout', 'dashboard.views.logout_user', name='logout_user'),
+    url(r'^dashboard/create', 'dashboard.views.create', name='create'),
     url(r'^dashboard/$', 'dashboard.views.main', name='main'),
+    url(r'^dashboard/new_user', 'dashboard.views.new_user', name='new_user'),
+    url(r'^dashboard/profile', 'dashboard.views.profile', name='profile'),
+    url(r'^dashboard/update', 'dashboard.views.update', name='update'),
     
+    url(r'^contact/$', RequestWizard.as_view() ),
 #     url(r'^ztest/main', GenericView.as_view() ),
 #     url(r'^ztest/insert', GenericView.as_view() ),
 #     url(r'^ztest/alert/list/$', AlertListView.as_view() ),

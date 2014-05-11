@@ -1,84 +1,32 @@
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-  {% load staticfiles %}
-  
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-   
-    <title>Ocevu Fast Telescope Control Center</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href={% static "bootstrap/css/bootstrap.min.css" %} rel="stylesheet">
+    {% extends "base_templates/base_login.html" %} 
     
-    <style>
-		td {padding:50px;}
-		
-		a:link {text-decoration:none;}
-		a {color:darkgreen;}
-		
-		
-	</style>
-
-
-  </head>
-
-   <body>
-     
-    <center>
+    {% block content %}
+		   
+		   
 	
-    <div class="container" style="padding-top: 50px;">
-    
-	   <div class="row">
-	   			
-	   			
-	   		  <div class="jumbotron">
-                <h2>Welcome to the Ocevu Fast Telescope Control Center</h2>                
-              </div>
-              
-              <hr>
-	   	
-	   	
 
-			
-			   <div class="row">
-			   
-			   {% if error %} 
-			   <div class="alert alert-dismissable alert-danger">
-			   {% endif %}
-			   {% if info %}
-			   <div class="alert alert-dismissable alert-success">
-			   {% endif %}
-				  
-				  {{ state|safe }}
-				  
-				</div>
-			
-							
-				
-			   </div>
 			  
 			  
               
-			<div class="form-group">
+		<div class="form-group">
 			<form action="/dashboard/login" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 				{% if next %}
 				<input class="form-control" type="hidden" name="next" value="{{ next }}" />
 				{% endif %}
 				
-				<div class="col-lg-5 text-left">
+				<div class="col-lg-3 text-left" >
+				<p></p>
+				</div>
+				<div class="col-lg-6 text-left" >
 					<div class="row">	
 						<h3>Log in</h3>
 						<hr>
 					</div>
 					<div class="row">
-						<label>Username</label>
-						<input class="form-control" type="text" name="username" value="{{ username}}" /><br />
+						<label>Email</label>
+						<input class="form-control" type="text" name="email" value="{{ email }}" /><br />
 					</div>
 					<div class="row">	
 						<label>Password</label>
@@ -86,84 +34,25 @@
 					</div>
 					<div class="row">
 						<input class="btn btn-primary" type="submit" value="Log In" />
+						<a href="/dashboard/new_user" class="btn btn-primary">Create a new user</a>
 					</div>
 				</div>
-			</form>
-			
-			<div class="col-lg-2 text-left">
-			
-			</div>
+				<div class="row">
+				<p>&nbsp</p>
+					</div>
+					<div class="row">
+				<p>&nbsp</p>
+					</div>
+					<div class="row">
+				<p>&nbsp</p>
+					</div>
+			</form>	
 				
-			<form action=/dashboard/create" method="post" enctype="multipart/form-data">
-				{% csrf_token %}
-				
-				<div class="col-lg-5 text-left" >				
-					<div class="row">	
-						<h3>Create a new user</h3>
-						<hr>
-					</div>
-					<div class="row">
-						<label>E-mail</label>
-						<input class="form-control" type="text" name="email" value="" /><br />
-					</div>
-					<div class="row">	
-						<label>Password</label>
-						<input class="form-control" type="password" name="password" value="" /><br />	
-					</div>					
-					<div class="row">
-						<label>Firstname</label>
-						<input class="form-control" type="text" name="firstname" value="" /><br />
-					</div>
-					<div class="row">
-						<label>Lastname</label>
-						<input class="form-control" type="text" name="lastname" value="" /><br />
-					</div>
-					<div class="row">
-						<label>Laboratory</label>
-						<input class="form-control" type="text" name="laboratory" value="" /><br />
-					</div>
-					<div class="row">
-						<label>Telephone number</label>
-						<input class="form-control" type="text" name="number" value="" /><br />
-					</div>					
-					<div class="row">
-						<input class="btn btn-primary" type="submit" value="Create" />
-					</div>
-				</div>				
-			</form>
-			</div>
+			
+    		
+		</div>
               
 		 
-	    </div>
-	    <div class="row">
-	    <p><br/></p>
-	    </div>
-	    <div class="row">
-			<div class="col-lg-12 text-center" >
-				OBSERVATOIRE MIDI-PYRENEES - 14, avenue Edouard Belin - 31400 TOULOUSE 
-				Tél. +33 (0)5 61 33 29 29 - Fax : +33 (0)5 61 33 28 88
-				Copyright © 2013 OMP - Tous droits réservés. 
-				Service web OMP - Mentions légales
-			</div>	
-		</div>
-		<div class="row">
-	    <p><br/></p>
-	    </div>
+	    
 	
-	</div>
-	
-	
-	
-</center>	
-	
-      
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src={% static "bootstrap/js/bootstrap.min.js" %}></script>
-    
-  </body>
-</html>
+		{% endblock %}

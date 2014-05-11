@@ -1,0 +1,100 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".inline.{{ sequence_form.prefix }}").formset({
+            prefix: "{{ sequencet_form.prefix }}",
+        })
+        $(".inline.{{ album_form.prefix }}").formset({
+            prefix: "{{ album_form.prefix }}",
+        })
+    });
+</script>
+    
+<script type="text/javascript">
+ function add() {
+	 document.getElementById("target2").innerHTML="<p>My shit</p>";
+ }
+</script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">
+</script>
+
+<script>
+	$(document).ready(function(){
+	  $("#btn1").click(function(){
+	    $("#target1").append("<p>Aasdf</p>");
+	  	});
+	 
+	});
+</script>
+
+
+<div class="row">   
+	<div class="form-group">
+		<form action="" method="post">
+			{% csrf_token %}
+			
+				{% for field in form %}
+				   {{ field.label_tag }}
+				    {{ field }} 
+				         {{ field.errors }} 
+				            
+				{% endfor %}
+			<div class="row">          
+		       <p>&nbsp</p>
+		    </div>	
+			<div class="row">          
+		       <p><input type="submit" class="btn btn-primary" value="Save" /></p>
+		    </div>
+			
+		</form>
+	</div>
+</div>
+
+<div class="row">          
+		       <p>&nbsp</p>
+		    </div>	
+		    
+		    
+<div class="row">          
+	 <button id="btn1">Add New Sequence JQUERY</button>
+</div>
+
+<div class="row">          
+	 <button id="btn2" onclick="add()">Add New Sequence JAVASCRIPT</button>
+</div>
+
+<div class="row"> 
+	<div id="target1">
+	  Click here
+	</div>
+	<div id="target2">
+	  Click here
+	</div>
+</div>
+		    	
+<div class="row">          
+		       <p>&nbsp</p>
+		    </div>	
+		    
+<div class="row">   
+	<div class="form-group">
+		<form action="" method="post">
+			{% csrf_token %}
+			
+				{% for field in form %}
+				    {{ field.label_tag }}
+				    {{ field }}
+				         {{ field.errors }}
+				   
+				            
+				{% endfor %}
+			<div class="row">          
+		       <p>&nbsp</p>
+		    </div>	
+			<div class="row">          
+		       <p><input type="submit" class="btn btn-primary" value="Save" /></p>
+		    </div>
+			
+		</form>
+	</div>
+</div>

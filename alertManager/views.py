@@ -26,7 +26,7 @@ class AlertIndexView(TemplateView):
     
 class AlertListView(ListView):
     model = Alert
-    paginate_by = 5
+    paginate_by = 10
     queryset = Alert.objects.order_by('-date')
     context_object_name = 'alert_list'
   

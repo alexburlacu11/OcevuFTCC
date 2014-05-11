@@ -6,12 +6,34 @@
  
  {% block content %}
  
-<form method="post">{% csrf_token %}
-    Are you sure you want to delete "{{ object }}" ?
-    <input type="submit" value="Yes" />
-</form>
-<form action="/routinemanager/view/{{object.id}}/" method="get">{% csrf_token %}    
-    <input type="submit" value="No" />
-</form>
+ <div class="row">
+  <h3>Are you sure you want to delete "{{ object }}" ?</h3>
+ </div>
+ 
+ <div class="row">
+  
+ </div>
+ 
+ <div class="row">
+  
+ </div>
+ 
+ 
+ <div class="row">
+ 
+ 	<div class="col-lg-1 text-left" >
+ 		<form method="post">{% csrf_token %}
+		    <input type="submit" class="btn btn-primary" value="Yes" />
+		</form>
+ 	</div>
+ 	
+ 	<div class="col-lg-1 text-right" >
+ 		<form action="/routinemanager/view/{{object.id}}/" method="get">{% csrf_token %}    
+		    <input type="submit" class="btn btn-primary" value="No" />
+		</form>
+ 	</div>
+ 
+ </div>
+
 
  {% endblock %}
