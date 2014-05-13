@@ -9,7 +9,8 @@ from django.http.response import HttpResponseRedirect
 from alertManager.views import AlertDetailView, AlertIndexView, AlertDeleteView, AlertCreateView, AlertUpdateView, AlertListView
 from routineManager.views import RequestDetailView, RequestIndexView, RequestDeleteView, RequestCreateView, RequestUpdateView, RequestListView
 
-from ztest.views import RequestWizard
+from ztest.views import RequestWizard, RequestIndex
+#  RequestIndex, RequestCreate, SequenceCreate,AlbumCreate,PlanCreate
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -29,7 +30,15 @@ urlpatterns = patterns('',
     url(r'^dashboard/profile', 'dashboard.views.profile', name='profile'),
     url(r'^dashboard/update', 'dashboard.views.update', name='update'),
     
-    url(r'^contact/$', RequestWizard.as_view() ),
+    url(r'^routinemanager2/$', RequestIndex.as_view() ),
+#     url(r'^routinemanager2/create/', RequestCreate.as_view() ),
+#     url(r'^routinemanager2/new_sequence/', SequenceCreate.as_view() ),
+#     url(r'^routinemanager2/new_album/', AlbumCreate.as_view() ),
+#     url(r'^routinemanager2/new_plan/', PlanCreate.as_view() ),
+    url(r'^routinemanager2/wizard/', RequestWizard.as_view() ),
+    url(r'^routinemanager2/edit/(?P<request_id>[-\d]+)$', RequestWizard.as_view() ),
+    
+    
 #     url(r'^ztest/main', GenericView.as_view() ),
 #     url(r'^ztest/insert', GenericView.as_view() ),
 #     url(r'^ztest/alert/list/$', AlertListView.as_view() ),

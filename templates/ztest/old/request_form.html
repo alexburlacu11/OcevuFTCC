@@ -1,0 +1,53 @@
+ {% extends "base_templates/base.html" %} 
+ 
+ {% block title %}Create / Edit a Request {% endblock %}     
+
+
+ {% block content %}
+
+
+
+
+<form action="" method="post">
+            {% csrf_token %}
+            
+	 <div class="row">
+		
+		<div class="row">	
+	       <div class="col-lg-5 text-left">
+	        	<h3>Owner information</h3>
+	        	<hr>
+	            <div>
+	                {{ form.as_p }}
+	            </div>
+	            <hr>
+	       </div>
+	    </div>
+	
+	  </div>
+	
+	<div class="row">
+		<h3>List of sequences</h3>
+	        	<hr>
+		{% for row in seq_list %}
+		<p> {{row.id}} </p>
+		
+		<p> {{row.status}} </p>		
+					{% endfor %}
+	
+	</div>
+	
+	
+	<div class="row">  
+	           
+			    <input type="submit" class="btn btn-primary" value="Add a new sequence" />
+	          
+	 </div>
+         
+ </form> 
+
+ 
+
+					
+					
+ {% endblock %}

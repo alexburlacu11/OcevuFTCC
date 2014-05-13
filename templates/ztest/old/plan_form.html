@@ -1,0 +1,44 @@
+ {% extends "base_templates/base.html" %} 
+ 
+ {% block title %}Create / Edit a Request {% endblock %}     
+
+
+ {% block content %}
+
+
+
+
+<form action="" method="post">
+            {% csrf_token %}
+            
+	 <div class="row">
+		
+		<div class="row">	
+	       <div class="col-lg-5 text-left">
+	        	
+	        	<hr>
+	            <div>
+	                {{ form.as_p }}
+	            </div>
+	            <hr>
+	       </div>
+	    </div>
+	
+	  </div>
+	
+	
+	
+	
+	<div class="row">  
+	           
+			    <input type="submit" class="btn btn-primary" value="Save" />
+	          
+	 </div>
+         
+ </form> 
+
+ 
+
+					
+					
+ {% endblock %}
