@@ -42,7 +42,8 @@
 	    	<br>
 			<button type="submit" class="btn btn-success" name="action" value="request_save_and_back">Save and go back</button>		
 			<button type="submit" class="btn btn-success" name="action" value="request_save_and_add">Save and add sequence</button>		
-		
+			<button type="submit" class="btn btn-primary" name="action" value="cancel">Cancel</button>		
+			<button type="submit" class="btn btn-danger" name="action" value="validate">Validate</button>	
 		</form>
 		
 		
@@ -69,7 +70,8 @@
 							{% csrf_token %} 							
 							
 							<center>
-							<input type="submit" class="btn btn-primary" value="Edit" />
+							<button type="submit" class="btn btn-primary" name="action" value="edit">Edit</button>	
+							<button type="submit" class="btn btn-danger" name="action" value="delete">Delete</button>	
 							</center>
 																		
 						</td>

@@ -202,64 +202,112 @@ def plan_save(request):
 def edit_request(request, slug):
     
     """get slug, get list of objects and instantiate form"""
-    
-    template = loader.get_template('routineManagerProcedural/request_form.html')
+    choice = request.GET.get('action')
     request_object = Request.objects.get(id=slug)
-    form=RequestForm(instance=request_object)
-    object_list = Sequence.objects.filter(request=request_object)
-    context = RequestContext(request, {          
-            'form': form, 
-            'object_list':object_list
-        })
+    if choice == 'edit':    
+        template = loader.get_template('routineManagerProcedural/request_form.html')        
+        form=RequestForm(instance=request_object)
+        object_list = Sequence.objects.filter(request=request_object)
+        context = RequestContext(request, {          
+                'form': form, 
+                'object_list':object_list
+            })
+    else:
+        if choice == 'delete':
+            request_object.delete()
+            template = loader.get_template('routineManagerProcedural/index.html')
+            email = request.user.email
+            object_list = Request.objects.filter(email=email).order_by('-creation_date')
+            context = RequestContext(request, {          
+                'object_list': object_list, 
+            })
 
     return HttpResponse(template.render(context))
 
 def edit_sequence(request, slug):
     
     """get slug, get list of objects and instantiate form"""
-    
-    template = loader.get_template('routineManagerProcedural/sequence_form.html')
+    choice = request.GET.get('action')
     sequence_object = Sequence.objects.get(id=slug)
     request_object = sequence_object.request
-    form=SequenceForm(instance=sequence_object)
-    object_list = Album.objects.filter(sequence=sequence_object)
-    context = RequestContext(request, {          
-            'form': form, 
-            'object_list':object_list,
-            'request_object':request_object
-        })
-
+    if choice == 'edit':
+        template = loader.get_template('routineManagerProcedural/sequence_form.html')            
+        form=SequenceForm(instance=sequence_object)
+        object_list = Album.objects.filter(sequence=sequence_object)
+        context = RequestContext(request, {          
+                'form': form, 
+                'object_list':object_list,
+                'request_object':request_object
+            })
+    else:
+        if choice == 'delete':
+            sequence_object.delete()
+            template = loader.get_template('routineManagerProcedural/request_form.html')  
+            form=RequestForm(instance=request_object)
+            object_list = Sequence.objects.filter(request=request_object)
+            context = RequestContext(request, {          
+                    'form': form, 
+                    'object_list':object_list
+                })
+            
     return HttpResponse(template.render(context))
 
 def edit_album(request, slug):
     
     """get slug, get list of objects and instantiate form"""
+    choice = request.GET.get('action')
     
-    template = loader.get_template('routineManagerProcedural/album_form.html')
     album_object = Album.objects.get(id=slug)
     sequence_object = album_object.sequence
-    form=AlbumForm(instance=album_object)
-    object_list = Plan.objects.filter(album=album_object)
-    context = RequestContext(request, {          
-            'form': form, 
-            'object_list':object_list,
-            'sequence_object':sequence_object
-        })
+    request_object = sequence_object.request
+    if choice == 'edit':
+        template = loader.get_template('routineManagerProcedural/album_form.html')
+        form=AlbumForm(instance=album_object)
+        object_list = Plan.objects.filter(album=album_object)
+        context = RequestContext(request, {          
+                'form': form, 
+                'object_list':object_list,
+                'sequence_object':sequence_object
+            })
+    else:
+        if choice == 'delete':
+            album_object.delete()
+            template = loader.get_template('routineManagerProcedural/sequence_form.html')            
+            form=SequenceForm(instance=sequence_object)
+            object_list = Album.objects.filter(sequence=sequence_object)
+            context = RequestContext(request, {          
+                    'form': form, 
+                    'object_list':object_list,
+                    'request_object':request_object
+                })
 
     return HttpResponse(template.render(context))
 
 def edit_plan(request, slug):
     
     """get slug, get list of objects and instantiate form"""
-    
-    template = loader.get_template('routineManagerProcedural/plan_form.html')
+    choice = request.GET.get('action')    
     plan_object = Plan.objects.get(id=slug)
     album_object = plan_object.album
-    form=PlanForm(instance=plan_object)    
-    context = RequestContext(request, {          
-            'form': form,             
-            'album_object':album_object
-        })
+    sequence_object = album_object.sequence
+    if choice == 'edit':
+        template = loader.get_template('routineManagerProcedural/plan_form.html')
+        form=PlanForm(instance=plan_object)    
+        context = RequestContext(request, {          
+                'form': form,             
+                'album_object':album_object
+            })
+    else:
+        if choice == 'delete':
+            plan_object.delete()
+            template = loader.get_template('routineManagerProcedural/album_form.html')
+            form=AlbumForm(instance=album_object)
+            object_list = Plan.objects.filter(album=album_object)
+            context = RequestContext(request, {          
+                    'form': form, 
+                    'object_list':object_list,
+                    'sequence_object':sequence_object
+                })
 
     return HttpResponse(template.render(context))
 
