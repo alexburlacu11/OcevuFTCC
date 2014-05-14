@@ -19,7 +19,7 @@
 <div class="row">
 	
 	<div class="col-lg-5">
-		<h3>List of Routine Requests in the database </h3>	
+		<h3>General Information</h3>	
 	</div>
 	
 
@@ -27,8 +27,28 @@
 
 <div class="row">
 
+	
+	
+
 	<div class="col-lg-6">
+		<form action="/routinemanagerprocedural/request_save" method="post"
+						enctype="multipart/form-data">
+			{% csrf_token %} <br>
+	    	{% for field in form %}		    
+				{{ field.label_tag }}		           
+	              {{ field }}  
+	              {{ field.errors }}		      
+	    	{% endfor %}
+	    	<br>
+			<button type="submit" class="btn btn-success" name="action" value="request_save_and_back">Save and go back</button>		
+			<button type="submit" class="btn btn-success" name="action" value="request_save_and_add">Save and add sequence</button>		
 		
+		</form>
+		
+		
+	</div>
+           
+    <div class="col-lg-6">
 		<div class="table-responsive">
 			<table
 				class="table table-bordered table-hover table-striped tablesorter">
@@ -44,40 +64,29 @@
 					{% for row in object_list %}
 					<tr>					
 						<td>
-					<form action="edit/{{row.id}}/" method="get"
+					<form action="/routinemanagerprocedural/edit_sequence/{{row.id}}/" method="get"
 						enctype="multipart/form-data">
 							{% csrf_token %} 							
 							
 							<center>
 							<input type="submit" class="btn btn-primary" value="Edit" />
 							</center>
-							</form>											
+																		
 						</td>
-			     		<td>{{ row.target_type }}</td> 			     		 
+			     		<td>{{ row.event_type }}</td> 			     		 
 			     		<td>{{ row.creation_date }}</td> 
 			     		<td>{{ row.status }}</td>
 					
 					</tr>
 					{% endfor %}
 				</tbody>
-			</table>
-			
-		    
-		</div>
-	</div>
-	
-	<div class="col-lg-6">
-	
-	
-	</div>
-	
+			</table>	    
+		</div>	 
+     </div>
+           
+                  
+                       
 </div>
-
-<div class="row">  
-           <div class="col-lg-12 text-left"> 
-           	<a href="create"><button class="btn btn-primary">Add new routine observation request</button></a>
-           </div>            
-         </div>
 
 
 

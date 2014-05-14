@@ -89,9 +89,9 @@ class RequestWizard(SessionWizardView):
         if self.steps.current == '1':
             
             email = self.request.user.email
-            print email
+           
             req = Request.objects.filter(email=email).order_by('-creation_date').first()
-            print req
+   
             context.update({'object_list': Album.objects.all(), 'request':req})
             
         if self.steps.current == '2':

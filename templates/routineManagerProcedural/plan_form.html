@@ -1,0 +1,61 @@
+ {% extends "base_templates/base.html" %} 
+ 
+ {% block title %}Routine Manager{% endblock %}
+ 
+ 
+ {% block content %}
+
+
+{% if success %}
+<div class="alert alert-dismissable alert-success">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  Success !
+</div>
+{% endif %}
+
+	
+
+
+<div class="row">
+	
+	<div class="col-lg-5">
+		<h3>Plan Information</h3>	
+	</div>
+	
+
+</div>
+
+<div class="row">
+
+	
+	
+
+	<div class="col-lg-6">
+		<form action="/routinemanagerprocedural/plan_save" method="post"
+						enctype="multipart/form-data">
+			{% csrf_token %} <br>
+	    	{% for field in form %}		    
+				{{ field.label_tag }}		           
+	              {{ field }}  
+	              {{ field.errors }}		      
+	    	{% endfor %}
+	    	<input type="hidden" name="album_id" value="{{album_object.id}}"/>
+	    	<p>Album object id:  {{album_object.id}}</p>
+	    	<br>
+			<button type="submit" class="btn btn-success" name="action" value="plan_save_and_back">Save and go back</button>		
+				
+		
+		</form>
+		
+		
+	</div>
+           
+           
+                  
+                       
+</div>
+
+
+
+ 	 
+{% endblock %}	

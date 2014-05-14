@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'jquery',
     'djangoformsetjs',
     'routineManager',
+    'routineManagerProcedural',
     'alertManager',
     'dashboard',
     'guardian',

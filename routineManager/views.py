@@ -23,8 +23,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.generic.base import View
 
 
-class RequestIndexView(TemplateView):
-    template_name = "routineManager/index.html"
+ 
     
     
 class RequestListView(ListView):
@@ -32,6 +31,11 @@ class RequestListView(ListView):
     paginate_by = 10
     queryset = Request.objects.order_by('-creation_date')
     context_object_name = 'request_list'
+     
+    def get_queryset(self):
+        email = self.request.user.email
+        return Request.objects.filter(email=email).order_by('-creation_date')    
+    
   
 
 # class RequestCreateView(CreateView):
@@ -57,9 +61,9 @@ class RequestDeleteView(DeleteView):
     success = "ok"
     success_url='/routinemanager/'
 
-class SequenceCreateForm(ModelForm):
-    class Meta:
-        model = Sequence
+# class SequenceCreateForm(ModelForm):
+#     class Meta:
+#         model = Sequence
     
 
 # views.py
@@ -69,7 +73,16 @@ from django.views.generic import CreateView
 from .forms import SequenceFormSet, AlbumFormSet, RequestForm, PlanFormSet
 from .models import Request, Sequence, Album, Plan
 
-
+class RequestIndexView(ListView):
+    
+    model = Request
+    template_name="routineManager/index.html"
+    context_object_name = 'request_list'
+    
+    def get_queryset(self):
+        email = self.request.user.email
+        return Request.objects.filter(email=email).order_by('-creation_date')  
+    
 class RequestCreateView(CreateView):
 #     template_name = 'Request_add.html'
     model = Request
@@ -87,11 +100,22 @@ class RequestCreateView(CreateView):
         Sequence_form = SequenceFormSet()
         Album_form = AlbumFormSet()
         Plan_form = PlanFormSet()
+        email = self.request.user.email        
+        laboratory = self.request.user.laboratory
+        telnumber = self.request.user.telnumber    
+        form.email = email
+        form.laboratory = laboratory
+        form.telnumber = telnumber 
+           
         return self.render_to_response(
             self.get_context_data(form=form,
                                   Sequence_form=Sequence_form,
                                   Album_form=Album_form,
-                                  Plan_form=Plan_form))
+                                  Plan_form=Plan_form,
+                                  email=email,
+                                  laboratory=laboratory,
+                                  telnumber=telnumber
+                                  ))
 
     def post(self, request, *args, **kwargs):
         """

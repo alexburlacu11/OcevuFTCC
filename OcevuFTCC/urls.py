@@ -38,6 +38,17 @@ urlpatterns = patterns('',
     url(r'^routinemanager2/wizard/', RequestWizard.as_view() ),
     url(r'^routinemanager2/edit/(?P<request_id>[-\d]+)$', RequestWizard.as_view() ),
     
+    url(r'^routinemanagerprocedural/$', 'routineManagerProcedural.views.index', name='index'),
+    url(r'^routinemanagerprocedural/request_create', 'routineManagerProcedural.views.request_create', name='request_create'),
+    url(r'^routinemanagerprocedural/request_save', 'routineManagerProcedural.views.request_save', name='request_save'),
+    url(r'^routinemanagerprocedural/sequence_save', 'routineManagerProcedural.views.sequence_save', name='sequence_save'),
+    url(r'^routinemanagerprocedural/album_save', 'routineManagerProcedural.views.album_save', name='album_save'),
+    url(r'^routinemanagerprocedural/plan_save', 'routineManagerProcedural.views.plan_save', name='plan_save'),
+    url(r'^routinemanagerprocedural/edit_request/(?P<slug>\d+)', 'routineManagerProcedural.views.edit_request', name='edit_request'),
+    url(r'^routinemanagerprocedural/edit_sequence/(?P<slug>\d+)', 'routineManagerProcedural.views.edit_sequence', name='edit_sequence'),
+    url(r'^routinemanagerprocedural/edit_album/(?P<slug>\d+)', 'routineManagerProcedural.views.edit_album', name='edit_album'),
+    url(r'^routinemanagerprocedural/edit_plan/(?P<slug>\d+)', 'routineManagerProcedural.views.edit_plan', name='edit_plan'),
+     
     
 #     url(r'^ztest/main', GenericView.as_view() ),
 #     url(r'^ztest/insert', GenericView.as_view() ),
