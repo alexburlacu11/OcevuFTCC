@@ -15,7 +15,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = MyUser
-        fields = ('email','firstname', 'lastname','laboratory','telnumber','date_of_birth')
+        fields = ('email','firstname', 'lastname','laboratory','telnumber')
     
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
@@ -26,7 +26,7 @@ class UserCreationForm(forms.ModelForm):
         self.fields['laboratory'].widget.attrs['class'] = "form-control"
         self.fields['telnumber'].widget.attrs['class'] = "form-control"
         self.fields['password2'].widget.attrs['class'] = "form-control"
-        self.fields['date_of_birth'].widget.attrs['class'] = "form-control"
+        #self.fields['date_of_birth'].widget.attrs['class'] = "form-control"
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -54,7 +54,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = MyUser    
-        fields = ('email', 'password','firstname', 'lastname','laboratory','telnumber','date_of_birth')
+        fields = ('email', 'password','firstname', 'lastname','laboratory','telnumber')
     
     def __init__(self, *args, **kwargs):
         super(UserChangeForm, self).__init__(*args, **kwargs)
@@ -64,7 +64,7 @@ class UserChangeForm(forms.ModelForm):
         self.fields['lastname'].widget.attrs['class'] = "form-control"
         self.fields['laboratory'].widget.attrs['class'] = "form-control"
         self.fields['telnumber'].widget.attrs['class'] = "form-control"
-        self.fields['date_of_birth'].widget.attrs['class'] = "form-control"
+        #self.fields['date_of_birth'].widget.attrs['class'] = "form-control"
         
     def save(self, commit=True):
         # Save the provided password in hashed format
@@ -89,11 +89,10 @@ class MyUserAdmin(UserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('firstname', 'lastname','laboratory','telnumber','date_of_birth', 'is_admin')
+    list_display = ('firstname', 'lastname','laboratory','telnumber', 'is_admin')
     list_filter = ('is_admin',)
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('date_of_birth',)}),
+        (None, {'fields': ('email', 'password')}),        
         ('Permissions', {'fields': ('is_admin',)}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -101,7 +100,7 @@ class MyUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'date_of_birth', 'password1', 'password2')}
+            'fields': ('email', 'password1', 'password2')}
         ),
     )
     search_fields = ('email',)

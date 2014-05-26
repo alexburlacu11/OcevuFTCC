@@ -1,0 +1,83 @@
+ {% extends "base_templates/base.html" %} 
+ 
+ {% block title %}Routine Manager{% endblock %}
+ 
+ 
+ {% block content %}
+
+
+	{% if success %}
+	<div class="alert alert-dismissable alert-success">
+	  <button type="button" class="close" data-dismiss="alert">×</button>
+	  Success !
+	</div>	
+	{% endif %}
+	
+	{% block up %}
+		   
+		   
+	{% endblock %}
+	
+	
+	
+	<div class="row">
+	
+		<div class="col-lg-6">
+			{% block left %}
+			   
+			   
+			{% endblock %}
+		</div>
+		
+		<div class="col-lg-6">
+		
+			<div class="row">
+				<div class="col-lg-12">
+					<h3>Summary</h3>
+					<div class="alert alert-dismissable alert-success text-right">  
+						
+					
+							<ul>
+							
+								  
+								  	 {% for name_of_seq, list_of_albums in global_summary.items %} 
+								  	 
+									  <p>{{name_of_seq}}</p>
+									  
+									     {% for album, plans in list_of_albums.items %} 
+								  	 
+											  <p>{{album}}</p>
+											  	
+											  	{% for plan in plans %} 
+											  
+											  		<p>{{plan}}</p>
+											  		
+											  	{% endfor %}	
+											  							  
+											 {% endfor %}	
+									  	
+									  							  
+									 {% endfor %}						  
+					
+							</ul>
+							<hr>
+					
+							
+							
+					</div>			
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-lg-12">
+					{% block right %}
+					   
+					{% endblock %}
+				</div>
+			</div>
+		
+		</div>
+	
+	</div>
+ 	 
+{% endblock %}	

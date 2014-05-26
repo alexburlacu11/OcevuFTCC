@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.template import RequestContext, loader
-from models import Request, Sequence, Album, Plan
+from models import Request, Sequence, Album, Plan, SummaryManager
 from forms import RequestForm, SequenceForm, AlbumForm, PlanForm
 # Create your views here.
 
@@ -34,8 +34,7 @@ def request_create(request):
     return HttpResponse(template.render(context))
 
 def request_save(request):
-    """save request"""
-    
+    """save request"""        
     name = request.POST.get('name')
     email = request.POST.get('email')    
     choice = request.POST.get('action')
@@ -46,6 +45,17 @@ def request_save(request):
 #         form = RequestForm(request.POST or None) 
     
     form = RequestForm(request.POST)     
+    
+    if choice == 'cancel':       
+        template = loader.get_template('routineManagerProcedural/index.html')
+        email = request.user.email
+        object_list = Request.objects.filter(email=email).order_by('-creation_date')
+        context = RequestContext(request, {          
+            'object_list': object_list, 
+        })
+        return HttpResponse(template.render(context))
+    
+    
     if(form.is_valid()):
         """check if it exists"""
 #         request_db = get_object_or_404(Request, name=name, email=email)
@@ -59,18 +69,22 @@ def request_save(request):
             })
         else:
             if choice == 'request_save_and_add':
+                global_summary = "bla"   
                 template = loader.get_template('routineManagerProcedural/sequence_form.html')                   
                 form = SequenceForm()
-                form.request=request_from_form
+                form.request=request_from_form               
                 context = RequestContext(request, {           
                     'form': form, 
-                    'request_object':request_from_form
+                    'request_object':request_from_form,
+                    'global_summary':global_summary
                 })
                  
     else:
+        global_summary = "bla"   
         template = loader.get_template('routineManagerProcedural/request_form.html')
         context = RequestContext(request, {          
             'form': form, 
+            'global_summary':global_summary
         })
        
  
@@ -79,10 +93,25 @@ def request_save(request):
 def sequence_save(request):
     """save sequence"""
     
+    
     choice = request.POST.get('action')
     form = SequenceForm(request.POST)    
     request_id = request.POST.get('request_id')
     request_object = Request.objects.get(id=request_id)   
+    
+    if choice == 'cancel':
+        global_summary = "bla"
+        template = loader.get_template('routineManagerProcedural/request_form.html')        
+        object_list = Sequence.objects.filter(request=request_object).order_by('-creation_date')
+        form = RequestForm(instance=request_object)
+        context = RequestContext(request, {          
+            'object_list': object_list, 
+            'form':form,
+            'global_summary':global_summary
+        })
+        return HttpResponse(template.render(context))
+    
+    
     if(form.is_valid()):        
         form.request = request_object
         sequence = form.save() 
@@ -93,27 +122,32 @@ def sequence_save(request):
                 get the id of the request from the form, use it to get all sequences belonging to that request id, 
                 and also send the form containing the request information
             """
-            
+            global_summary = "bla"
             object_list = Sequence.objects.filter(request=request_object).order_by('-creation_date')
             form = RequestForm(instance=request_object)
             context = RequestContext(request, {          
                 'object_list': object_list, 
-                'form':form
+                'form':form,
+                'global_summary':global_summary
             })
         else:
             if choice == 'sequence_save_and_add':
-                template = loader.get_template('routineManagerProcedural/album_form.html')      
+                template = loader.get_template('routineManagerProcedural/album_form.html') 
+                global_summary = "bla"     
                 form = AlbumForm()
                 context = RequestContext(request, {          
                     'form': form, 
-                    'sequence_object': sequence
+                    'sequence_object': sequence,
+                    'global_summary':global_summary
                 })
                  
     else:
         template = loader.get_template('routineManagerProcedural/sequence_form.html')
+        global_summary = "bla"     
         context = RequestContext(request, {          
             'form': form, 
-            'request_object':request_object
+            'request_object':request_object,
+            'global_summary':global_summary
         })
        
  
@@ -123,11 +157,26 @@ def sequence_save(request):
 def album_save(request):
     """save album"""
     
+    
     choice = request.POST.get('action')
     form = AlbumForm(request.POST)    
     sequence_id = request.POST.get('sequence_id')
     sequence_object = Sequence.objects.get(id=sequence_id)   
     request_object = sequence_object.request
+    
+    if choice == 'cancel':
+        template = loader.get_template('routineManagerProcedural/sequence_form.html')
+        global_summary = "bla"     
+        object_list = Album.objects.filter(sequence=sequence_object).order_by('-creation_date')
+        form = SequenceForm(instance=sequence_object)
+        context = RequestContext(request, {          
+            'object_list': object_list, 
+            'form':form,
+            'request_object':request_object,
+            'global_summary':global_summary
+        })
+        return HttpResponse(template.render(context))
+    
     
     if(form.is_valid()):        
         form.sequence = sequence_object
@@ -135,30 +184,35 @@ def album_save(request):
         
         if choice == 'album_save_and_back':
             template = loader.get_template('routineManagerProcedural/sequence_form.html')
+            global_summary = "bla"     
             object_list = Album.objects.filter(sequence=sequence_object).order_by('-creation_date')
             form = SequenceForm(instance=sequence_object)
             context = RequestContext(request, {          
                 'object_list': object_list, 
                 'form':form,
                 'request_object':request_object,
+                'global_summary':global_summary
             })
         else:
             if choice == 'album_save_and_add':
-                template = loader.get_template('routineManagerProcedural/plan_form.html')      
+                template = loader.get_template('routineManagerProcedural/plan_form.html')  
+                global_summary = "bla"         
                 form = PlanForm()
                 context = RequestContext(request, {          
                     'form': form, 
-                    'album_object': album
+                    'album_object': album,
+                    'global_summary':global_summary
                 })
                  
     else:
         template = loader.get_template('routineManagerProcedural/album_form.html')
+        global_summary = "bla"       
         id_seq = sequence_object.id
         object_list = Plan.objects.filter
         context = RequestContext(request, {          
             'form': form, 
             'sequence_object':sequence_object,
-            
+            'global_summary':global_summary
         })
        
  
@@ -173,26 +227,44 @@ def plan_save(request):
     album_id = request.POST.get('album_id')
     album_object = Album.objects.get(id=album_id)   
     sequence_object = album_object.sequence
-    if(form.is_valid()):        
-        form.album = album_object
-        plan = form.save() 
-        
-        if choice == 'plan_save_and_back':
+    
+    if choice == 'cancel':
             template = loader.get_template('routineManagerProcedural/album_form.html')
+            global_summary = "bla"       
             object_list = Plan.objects.filter(album=album_object).order_by('-creation_date')
             form = AlbumForm(instance=album_object)
             context = RequestContext(request, {          
                 'object_list': object_list, 
                 'form':form,
                 'sequence_object':sequence_object,
+                'global_summary':global_summary
+            })
+            return HttpResponse(template.render(context))
+            
+    if(form.is_valid()):        
+        form.album = album_object
+        plan = form.save() 
+        
+        if choice == 'plan_save_and_back':
+            template = loader.get_template('routineManagerProcedural/album_form.html')
+            global_summary = "bla"   
+            object_list = Plan.objects.filter(album=album_object).order_by('-creation_date')
+            form = AlbumForm(instance=album_object)
+            context = RequestContext(request, {          
+                'object_list': object_list, 
+                'form':form,
+                'sequence_object':sequence_object,
+                'global_summary':global_summary
             })
         
                  
     else:
         template = loader.get_template('routineManagerProcedural/plan_form.html')
+        global_summary = "bla"   
         context = RequestContext(request, {          
             'form': form, 
-            'album_object':album_object
+            'album_object':album_object,
+            'global_summary':global_summary
         })
        
  
@@ -205,12 +277,14 @@ def edit_request(request, slug):
     choice = request.GET.get('action')
     request_object = Request.objects.get(id=slug)
     if choice == 'edit':    
-        template = loader.get_template('routineManagerProcedural/request_form.html')        
+        template = loader.get_template('routineManagerProcedural/request_form.html')
+        global_summary = SummaryManager.get_summary(slug);        
         form=RequestForm(instance=request_object)
         object_list = Sequence.objects.filter(request=request_object)
         context = RequestContext(request, {          
                 'form': form, 
-                'object_list':object_list
+                'object_list':object_list,
+                'global_summary':global_summary
             })
     else:
         if choice == 'delete':
@@ -231,23 +305,27 @@ def edit_sequence(request, slug):
     sequence_object = Sequence.objects.get(id=slug)
     request_object = sequence_object.request
     if choice == 'edit':
-        template = loader.get_template('routineManagerProcedural/sequence_form.html')            
+        template = loader.get_template('routineManagerProcedural/sequence_form.html')  
+        global_summary = dict(one=1, two=2, three=3)         
         form=SequenceForm(instance=sequence_object)
         object_list = Album.objects.filter(sequence=sequence_object)
         context = RequestContext(request, {          
                 'form': form, 
                 'object_list':object_list,
-                'request_object':request_object
+                'request_object':request_object,
+                'global_summary':global_summary
             })
     else:
         if choice == 'delete':
             sequence_object.delete()
             template = loader.get_template('routineManagerProcedural/request_form.html')  
+            global_summary = dict(one=1, two=2, three=3) 
             form=RequestForm(instance=request_object)
             object_list = Sequence.objects.filter(request=request_object)
             context = RequestContext(request, {          
                     'form': form, 
-                    'object_list':object_list
+                    'object_list':object_list,
+                    'global_summary':global_summary
                 })
             
     return HttpResponse(template.render(context))
@@ -262,23 +340,27 @@ def edit_album(request, slug):
     request_object = sequence_object.request
     if choice == 'edit':
         template = loader.get_template('routineManagerProcedural/album_form.html')
+        global_summary = dict(one=1, two=2, three=3)
         form=AlbumForm(instance=album_object)
         object_list = Plan.objects.filter(album=album_object)
         context = RequestContext(request, {          
                 'form': form, 
                 'object_list':object_list,
-                'sequence_object':sequence_object
+                'sequence_object':sequence_object,
+                'global_summary':global_summary
             })
     else:
         if choice == 'delete':
             album_object.delete()
-            template = loader.get_template('routineManagerProcedural/sequence_form.html')            
+            template = loader.get_template('routineManagerProcedural/sequence_form.html')      
+            global_summary = dict(one=1, two=2, three=3)          
             form=SequenceForm(instance=sequence_object)
             object_list = Album.objects.filter(sequence=sequence_object)
             context = RequestContext(request, {          
                     'form': form, 
                     'object_list':object_list,
-                    'request_object':request_object
+                    'request_object':request_object,
+                    'global_summary':global_summary
                 })
 
     return HttpResponse(template.render(context))
@@ -292,23 +374,31 @@ def edit_plan(request, slug):
     sequence_object = album_object.sequence
     if choice == 'edit':
         template = loader.get_template('routineManagerProcedural/plan_form.html')
+        global_summary = dict(one=1, two=2, three=3)      
         form=PlanForm(instance=plan_object)    
         context = RequestContext(request, {          
                 'form': form,             
-                'album_object':album_object
+                'album_object':album_object,
+                'global_summary':global_summary
             })
     else:
         if choice == 'delete':
             plan_object.delete()
-            template = loader.get_template('routineManagerProcedural/album_form.html')
+            template = loader.get_template('routineManagerProcedural/album_form.html')       
+            global_summary = dict(one=1, two=2, three=3)        
             form=AlbumForm(instance=album_object)
             object_list = Plan.objects.filter(album=album_object)
             context = RequestContext(request, {          
                     'form': form, 
                     'object_list':object_list,
-                    'sequence_object':sequence_object
+                    'sequence_object':sequence_object,
+                    'global_summary':global_summary
                 })
 
     return HttpResponse(template.render(context))
+
+
+
+
 
 

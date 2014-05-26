@@ -1,36 +1,26 @@
- {% extends "base_templates/base.html" %} 
- 
- {% block title %}Routine Manager{% endblock %}
- 
- 
- {% block content %}
 
-
-{% if success %}
-<div class="alert alert-dismissable alert-success">
-  <button type="button" class="close" data-dismiss="alert">×</button>
-  Success !
+ {% extends "base_templates/base_request.html" %} 
+ 
+ 
+{% block up %}	   
+<div class="alert alert-dismissable alert-success text-center">  
+				<button class="btn btn-primary btn-lg disabled" id="btn1">Request Info</button>
+			  	<button class="btn btn-primary btn-lg" id="btn2">Sequences Info</button>
+			    <button class="btn btn-primary btn-lg disabled" id="btn3">Albums Info</button>
+			    <button class="btn btn-primary btn-lg disabled" id="btn4">Plans Info</button>
 </div>
-{% endif %}
-
 	
-
-
 <div class="row">
 	
-	<div class="col-lg-5">
-		<h3>Sequence Information</h3>	
+	<div class="col-lg-12">
+		<h3>SEQUENCE</h3>	
 	</div>
 	
-
 </div>
 
-<div class="row">
+{% endblock %}
 
-	
-	
-
-	<div class="col-lg-6">
+{% block left %}
 		<form action="/routinemanagerprocedural/sequence_save" method="post"
 						enctype="multipart/form-data">
 			{% csrf_token %} <br>
@@ -39,19 +29,33 @@
 	              {{ field }}  
 	              {{ field.errors }}		      
 	    	{% endfor %}
+	    				
 	    	<input type="hidden" name="request_id" value="{{request_object.id}}"/>
 	    	<p>Request object id:  {{request_object.id}}</p>
 	    	<br>
-			<button type="submit" class="btn btn-success" name="action" value="sequence_save_and_back">Save and go back</button>		
-			<button type="submit" class="btn btn-success" name="action" value="sequence_save_and_add">Save and add album</button>		
+			<button type="submit" class="btn btn-success" name="action" value="sequence_save_and_back">SAVE</button>		
+			<button type="submit" class="btn btn-success" name="action" value="sequence_save_and_add">Add new album</button>		
 			<button type="submit" class="btn btn-primary" name="action" value="cancel">Cancel</button>		
 			<button type="submit" class="btn btn-danger" name="action" value="validate">Validate</button>	
 		</form>
 		
+		<br>
 		
-	</div>
-           
-    <div class="col-lg-6">
+		<h3>Get JD Values:</h3>
+		<form action="/routinemanagerprocedural/getjd1jd2" method="post"
+						enctype="multipart/form-data">
+						{% csrf_token %} <br>
+		<input type="text" name="jd1jd2field"/>
+		<button type="submit" class="btn btn-primary" name="getjd2" value="cancel">Get JD 1 and JD2</button>			
+		</form>
+		
+{% endblock %}
+
+
+{% block right %}		
+		
+
+    	<h3>List of Albums</h3>	
 		<div class="table-responsive">
 			<table
 				class="table table-bordered table-hover table-striped tablesorter">
@@ -85,14 +89,5 @@
 					{% endfor %}
 				</tbody>
 			</table>	    
-		</div>	 
-     </div>
-           
-                  
-                       
-</div>
-
-
-
- 	 
+		</div>	  	 
 {% endblock %}	

@@ -1,24 +1,27 @@
 from django.db import models
+from django.template.defaultfilters import length
 
 # Create your models here.
 
 
 class Request(models.Model):
-    name = models.CharField(max_length=100)
-    laboratory = models.CharField(max_length=100)
-    telnumber = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
-    target_type = models.CharField(max_length=100) 
+    name = models.CharField(max_length=20)
+    laboratory = models.CharField(max_length=20)
+    telnumber = models.CharField(max_length=20)
+    email = models.CharField(max_length=50)
+    target_type = models.CharField(max_length=20, default='IMMEDIATE') 
 #     request_is_ALERT = models.BooleanField()
-    sequences_number = models.IntegerField()       
+#     sequences_number = models.IntegerField()       
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,)
     TYPE_STATUS = (
-    ('INVALID', 'INVALID'),
-    ('VALID', 'VALID'),
-    ('PENDING', 'PENDING'),   
+    ('INCOMPLETE', 'INCOMPLETE'),
+    ('SUBMITTED', 'SUBMITTED'),
+    ('PLANNED', 'PLANNED'),
+    ('REJECTED', 'REJECTED'),
+    ('EXECUTING', 'EXECUTING'),   
     ('DONE', 'DONE'), 
     )
-    status = models.CharField(max_length=100, default='INVALID',choices=TYPE_STATUS)
+    status = models.CharField(max_length=20, default='INCOMPLETE',choices=TYPE_STATUS)
     
     def get_cname(self):
         class_name = "Requests"
@@ -27,6 +30,7 @@ class Request(models.Model):
  
 class Sequence(models.Model):
     request = models.ForeignKey(Request)
+    name = models.CharField(max_length=20)
     TYPE_COORD_SYSTEM = (
     ('TT-ICRS-TOPO', 'TT-ICRS-TOPO'),
     ('TT-FK5-TOPO', 'TT-FK5-TOPO'),
@@ -42,29 +46,33 @@ class Sequence(models.Model):
     ('TDB-FK5-BARY', 'TDB-FK5-BARY'),
     ('UTC-GEOD-TOPO', 'UTC-GEOD-TOPO'),
     )
-    coord_system_id = models.CharField(max_length=20, choices=TYPE_COORD_SYSTEM)
-    target_ra = models.CharField(max_length=20)
-    target_dec = models.CharField(max_length=20)    
+    coord_system_id = models.CharField(max_length=20, choices=TYPE_COORD_SYSTEM, default='UTC-FK5-TOPO')
+    target_ra_dec = models.CharField(max_length=20)      
     jd1 = models.CharField(max_length=20)
     jd2 = models.CharField(max_length=20)  
-    event_type = models.CharField(max_length=20) 
-    TYPE_BURST = (
+    duration = models.IntegerField(default=0)     
+    TYPE_EVENT = (
     ('Rapid_Alert_burst', 'Rapid_Alert_burst'),
     ('Full_Alert_burst', 'Full_Alert_burst'),
     ('Rapid_Routine', 'Rapid_Routine'),
     ('Full_routine', 'Full_routine'),    
     )   
-    burst_id = models.CharField(max_length=20, choices=TYPE_BURST) 
-    priority = models.IntegerField()
-    duration = models.IntegerField()  
+    event_type = models.CharField(max_length=20, choices=TYPE_EVENT) 
+    INTERNAL_PRIORITY = (
+    ('0', '0'),
+    ('1', '1'),    
+    )   
+    priority = models.CharField(max_length=1, choices=INTERNAL_PRIORITY, default='0')    
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,)
     TYPE_STATUS = (
-    ('INVALID', 'INVALID'),
-    ('VALID', 'VALID'),
-    ('PENDING', 'PENDING'),   
+    ('INCOMPLETE', 'INCOMPLETE'),
+    ('SUBMITTED', 'SUBMITTED'),
+    ('PLANNED', 'PLANNED'),
+    ('REJECTED', 'REJECTED'),
+    ('EXECUTING', 'EXECUTING'),   
     ('DONE', 'DONE'), 
     )
-    status = models.CharField(max_length=100, default='INVALID',choices=TYPE_STATUS)
+    status = models.CharField(max_length=20, default='INCOMPLETE',choices=TYPE_STATUS)
     
     def get_cname(self):
         class_name = "Sequences"
@@ -74,20 +82,18 @@ class Sequence(models.Model):
 class Album(models.Model):
     sequence = models.ForeignKey(Sequence)
     TYPE_ALBUM = (
-    ('ALBUM_VIS', 'ALBUM_VIS'),
-    ('ALBUM_NIR', 'ALBUM_NIR'),
-    ('ALBUM_SPEC', 'ALBUM_SPEC'),    
+    ('VISIBLE', 'ALBUM_VIS'),
+    ('INFRARED', 'ALBUM_NIR'),
+    ('SPECTRO', 'ALBUM_SPEC'),    
     )        
     type = models.CharField(max_length=10, choices=TYPE_ALBUM) #vis nir other
-    plans_number = models.IntegerField()
+#     plans_number = models.IntegerField()
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,)    
     TYPE_STATUS = (
-    ('INVALID', 'INVALID'),
-    ('VALID', 'VALID'),
-    ('PENDING', 'PENDING'),   
-    ('DONE', 'DONE'), 
+    ('INCOMPLETE', 'INCOMPLETE'),    
+    ('COMPLETE', 'COMPLETE'), 
     )
-    status = models.CharField(max_length=100, default='INVALID',choices=TYPE_STATUS)
+    status = models.CharField(max_length=20, default='INCOMPLETE',choices=TYPE_STATUS)
     
     def get_cname(self):
         class_name = "Albums"
@@ -98,22 +104,105 @@ class Plan(models.Model):
     album = models.ForeignKey(Album)
     iteration_number = models.IntegerField()
     integration_time = models.IntegerField()
+    wavelength = models.CharField(max_length=20)
     TYPE_FILTER = (
-    ('B', 'B'),
-    ('V', 'V'),
-    ('R', 'R'),   
-    ('I', 'I'), 
+    ('Filter_B', 'Filter_B'),
+    ('Filter_V', 'Filter_V'),
+    ('Filter_R', 'Filter_R'),   
+    ('Filter_I', 'Filter_I'), 
     )  
     filter = models.CharField(max_length=10, choices=TYPE_FILTER) #B,V,R,I
     creation_date = models.DateTimeField(auto_now_add=True, blank=True,)
     TYPE_STATUS = (
-    ('INVALID', 'INVALID'),
-    ('VALID', 'VALID'),
-    ('PENDING', 'PENDING'),   
-    ('DONE', 'DONE'), 
+    ('INCOMPLETE', 'INCOMPLETE'),    
+    ('COMPLETE', 'COMPLETE'), 
     )
-    status = models.CharField(max_length=100, default='INVALID',choices=TYPE_STATUS)
+    status = models.CharField(max_length=20, default='INCOMPLETE',choices=TYPE_STATUS)
     
     def get_cname(self):
         class_name = "Plans"
         return class_name
+    
+    
+class SummaryManager(): 
+     
+    @staticmethod   
+    def get_summary(request_id):
+        
+#         global_summary = ( {
+#                             "name_of_sequence1" : 
+#                             ( 
+#                              { "album11":("plan111","plan112") },
+#                              { "album12":("plan121","plan122") } 
+#                             )
+#                          },
+#                           {
+#                             "name_of_sequence2" : 
+#                             ( 
+#                              { "album21":("plan211","plan212") },
+#                              { "album22":("plan221","plan222") } 
+#                             )
+#                           }               
+#                            
+#                            ) 
+         
+        request_object = Request.objects.get(id=request_id)
+        sequences = Sequence.objects.all()
+        
+        global_summary = "Nothing"
+        global_summary = {}
+        
+        for seq in sequences:
+            
+            for alb in Album.objects.filter(sequence=seq):
+                
+                global_summary = ( { seq.name : ( { alb : Plan.objects.filter(album=alb)} ) } )
+             
+        
+        if length(global_summary) == 0:
+            global_summary = "Nothing"
+        
+#         x = {}
+# 
+#         for row in sequences:
+#            x[row.name] = {} # derive this from something.
+#            for idx, col in enumerate(row):
+#                x[row.name][idx] = col
+       
+       
+        return global_summary
+    
+    
+    
+    
+#     <ul>
+#                                 {% for sequence in global_summary %} 
+#                                   
+#                                        {% for name_of_seq, list_of_albums in sequence.items %} 
+#                                        
+#                                       <p>{{name_of_seq}}</p>
+#                                       
+#                                           {% for album in list_of_albums %}     
+#                                                                                 
+#                                               {% for name_of_album, list_of_plans in album.items %} 
+#                                               
+#                                               <p>{{name_of_album}}</p>
+#                                               
+#                                                   {% for plan in list_of_plans %} 
+#                                                   
+#                                                   <p>{{plan}}</p>
+#                                                       
+#                                                                                 
+#                                                  {% endfor %}    
+#                                                                             
+#                                              {% endfor %}    
+#                                                                         
+#                                          {% endfor %}    
+#                                                                     
+#                                      {% endfor %}                          
+#                                  {% endfor %}
+#                             </ul>
+#                             
+#                             <hr>
+    
+    
