@@ -25,7 +25,8 @@
     <!-- Page Specific CSS -->
     <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
     
-    
+    <!-- JsTree -->
+    <link rel="stylesheet" href={% static "bootstrap/dist/themes/default/style.min.css" %} />
     
 </head>
 
@@ -121,8 +122,40 @@
     <script src={% static "bootstrap/js/tablesorter/jquery.tablesorter.js" %}></script>
     <script src={% static "bootstrap/js/tablesorter/tables.js" %}></script>
     
-    
-    
+    <!-- JsTree -->
+    <script src={% static "bootstrap/dist/jstree.min.js" %}></script>
+    <script>
+	  $(function () {
+	    // 6 create an instance when the DOM is ready
+	    $('#jstree').jstree();
+	    // 7 bind to events triggered on the tree
+	    $('#jstree').on("changed.jstree", function (e, data) {
+	      console.log(data.selected);
+	    });	    
+	    $("#plugins7").jstree({
+	        "types" : {
+	          "default" : {
+	            "icon" : "glyphicon glyphicon-flash"
+	          },
+	          "demo" : {
+	            "icon" : "glyphicon glyphicon-ok"
+	          }
+	        },
+	        "plugins" : [ "types" ]
+	      });
+	    $("#jstree").jstree("open_all");
+	    
+	  });
+	  </script>
+	  <style type="text/css">
+		 .jstree li > a > .jstree-icon {  display:none !important; } 
+		 .jstree {font-size: 16px; }
+		 
+
+		</style>
+
+	
+  
     
 </body>
 </html>

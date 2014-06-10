@@ -1,56 +1,89 @@
  {% extends "base_templates/base_request.html" %} 
  
  
-{% block up %}	   
-<div class="alert alert-dismissable alert-success text-center">  
-				<button class="btn btn-primary btn-lg" id="btn1">Request Info</button>
-			  	<button class="btn btn-primary btn-lg disabled" id="btn2">Sequences Info</button>
-			    <button class="btn btn-primary btn-lg disabled" id="btn3">Albums Info</button>
-			    <button class="btn btn-primary btn-lg disabled" id="btn4">Plans Info</button>
-</div>
-	
+{% block heading %}	   
+<div class="row text-center">
+
+				<ul class="nav nav-tabs" style="margin-bottom: 15px;">
+	                <li class="active"><a data-toggle="tab">Request Info</a></li>
+	                <li class="disabled"><a>Sequence Info</a></li>
+	                <li class="disabled"><a>Album Info</a></li>
+	                <li class="disabled"><a>Plan Info</a></li>                
+	              </ul>
+
+</div> 
 <div class="row">
 	
 	<div class="col-lg-12">
-		<h3>REQUEST</h3>	
+		<h3>REQUEST &nbsp	
+		<a href="/routinemanagerprocedural/help_request" onclick="window.open(this.href,'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=SomeSize,height=SomeSize');return false;">
+		Help <i class="fa fa-arrow-circle-right"></i></a></h3>	
 	</div>
 	
 </div>
 
 {% endblock %}
 
-{% block left %}
+{% block details %}
 
 		<form action="/routinemanagerprocedural/request_save" method="post"
 						enctype="multipart/form-data">
 			{% csrf_token %} <br>
+	    	<table class="table table-hover table-striped tablesorter">
 	    	{% for field in form %}		    
-				{{ field.label_tag }}		           
-	              {{ field }}  
-	              {{ field.errors }}		      
+				<tr><td>{{ field.label_tag }} {% if field.field.required %}&nbsp*{% endif %} </td>		           
+	             	<td>{{ field }}
+	              		{{ field.errors }}
+	              	</td></tr>		      
 	    	{% endfor %}
+	    	</table>
 	    	<br>
-			<button type="submit" class="btn btn-success" name="action" value="request_save_and_back">SAVE</button>		
-			<button type="submit" class="btn btn-success" name="action" value="request_save_and_add">Add new sequence</button>		
-			<button type="submit" class="btn btn-primary" name="action" value="cancel">Cancel</button>		
-			<button type="submit" class="btn btn-danger" name="action" value="validate">Validate</button>	
+	    	<div class="row">   	
+	    	<table>
+	    	<tr>
+	    	<td><button type="submit" class="btn btn-primary" name="action" value="cancel">Cancel</button></td>
+			<td>&nbsp</td>
+			<td><button type="submit" class="btn btn-success" name="action" value="request_save_and_back">SAVE</button></td>		
+			<td>&nbsp</td>
+			<td><button type="submit" class="btn btn-success" name="action" value="request_save_and_add">Add new sequence</button></td>				
+			<td>&nbsp</td>
+			<td>
+			{% if object_list %}
+			<button type="submit" class="btn btn-danger" name="action" value="validate">Validate</button>			   
+			{% else %}
+			<button type="submit" class="btn btn-danger disabled" name="action" value="validate">Validate</button>			
+			{% endif %}			
+			</td>			
+			</tr>
+			</table>
+			</div>
+			<div class="row">
+			<br/>
+			{% if object_list %}
+			<button type="submit" class="btn btn-warning" name="action" value="export">Export as XML</button>			   
+			{% else %}
+			<button type="submit" class="btn btn-warning disabled" name="action" value="export">Export as XML</button>			
+			{% endif %}
+
+			
+			</div>
 		</form>	
 
 	
 {% endblock %}
 
 
-{% block right %}
+{% block children_list %}
 
 
-    <h3>List of Sequences</h3>	
+    <h3>List of Sequences - <span class="label label-primary">{{object_list|length}}</span></h3>	
 		<div class="table-responsive">
 			<table
 				class="table table-bordered table-hover table-striped tablesorter">
 				<thead>
 					<tr>
 						<th> &nbsp</th>
-						<th>Target Type <i class="fa fa-sort"></i></th>
+						<th>Name <i class="fa fa-sort"></i></th>
 						<th>Creation Date <i class="fa fa-sort"></i></th>
 						<th>Status <i class="fa fa-sort"></i></th>
 					</tr>
@@ -67,9 +100,9 @@
 							<button type="submit" class="btn btn-primary" name="action" value="edit">Edit</button>	
 							<button type="submit" class="btn btn-danger" name="action" value="delete">Delete</button>	
 							</center>
-																		
+					</form>									
 						</td>
-			     		<td>{{ row.event_type }}</td> 			     		 
+			     		<td>{{ row.name }}</td> 			     		 
 			     		<td>{{ row.creation_date }}</td> 
 			     		<td>{{ row.status }}</td>
 					

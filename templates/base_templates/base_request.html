@@ -13,17 +13,16 @@
 	</div>	
 	{% endif %}
 	
-	{% block up %}
+	{% block heading %}
 		   
 		   
 	{% endblock %}
-	
-	
+          
 	
 	<div class="row">
 	
 		<div class="col-lg-6">
-			{% block left %}
+			{% block details %}
 			   
 			   
 			{% endblock %}
@@ -32,45 +31,92 @@
 		<div class="col-lg-6">
 		
 			<div class="row">
-				<div class="col-lg-12">
-					<h3>Summary</h3>
-					<div class="alert alert-dismissable alert-success text-right">  
-						
-					
-							<ul>
-							
-								  
-								  	 {% for name_of_seq, list_of_albums in global_summary.items %} 
-								  	 
-									  <p>{{name_of_seq}}</p>
-									  
-									     {% for album, plans in list_of_albums.items %} 
-								  	 
-											  <p>{{album}}</p>
-											  	
-											  	{% for plan in plans %} 
-											  
-											  		<p>{{plan}}</p>
-											  		
-											  	{% endfor %}	
-											  							  
-											 {% endfor %}	
-									  	
-									  							  
-									 {% endfor %}						  
-					
-							</ul>
-							<hr>
-					
-							
-							
-					</div>			
+			<div class="col-lg-12">
+				
+				
+				<div class="panel-heading"><h3>Summary</h3></div>
+              
+					<div class="well" style="overflow:scroll; height:350px;">  
+								
+				<div id="jstree" class="panel-body">
+				    <!-- in this example the tree is populated from inline HTML -->
+				    <ul>
+				      <li><!--  ROOT NODE 1 : REQUEST  -->
+				      	<form id="form-req" action="/routinemanagerprocedural/edit_request/{{global_summary.0.items.0}}/" method="get"
+												enctype="multipart/form-data">
+													{% csrf_token %}
+													<input type="hidden" name="action" value="edit" />												
+														<a href="#" onclick="document.getElementById('form-req').submit();">
+															Request: {{global_summary.0.items.0.request.name}}
+															<span class="label label-danger">{{global_summary.0.items.0.request.status}}</span>															
+														</a>												
+											</form>				      
+				        <ul><!-- List of Sequences  -->				        
+					        {% for sequence in global_summary %}
+					          <li id="child_node_1"><!--  Sequence element  -->
+					          	{% for sequence, albums in sequence.items %}
+					          	<!--  Sequence form  -->
+					          	 <form id="form-seq" action="/routinemanagerprocedural/edit_sequence/{{sequence.id}}/" method="get"
+												enctype="multipart/form-data">
+													{% csrf_token %}
+													<input type="hidden" name="action" value="edit" />												
+														<a href="#" onclick="document.getElementById('form-seq').submit();">
+															Sequence: {{sequence.name}}
+															<span class="label label-danger">{{sequence.status}}</span>
+														</a>													
+								  </form>
+								 <!-- END Sequence form  -->	
+					          	   <ul> <!--  Unordered list of albums  -->
+					          	   				{% for album_iterator in albums %}									   		
+									   				{% for album, plans in album_iterator.items %}									   				
+									   					<li><!-- Album form -->
+										   					<form id="form-album" action="/routinemanagerprocedural/edit_album/{{album.id}}/" method="get"
+																enctype="multipart/form-data">
+																	{% csrf_token %}
+																	<input type="hidden" name="action" value="edit" />																	
+																		<a href="#" onclick="document.getElementById('form-album').submit();">																			
+																			Album type: {{album.type}}
+																			<span class="label label-danger">{{album.status}}</span>
+																		</a>																
+															</form>	
+															<!-- END Album form -->
+									   						<ul> <!-- unordered list of plans -->
+									   							{% for plan in plans %}
+									   								<li><!-- plan item and form -->
+										   								<form id="form-plan" action="/routinemanagerprocedural/edit_plan/{{plan.id}}/" method="get"
+																		enctype="multipart/form-data">
+																			{% csrf_token %}
+																			<input type="hidden" name="action" value="edit" />																			
+																				<a href="#" onclick="document.getElementById('form-plan').submit();">																					
+																					Plan Filter: {{plan.filter}}
+																					Images: {{plan.iterations_number}}
+																					<span class="label label-danger">{{plan.status}}</span>
+																				</a>																			
+																		</form>	
+									   								</li><!-- end plan item and form-->
+									   							{% endfor %}									   						
+									   						</ul><!-- END unordered list of plans -->								   					
+									   					</li>									   				
+									   				{% endfor %}									   				
+									   			{% endfor %}  	    
+					          	   </ul> <!-- END Unordered list of albums  -->		
+					          	   {% endfor %}	          
+					          </li> <!--  END Sequence element  --> 				          
+					        {% endfor %}       			          
+				        </ul><!--  End list of Sequences  -->
+				      </li><!-- END ROOT NODE 1 : REQUEST  -->			      
+				    </ul><!-- END list of requests which is only 1 -->
+				  </div><!--  END jstree div  -->	
+				 </div>
 				</div>
-			</div>
+			</div><!--  END row containing jstree -->
+			
+			
+		
 			
 			<div class="row">
 				<div class="col-lg-12">
-					{% block right %}
+					{% block children_list %}
 					   
 					{% endblock %}
 				</div>

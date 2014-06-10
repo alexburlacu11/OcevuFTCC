@@ -48,7 +48,10 @@ urlpatterns = patterns('',
     url(r'^routinemanagerprocedural/edit_sequence/(?P<slug>\d+)', 'routineManagerProcedural.views.edit_sequence', name='edit_sequence'),
     url(r'^routinemanagerprocedural/edit_album/(?P<slug>\d+)', 'routineManagerProcedural.views.edit_album', name='edit_album'),
     url(r'^routinemanagerprocedural/edit_plan/(?P<slug>\d+)', 'routineManagerProcedural.views.edit_plan', name='edit_plan'),
-     
+    url(r'^routinemanagerprocedural/help_request/', 'routineManagerProcedural.views.help_request', name='help_request'),
+    url(r'^routinemanagerprocedural/help_sequence/', 'routineManagerProcedural.views.help_sequence', name='help_sequence'),
+    url(r'^routinemanagerprocedural/help_album/', 'routineManagerProcedural.views.help_album', name='help_album'),
+    url(r'^routinemanagerprocedural/help_plan/', 'routineManagerProcedural.views.help_plan', name='help_plan'),     
     
 #     url(r'^ztest/main', GenericView.as_view() ),
 #     url(r'^ztest/insert', GenericView.as_view() ),

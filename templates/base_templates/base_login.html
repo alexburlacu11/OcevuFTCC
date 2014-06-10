@@ -24,6 +24,16 @@
 		
 	</style>
 
+	<script type='text/javascript'>
+		$(document).ready(function() {
+		
+			var text = $('td').text();
+			text = text.replace('INCOMPLETE', '<font color="red">INCOMPLETE</font>');
+			$('td').html(text);
+		
+		}}
+	</script>
+
 
   </head>
 
