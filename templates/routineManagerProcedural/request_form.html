@@ -15,7 +15,7 @@
 <div class="row">
 	
 	<div class="col-lg-12">
-		<h3>REQUEST &nbsp	
+		<h3>REQUEST &nbsp 	
 		<a href="/routinemanagerprocedural/help_request" onclick="window.open(this.href,'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=SomeSize,height=SomeSize');return false;">
 		Help <i class="fa fa-arrow-circle-right"></i></a></h3>	
 	</div>
@@ -29,6 +29,7 @@
 		<form action="/routinemanagerprocedural/request_save" method="post"
 						enctype="multipart/form-data">
 			{% csrf_token %} <br>
+			<input type="hidden" name="instance" value="{{instance}}" />
 	    	<table class="table table-hover table-striped tablesorter">
 	    	{% for field in form %}		    
 				<tr><td>{{ field.label_tag }} {% if field.field.required %}&nbsp*{% endif %} </td>		           
@@ -51,7 +52,7 @@
 			{% if object_list %}
 			<button type="submit" class="btn btn-danger" name="action" value="validate">Validate</button>			   
 			{% else %}
-			<button type="submit" class="btn btn-danger disabled" name="action" value="validate">Validate</button>			
+			<button type="submit" class="btn btn-danger disabled" name="action" value="validate"><i>Validate</i></button>			
 			{% endif %}			
 			</td>			
 			</tr>
@@ -62,7 +63,7 @@
 			{% if object_list %}
 			<button type="submit" class="btn btn-warning" name="action" value="export">Export as XML</button>			   
 			{% else %}
-			<button type="submit" class="btn btn-warning disabled" name="action" value="export">Export as XML</button>			
+			<button type="submit" class="btn btn-warning disabled" name="action" value="export"><i>Export as XML</i></button>			
 			{% endif %}
 
 			

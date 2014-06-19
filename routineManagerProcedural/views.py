@@ -1,16 +1,20 @@
 from django.core import serializers
 import os
+import json
+import time
 from django.utils.encoding import smart_str
 import mimetypes
 from django.core.servers.basehttp import FileWrapper
-        
+from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from models import Request, Sequence, Album, Plan, SummaryManager
 from forms import RequestForm, SequenceForm, AlbumForm, PlanForm
+from routineManagerProcedural.models import OFTThreadManager
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
-
+@login_required
 def index(request):
     """redirect to index page """
          
@@ -23,6 +27,7 @@ def index(request):
  
     return HttpResponse(template.render(context))
     
+@login_required
 def request_create(request):
     """redirect to create page """
          
@@ -30,31 +35,31 @@ def request_create(request):
     email = request.user.email
     laboratory = request.user.laboratory
     telnumber = request.user.telnumber    
-    form = RequestForm(initial={'email': email, 'laboratory':laboratory, 'telnumber':telnumber})
+    form = RequestForm(initial={'email': email, 'laboratory':laboratory, 'telnumber':telnumber, 'status':'INCOMPLETE'})
     context = RequestContext(request, {          
         'form': form, 
     })
  
     return HttpResponse(template.render(context))
 
+@login_required
 def request_save(request):
     """save request"""        
 #     name = request.POST.get('name')
     email = request.POST.get('email')    
     choice = request.POST.get('action')
-#     instance = Request.objects.get(name=name, email=email)
-#     if(instance):
-#         form = RequestForm(instance=instance)     
-#     else:
-#         form = RequestForm(request.POST or None) 
+    instance = request.POST.get('instance')
+    if(instance):
+        req_in_db = Request.objects.get(id=instance) 
+        form = RequestForm(instance=req_in_db, data=request.POST)     
+    else:
+        form = RequestForm(request.POST) 
     
-    form = RequestForm(request.POST)     
+#     form = RequestForm(request.POST)     
     
     if choice == 'export':
         
-        queryset = Request.objects.filter(id=1)       
-        
-        
+        queryset = Request.objects.filter(id=1)        
         XMLSerializer = serializers.get_serializer("xml")
         xml_serializer = XMLSerializer()
         xml_serializer.serialize(queryset)
@@ -88,7 +93,9 @@ def request_save(request):
     if(form.is_valid()):
         """check if it exists"""
 #         request_db = get_object_or_404(Request, name=name, email=email)
-        request_from_form = form.save()      
+        
+        request_from_form = form.save()
+    
         if choice == 'request_save_and_back':
             template = loader.get_template('routineManagerProcedural/index.html')
             email = request.user.email
@@ -100,7 +107,7 @@ def request_save(request):
             if choice == 'request_save_and_add':
                 global_summary = SummaryManager.get_summary(request_from_form.id);   
                 template = loader.get_template('routineManagerProcedural/sequence_form.html')                   
-                form = SequenceForm()
+                form = SequenceForm(initial={'status': 'INCOMPLETE'})
                 form.request=request_from_form               
                 context = RequestContext(request, {           
                     'form': form, 
@@ -119,6 +126,7 @@ def request_save(request):
  
     return HttpResponse(template.render(context))
 
+@login_required
 def sequence_save(request):
     """save sequence"""
     
@@ -127,6 +135,13 @@ def sequence_save(request):
     form = SequenceForm(request.POST)    
     request_id = request.POST.get('request_id')
     request_object = Request.objects.get(id=request_id)   
+    
+    instance = request.POST.get('instance')
+    if(instance):
+        sequenceInDB = Sequence.objects.get(id=instance) 
+        form = SequenceForm(instance=sequenceInDB, data=request.POST)     
+    else:
+        form = SequenceForm(request.POST) 
     
     if choice == 'cancel':
         global_summary = SummaryManager.get_summary(request_object.id);
@@ -169,7 +184,7 @@ def sequence_save(request):
             if choice == 'sequence_save_and_add':
                 template = loader.get_template('routineManagerProcedural/album_form.html') 
                 global_summary = SummaryManager.get_summary(request_object.id);     
-                form = AlbumForm()
+                form = AlbumForm(initial={'status': 'INCOMPLETE'})
                 context = RequestContext(request, {          
                     'form': form, 
                     'sequence_object': sequence,
@@ -188,7 +203,7 @@ def sequence_save(request):
     print "no template so form is bad"
     return HttpResponse(template.render(context))
 
-
+@login_required
 def album_save(request):
     """save album"""
     
@@ -198,6 +213,13 @@ def album_save(request):
     sequence_id = request.POST.get('sequence_id')
     sequence_object = Sequence.objects.get(id=sequence_id)   
     request_object = sequence_object.request
+    
+    instance = request.POST.get('instance')
+    if(instance):
+        albumInDB = Album.objects.get(id=instance) 
+        form = AlbumForm(instance=albumInDB, data=request.POST)     
+    else:
+        form = AlbumForm(request.POST) 
     
     if choice == 'cancel':
         template = loader.get_template('routineManagerProcedural/sequence_form.html')
@@ -234,7 +256,7 @@ def album_save(request):
             if choice == 'album_save_and_add':
                 template = loader.get_template('routineManagerProcedural/plan_form.html')  
                 global_summary = SummaryManager.get_summary(request_object.id);         
-                form = PlanForm()
+                form = PlanForm(initial={'status': 'INCOMPLETE'})
                 context = RequestContext(request, {          
                     'form': form, 
                     'album_object': album,
@@ -255,7 +277,7 @@ def album_save(request):
  
     return HttpResponse(template.render(context))
 
-
+@login_required
 def plan_save(request):
     """save plan"""
     
@@ -264,6 +286,13 @@ def plan_save(request):
     album_id = request.POST.get('album_id')
     album_object = Album.objects.get(id=album_id)   
     sequence_object = album_object.sequence
+    
+    instance = request.POST.get('instance')
+    if(instance):
+        planInDB = Plan.objects.get(id=instance) 
+        form = PlanForm(instance=planInDB, data=request.POST)     
+    else:
+        form = PlanForm(request.POST)       
     
     if choice == 'cancel':
             template = loader.get_template('routineManagerProcedural/album_form.html')
@@ -309,7 +338,7 @@ def plan_save(request):
  
     return HttpResponse(template.render(context))
 
-
+@login_required
 def edit_request(request, slug):
     
     """get slug, get list of objects and instantiate form"""
@@ -320,7 +349,8 @@ def edit_request(request, slug):
         global_summary = SummaryManager.get_summary(slug);        
         form=RequestForm(instance=request_object)
         object_list = Sequence.objects.filter(request=request_object)
-        context = RequestContext(request, {          
+        context = RequestContext(request, {     
+                'instance':request_object.id,                                
                 'form': form, 
                 'object_list':object_list,
                 'global_summary':global_summary
@@ -337,6 +367,7 @@ def edit_request(request, slug):
 
     return HttpResponse(template.render(context))
 
+@login_required
 def edit_sequence(request, slug):
     
     """get slug, get list of objects and instantiate form"""
@@ -348,7 +379,8 @@ def edit_sequence(request, slug):
         global_summary = SummaryManager.get_summary(request_object.id);         
         form=SequenceForm(instance=sequence_object)
         object_list = Album.objects.filter(sequence=sequence_object)
-        context = RequestContext(request, {          
+        context = RequestContext(request, {     
+                'instance':sequence_object.id,     
                 'form': form, 
                 'object_list':object_list,
                 'request_object':request_object,
@@ -369,6 +401,7 @@ def edit_sequence(request, slug):
             
     return HttpResponse(template.render(context))
 
+@login_required
 def edit_album(request, slug):
     
     """get slug, get list of objects and instantiate form"""
@@ -382,7 +415,8 @@ def edit_album(request, slug):
         global_summary = SummaryManager.get_summary(request_object.id);
         form=AlbumForm(instance=album_object)
         object_list = Plan.objects.filter(album=album_object)
-        context = RequestContext(request, {          
+        context = RequestContext(request, {
+                'instance':album_object.id,          
                 'form': form, 
                 'object_list':object_list,
                 'sequence_object':sequence_object,
@@ -404,6 +438,7 @@ def edit_album(request, slug):
 
     return HttpResponse(template.render(context))
 
+@login_required
 def edit_plan(request, slug):
     
     """get slug, get list of objects and instantiate form"""
@@ -413,9 +448,10 @@ def edit_plan(request, slug):
     sequence_object = album_object.sequence
     if choice == 'edit':
         template = loader.get_template('routineManagerProcedural/plan_form.html')
-        global_summary = SummaryManager.get_summary(sequence_object.request.id);      
-        form=PlanForm(instance=plan_object)    
-        context = RequestContext(request, {          
+        global_summary = SummaryManager.get_summary(sequence_object.request.id);        
+        form = PlanForm( instance = plan_object)            
+        context = RequestContext(request, {  
+                'instance':plan_object.id,          
                 'form': form,             
                 'album_object':album_object,
                 'global_summary':global_summary
@@ -436,8 +472,7 @@ def edit_plan(request, slug):
 
     return HttpResponse(template.render(context))
 
-
-
+@login_required
 def help_request(request):
     template = loader.get_template('routineManagerProcedural/help_request.html')
     context = RequestContext(request, {          
@@ -446,6 +481,7 @@ def help_request(request):
 
     return HttpResponse(template.render(context))
 
+@login_required
 def help_sequence(request):
     template = loader.get_template('routineManagerProcedural/help_sequence.html')
     context = RequestContext(request, {          
@@ -454,6 +490,7 @@ def help_sequence(request):
 
     return HttpResponse(template.render(context))
 
+@login_required
 def help_album(request):
     template = loader.get_template('routineManagerProcedural/help_album.html')
     context = RequestContext(request, {          
@@ -462,6 +499,7 @@ def help_album(request):
 
     return HttpResponse(template.render(context))
 
+@login_required
 def help_plan(request):
     template = loader.get_template('routineManagerProcedural/help_plan.html')
     context = RequestContext(request, {          
@@ -469,6 +507,21 @@ def help_plan(request):
                 })
 
     return HttpResponse(template.render(context))
+
+@login_required
+def getJd1Jd2(request):
+#     time.sleep(20)
+    location = request.GET.get('slug', '')    
+    result = OFTThreadManager.getJd1Jd2(location)    
+    if result == None or result == "":
+        result = 'No data received' 
+    data = ( {'jd1':result[0] , 'jd2':result[1] })
+    convertedJSON = json.dumps(data, ensure_ascii=False)   
+    
+    return HttpResponse(convertedJSON)
+    
+
+
 
 
 

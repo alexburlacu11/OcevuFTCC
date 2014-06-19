@@ -7,11 +7,24 @@ from models import Plan
 
 from django.forms import ModelForm
 from django import forms
+from django.db.models.base import Empty
+from django.core.validators import EMPTY_VALUES
 
 
 
 class RequestForm(ModelForm):
-    class Meta:
+    TYPE_STATUS = (
+    ('INCOMPLETE', 'INCOMPLETE'),
+    ('SUBMITTED', 'SUBMITTED'),
+    ('PLANNED', 'PLANNED'),
+    ('REJECTED', 'REJECTED'),
+    ('EXECUTING', 'EXECUTING'),    
+    ('DONE', 'DONE'), 
+    )
+   
+    status = forms.CharField()
+    
+    class Meta: 
         model = Request
         
  
@@ -30,16 +43,27 @@ class RequestForm(ModelForm):
 #         self.fields['sequences_number'].widget.attrs['readonly'] = True
 #         self.fields['status'].widget.attrs['class'] = "form-control"
         self.fields['status'].widget.attrs['readonly'] = True
+        
          
  
 class SequenceForm(ModelForm):
- 
+    TYPE_STATUS = (
+    ('INCOMPLETE', 'INCOMPLETE'),
+    ('SUBMITTED', 'SUBMITTED'),
+    ('PLANNED', 'PLANNED'),
+    ('REJECTED', 'REJECTED'),
+    ('EXECUTING', 'EXECUTING'),    
+    ('DONE', 'DONE'), 
+    )
+    
     ra_dec_example = (
     ('20 54 05.689 +37 01 17.38', '20 54 05.689 +37 01 17.38'),
     ('10:12:45.3-45:17:50', '10:12:45.3-45:17:50'),
     ('350.123456 -17.33333', '350.123456 -17.33333'),
     )
     format_ra_dec = forms.ChoiceField(choices=ra_dec_example) 
+    
+    status = forms.CharField()
     
     class Meta:
         model = Sequence
@@ -65,6 +89,9 @@ class SequenceForm(ModelForm):
         
 
 class AlbumForm(ModelForm):
+    
+    status = forms.CharField()
+    
     class Meta:
         model = Album      
         exclude = ('sequence',)  
@@ -82,6 +109,9 @@ class AlbumForm(ModelForm):
                  
  
 class PlanForm(ModelForm):
+    
+    status = forms.CharField()
+    
     class Meta:
         model = Plan   
         exclude = ('album',)     

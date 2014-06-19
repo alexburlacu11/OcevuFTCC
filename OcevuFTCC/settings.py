@@ -27,6 +27,9 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'dashboard.MyUser'
+
+LOGIN_URL = '/' 
+ 
 # Application definition
 
 INSTALLED_APPS = (

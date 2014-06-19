@@ -1,8 +1,9 @@
 
  {% extends "base_templates/base_request.html" %} 
  
+ {% load static %}
  
-{% block heading %}	   
+{% block heading %}	  
 <div class="row text-center">
 
 				<ul class="nav nav-tabs" style="margin-bottom: 15px;">
@@ -33,18 +34,138 @@
 
 {% endblock %}
 
+
+
+
+
 {% block details %}
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	
+	<script type="text/javascript">
+	$( document ).ready(function() {
+		$('#get').click(function(e) {
+			$.get( "/routinemanagerprocedural/getjd1jd2/?slug=coucou", {  } )
+			  .done(function( data ) {	
+				var json = JSON.parse(data);
+			    $('#id_julian_day_1').val(json.jd1);
+			    $('#id_julian_day_2').val(json.jd2);
+			  });
+		});	
+	});
+	</script>
+
 		<form action="/routinemanagerprocedural/sequence_save" method="post"
 						enctype="multipart/form-data">
 			{% csrf_token %} <br>
-			
+			<input type="hidden" name="instance" value="{{instance}}" />
 	    	<table class="table table-hover table-striped tablesorter">
-	    	{% for field in form %}		    
-				<tr><td>{{ field.label_tag }}{% if field.field.required %}&nbsp*{% endif %}</td>		           
-	             	<td>{{ field }}
-	              		{{ field.errors }}	
-	              	</td></tr>		      
-	    	{% endfor %}
+	    			    
+				<tr>
+					<td>
+						{{ form.name.label_tag }}
+						{% if form.name.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.name }}
+	              		{{ form.name.errors }}	
+	              	</td>
+	            </tr>	
+	            <tr>
+					<td>
+						{{ form.coord_system_id.label_tag }}
+						{% if form.coord_system_id.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.coord_system_id }}
+	              		{{ form.coord_system_id.errors }}	
+	              	</td>
+	            </tr>	
+	            <tr>
+					<td>
+						{{ form.target_ra_dec.label_tag }}
+						{% if form.target_ra_dec.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		ex: {{ form.format_ra_dec }} <br/> <br/> {{ form.target_ra_dec }}
+	              		{{ form.target_ra_dec.errors }}	
+	              	</td>
+	            </tr>    
+	            <tr>
+					<td>
+						{{ form.executing_night.label_tag }}
+						{% if form.executing_night.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.executing_night }} &nbsp &nbsp &nbsp
+	             		
+	             				<a href="#getjuliandays" id="get" class="btn btn-info btn-xs">Get JD1 and JD2</a>
+	              	
+	              		{{ form.executing_night.errors }}	
+	              	</td>
+	            </tr> 
+	            <tr>
+					<td>
+						{{ form.julian_day_1.label_tag }}
+						{% if form.julian_day_1.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.julian_day_1 }}
+	              		{{ form.julian_day_1.errors }}	
+	              	</td>
+	            </tr>
+	            <tr>
+					<td>
+						{{ form.julian_day_2.label_tag }}
+						{% if form.julian_day_2.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.julian_day_2 }}
+	              		{{ form.julian_day_2.errors }}	
+	              	</td>
+	            </tr> 
+	            <tr>
+					<td>
+						{{ form.start_exposure_preference.label_tag }}
+						{% if form.start_exposure_preference.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.start_exposure_preference }}
+	              		{{ form.start_exposure_preference.errors }}	
+	              	</td>
+	            </tr> 
+	            <tr>
+					<td>
+						{{ form.duration.label_tag }}
+						{% if form.duration.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.duration }}
+	              		{{ form.duration.errors }}	
+	              	</td>
+	            </tr> 
+	            <tr>
+					<td>
+						{{ form.has_priority.label_tag }}
+						{% if form.has_priority.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.has_priority }}
+	              		{{ form.has_priority.errors }}	
+	              	</td>
+	            </tr>
+	            <tr>
+					<td>
+						{{ form.status.label_tag }}
+						{% if form.status.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.status }}
+	              		{{ form.status.errors }}	
+	              	</td>
+	            </tr>
+	              
+	    	
 	    	</table>
 	    				
 	    	<input type="hidden" name="request_id" value="{{request_object.id}}"/>
@@ -62,7 +183,7 @@
 			{% if object_list %}
 			<button type="submit" class="btn btn-danger" name="action" value="validate">Validate</button>
 			{% else %}
-			<button type="submit" class="btn btn-danger disabled" name="action" value="validate">Validate</button>
+			<button type="submit" class="btn btn-danger disabled" name="action" value="validate"><i>Validate</i></button>
 			{% endif %}
 			</td>	
 			<td style="width:90%;">&nbsp</td>			
@@ -70,28 +191,16 @@
 			{% if object_list %}
 			<button type="submit" class="btn btn-warning" name="action" value="simulate">Simulate</button>
 			{% else %}
-			<button type="submit" class="btn btn-warning disabled" name="action" value="simulate">Simulate</button>
+			<button type="submit" class="btn btn-warning disabled" name="action" value="simulate"><i>Simulate</i></button>
 			{% endif %}
 			</td>
 	    	</tr>
 	    	</table>	
-		</form>
-		
-		<br>
-		
-		<h3>Get JD Values:</h3>
-		<form action="/routinemanagerprocedural/getjd1jd2" method="post"
-						enctype="multipart/form-data">
-						{% csrf_token %} <br>		
-		<button type="submit" class="btn btn-primary" name="getjd2" value="cancel">Get JD 1 and JD2</button>			
-		</form>
-		
+		</form>		
 {% endblock %}
 
 
-{% block children_list %}		
-		
-
+{% block children_list %}	
     	<h3>List of Albums - <span class="label label-primary">{{object_list|length}}</span></h3>	
 		<div class="table-responsive">
 			<table
@@ -128,3 +237,6 @@
 			</table>	    
 		</div>	  	 
 {% endblock %}	
+
+
+

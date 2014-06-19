@@ -52,7 +52,7 @@ urlpatterns = patterns('',
     url(r'^routinemanagerprocedural/help_sequence/', 'routineManagerProcedural.views.help_sequence', name='help_sequence'),
     url(r'^routinemanagerprocedural/help_album/', 'routineManagerProcedural.views.help_album', name='help_album'),
     url(r'^routinemanagerprocedural/help_plan/', 'routineManagerProcedural.views.help_plan', name='help_plan'),     
-    
+    url(r'^routinemanagerprocedural/getjd1jd2/$', 'routineManagerProcedural.views.getJd1Jd2', name='getJd1Jd2'),    
 #     url(r'^ztest/main', GenericView.as_view() ),
 #     url(r'^ztest/insert', GenericView.as_view() ),
 #     url(r'^ztest/alert/list/$', AlertListView.as_view() ),

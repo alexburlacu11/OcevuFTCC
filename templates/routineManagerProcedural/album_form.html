@@ -44,6 +44,7 @@
 		<form action="/routinemanagerprocedural/album_save" method="post"
 						enctype="multipart/form-data">
 			{% csrf_token %} <br>
+			<input type="hidden" name="instance" value="{{instance}}" />
 			<table class="table table-hover table-striped tablesorter">
 	    	{% for field in form %}		    
 				<tr><td>{{ field.label_tag }}{% if field.field.required %}&nbsp*{% endif %}</td>		           
@@ -67,7 +68,7 @@
 			{% if object_list %}
 			<button type="submit" class="btn btn-danger" name="action" value="validate">Validate</button>
 			{% else %}
-			<button type="submit" class="btn btn-danger disabled" name="action" value="validate">Validate</button>
+			<button type="submit" class="btn btn-danger disabled" name="action" value="validate"><i>Validate</i></button>
 			{% endif %}
 			</td>	
 			<td style="width:90%;">&nbsp</td>			
@@ -75,7 +76,7 @@
 			{% if object_list %}
 			<button type="submit" class="btn btn-warning" name="action" value="simulate">Simulate</button>
 			{% else %}
-			<button type="submit" class="btn btn-warning disabled" name="action" value="simulate">Simulate</button>
+			<button type="submit" class="btn btn-warning disabled" name="action" value="simulate"><i>Simulate</i></button>
 			{% endif %}
 			</td>
 	    	</tr>

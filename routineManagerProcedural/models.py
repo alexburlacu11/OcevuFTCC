@@ -5,6 +5,7 @@ from django.template.defaultfilters import length
 
 
 class Request(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20)
     laboratory = models.CharField(max_length=20)
     telnumber = models.CharField(max_length=20)
@@ -38,6 +39,7 @@ class Request(models.Model):
  
  
 class Sequence(models.Model):
+    id = models.AutoField(primary_key=True)
     request = models.ForeignKey(Request)
     name = models.CharField(max_length=20)
     TYPE_COORD_SYSTEM = (
@@ -97,6 +99,7 @@ class Sequence(models.Model):
     
  
 class Album(models.Model):
+    id = models.AutoField(primary_key=True)
     sequence = models.ForeignKey(Sequence)
     TYPE_ALBUM = (
     ('VISIBLE', 'ALBUM_VIS'),
@@ -119,6 +122,7 @@ class Album(models.Model):
     
          
 class Plan(models.Model):
+    id = models.AutoField(primary_key=True)
     album = models.ForeignKey(Album)
     iterations_number = models.IntegerField()
     exposure_time = models.IntegerField()    
@@ -230,5 +234,31 @@ class SummaryManager():
 #                             </ul>
 #                             
 #                             <hr>
+    
+class OFTThreadManager():
+    
+    @staticmethod   
+    def getJd1Jd2(location):
+        
+        import subprocess
+
+        p = subprocess.Popen(["/home/oftcc/git/ext/jd1jd2_Cpp_V1.0/astro", "-o", "Toulouse"], stdout=subprocess.PIPE)
+
+        a =  p.communicate()
+
+        values = a[0].split()  
+        
+        jd1 = values[2]
+        jd2 = values[5]
+        data = [ jd1, jd2 ]        
+        
+        return data
+    
+    
+    
+    
+    
+    
+    
     
     
