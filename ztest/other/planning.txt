@@ -1,0 +1,25 @@
+#Planning
+planstart=1
+planend=10
+#Sequences
+1, "alex", 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
+2, "alex", 2, 5, 3, 4, 12, 2, 4, 
+3, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
+4, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
+5, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
+6, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
+7, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
+8, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
+9, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
+10, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
+11, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
+12, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
+13, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
+14, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
+15, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
+
+
+
+//id_seq, owner, jd1Owner, jd2Owner, duration, priority, Tprefered, 
+//ex: add example here
+//julian days instead of integers

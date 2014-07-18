@@ -77,7 +77,8 @@ class Sequence(models.Model):
     TYPE_EXPOSURE_PREFERENCE = (
     ('IMMEDIATE', 'IMMEDIATE'),
     ('BEST_ELEVATION', 'BEST_ELEVATION'),
-    ('BETWEEN_JD1_JD2', 'BETWEEN_JD1_JD2'),    
+    ('BETWEEN_JD1_JD2', 'BETWEEN_JD1_JD2'),  
+    ('FIX', 'FIX'),  
     )
     start_exposure_preference = models.CharField(max_length=20, choices=TYPE_EXPOSURE_PREFERENCE, default='IMMEDIATE')
     duration = models.IntegerField(default=0)      
