@@ -1,25 +1,33 @@
-#Planning
-planstart=1
-planend=10
-#Sequences
-1, "alex", 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
-2, "alex", 2, 5, 3, 4, 12, 2, 4, 
-3, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
-4, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
-5, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
-6, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
-7, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
-8, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
-9, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
-10, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
-11, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
-12, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
-13, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
-14, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
-15, "alex", 2, 5, 3, 4, 12, 2, 4, "BETWEEN_JD1_JD2"
+#	This is an example test file for planning and testing sequences
 
+#	Planning configuration: 
+#	Modify the start and end time of the plannification
+#	for the following variables
+#	
+#	example:
+#		mode=CLASSIC
+#		planStart=115740
+#		planEnd=499996800
 
+mode=CLASSIC
+planStart=1
+planEnd=20
 
-//id_seq, owner, jd1Owner, jd2Owner, duration, priority, Tprefered, 
-//ex: add example here
-//julian days instead of integers
+#	Sequences configuration:
+#	Add sequences using the following format
+#	[sequence id], [owner], [julian date observation start], 
+#	[julian date observation end], [duration], [priority],
+#	[prefered observation time]
+#	
+#	example:
+#		1, "alex", 34722, 115740, 112267, 12, -1
+#		2, "alex", 361224540, 499996800, 138772260, 12, 430610670
+#
+#	remarks:
+#	1 julian second = 0.00001157401129603386 * 10 pow 10 = 115740
+#	12 hours = 43200 seconds 
+#		-> 115740 * 43200 = 4999968000 julian seconds in a night
+
+1, "alex", 3, 5, 2, 12, -1
+2, "alex", 7, 12, 5, 12, -1
+3, "alex", 11, 17, 3, 13, -1
