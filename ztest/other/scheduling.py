@@ -251,6 +251,7 @@ class Planning:
                         for i in indexes:
                             if self.planStart[i] > seq.tPrefered:
                                 seq.TSP = Dj
+                                
                                 seq.TEP= seq.TSP + seq.duration
                             else:
                                 if self.planEnd[i] < seq.tPrefered:
