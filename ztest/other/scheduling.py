@@ -630,7 +630,7 @@ class Tests:
         plan = Planning( 'CLASSIC', sequences, s1, 1, planStart, planEnd)
         print '-------Before------'
         plan.display()
-        print '-------Scheduling------'
+        print '-------Scheduling------' 
         plan.schedule()
         print '-------After-------'
         plan.display()  
