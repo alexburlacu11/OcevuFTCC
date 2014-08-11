@@ -193,26 +193,30 @@ class Planning:
                    
     def schedule(self):    
         if self.mode == "CLASSIC":
+            
             print "classic"
+            
             """pre-configuration"""
+            
+            """update interval durations"""
             self.updateDurations()
-                                   
+            
+            """sort sequences by priority and jd2Owner"""                       
             self.initialSort()
                                         
             """loop through sequences"""
             for seq in self.sequences:
-                 
-                indexesFromDuration = self.filterByDuration(seq)
                 
-                if (indexesFromDuration is not None):  
-                     
-                    """if there are slots available"""                          
-                    self.placeSequence("DIRECT", indexesFromDuration, seq)
-                 
-                else:
-                     
+                """Get indexes list of intervals where the interval duration is > duration of the sequence""" 
+                indexFromDuration = self.filterByDuration(seq)
+                                
+                if (indexFromDuration):  
+                    """if there are slots available"""
+                    self.placeSequence("DIRECT", indexFromDuration, seq)
+                                     
+                else:                                        
                     """no slots available, shift to make room"""
-                    self.placeSequence("DELAY", indexesFromDuration, seq)
+                    self.placeSequence("DELAY", indexFromDuration, seq)
                      
 
     def placeSequence(self, option, indexes, seq):
@@ -309,8 +313,8 @@ class Planning:
         
             
     def initialSort(self):
-        """sort according to priority and jd2"""
-        """sort by temps de preferance instead of jd2 ?? to gain in precision"""
+        """sort ascending according to priority and jd2Owner"""
+        """TODO: sort by tPrefered instead of jd2 ?? to gain in precision????????"""
         self.sequences.sort(key=lambda x: ( x.sequencePriority, x.jd2Owner ), reverse=False)
         
     def filterByDuration(self, seq):
@@ -321,6 +325,7 @@ class Planning:
             rightLimit = min(self.planEnd[i],seq.jd2Owner)
             if rightLimit - leftLimit >= seq.duration:
                 indexesFromDuration.append(i)
+                break
         return indexesFromDuration
 #             print "indexes from durations: "+str(indexesFromDuration)
 
@@ -408,7 +413,7 @@ class Planning:
             
     def displayGUI(self):
         from matplotlib.ticker import FormatStrFormatter  
-        import numpy as np
+    
              
         if self.sequences is not None:      
             yAxisMin = -0.5
@@ -531,7 +536,7 @@ class Tests:
 
 
     def test1a(self):
-        """test 1a: duration for one sequence"""
+        """test 1a: insert one sequence and test insertion according to duration"""
         print '---Test 1a: duration for one sequence'
         s1 = Sequence(1, self.owner1, 3, 5, 2, 12, 4)
 #         sequences = [self.s1, self.s2, self.s3, self.s4, self.s5, self.s6, self.s7]
@@ -645,7 +650,7 @@ class Tests:
         planEnd = 20
         plan = Planning( 'CLASSIC', sequences, s1, 1, planStart, planEnd)
         plan.schedule()
-#         plan.displayGUI()
+        plan.displayGUI()
         
     def testLoadFromFile(self):
         """test File: Load planning from file"""
@@ -664,13 +669,13 @@ class Tests:
 def main():
     print "--------------Starting tests--------------"
     testSuite = Tests()
-#     testSuite.test1a()   
+    testSuite.test1a()   
 #     testSuite.test1b()    
 #     testSuite.test1c()
 #     testSuite.test1d()
 #     testSuite.test2a()
 #     testSuite.test2b()
-#     testSuite.testPlanPlot()
+    testSuite.testPlanPlot()
     testSuite.testLoadFromFile()
 
 if __name__ == '__main__':
