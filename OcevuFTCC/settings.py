@@ -49,7 +49,8 @@ INSTALLED_APPS = (
     'alertManager',
     'dashboard',
     'guardian',
-    'ztest',       
+    'ztest',
+    'planner',       
   #  'django_jenkins',    
 )
 
