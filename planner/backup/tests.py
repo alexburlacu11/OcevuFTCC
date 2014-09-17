@@ -2,6 +2,7 @@ from django.test import TestCase
 
 import unittest
 from scheduling import Planning, Owner, Sequence, Quota
+import time as t
 
 class Test_Suite_for_Planner(unittest.TestCase):
     
@@ -10,7 +11,7 @@ class Test_Suite_for_Planner(unittest.TestCase):
     def setUp(self):
         """"
         Set up the environment. Create a new empty planning and some sequences. 
-        Use test sequences to insert in planningning according to the test objectives
+        Use test sequences to insert in planning according to the test objectives
         """
         self.planning = Planning( 0, [] , 0, 0, 0, 0)
         self.planStart = 1
@@ -43,20 +44,49 @@ class Test_Suite_for_Planner(unittest.TestCase):
         """Overlapping sequences"""
         self.s11 = Sequence(11, self.owner1, 5, 14, 4, 12, 6)
         self.s12 = Sequence(12, self.owner1, 7, 14, 5, 12, 9)
-        """Shifting sequences"""
-        self.s13 = Sequence(13, self.owner1, 1, 9, 4, 12, 4)
-        self.s14 = Sequence(14, self.owner1, 13, 19, 6, 12, -1)
-        self.s1314 = Sequence(1314, self.owner1, 9, 20, 5, 12, -1)
+        """Shifting sequences: don't use immediate sequences because they are non-shiftable"""
+        """left"""
+        self.s13 = Sequence(13, self.owner1, 1, 9, 6, 12, 6)
+        self.s14 = Sequence(14, self.owner1, 13, 19, 6, 12, 16)
+        self.s1314 = Sequence(1314, self.owner1, 1, 20, 6, 12, 11)
+        """right"""
+        self.s15 = Sequence(15, self.owner1, 3, 9, 6, 12, 6)
+        self.s16 = Sequence(16, self.owner1, 14, 20, 4, 12, 16)
+        self.s1516 = Sequence(1516, self.owner1, 12, 20, 4, 12, -1)
+        """both left and right"""
+        self.s17 = Sequence(17, self.owner1, 1, 8, 6, 12, 5)
+        self.s18 = Sequence(18, self.owner1, 14, 20, 4, 12, 16)
+        self.s1718 = Sequence(1718, self.owner1, 1, 20, 9, 12, 12 )
+        """multiple sequences for simple tests without shift"""
+        """check file"""
+#         self.s201 = Sequence(201, self.owner1, 1, 2, 2, 12, -1)
         
         
-    """Reusable tests"""   
+        
+    """Reusable tests and other functions"""   
     def subtest_PLAN_unit_planner_Planning_schedule_orderNSequences(self):
-        
+        """Check that all sequences are in the proper order"""
         numberOfSequences = len(self.planning.sequences)
-        for i in range(0, numberOfSequences-1):
+        for i in xrange(0, numberOfSequences-1):
             self.assertLess(self.planning.sequences[i].TSP, self.planning.sequences[i+1].TSP)
             self.assertLess(self.planning.sequences[i].TEP, self.planning.sequences[i+1].TEP)
             self.assertLessEqual(self.planning.sequences[i].TEP, self.planning.sequences[i+1].TSP)
+            
+    def subtest_PLAN_unit_planner_Planning_schedule_order3SequencesAfterShift(self):
+        """Checks that the sequence following a shift is correctly placed"""
+        self.assertTrue(self.planning.sequences[2].TSP >= self.planning.sequences[0].TSP)
+        self.assertTrue(self.planning.sequences[2].TEP >= self.planning.sequences[0].TEP)
+        self.assertTrue(self.planning.sequences[2].TSP <= self.planning.sequences[1].TSP)
+        self.assertTrue(self.planning.sequences[2].TEP <= self.planning.sequences[1].TEP)
+        self.assertTrue(self.planning.sequences[2].TSP >= self.planning.sequences[0].TEP)
+        self.assertTrue(self.planning.sequences[2].TEP <= self.planning.sequences[1].TEP)
+    
+    def avg(self, myList):
+        """ computes the average of a list of integers """
+        s = 0
+        for elm in myList:
+            s += elm            
+        return str(s/(len(myList)*1.0))
         
     
     """Init tests"""    
@@ -81,8 +111,6 @@ class Test_Suite_for_Planner(unittest.TestCase):
         """       
         self.planning.initFromFile('planning.txt')
         self.assertTrue(self.planning.sequences)
-        self.assertTrue(self.planning.planStart)
-        self.assertTrue(self.planning.planEnd)
         self.assertTrue(self.planning)   
         
     def test_PLAN_unit_planner_Planning_schedule_emptyPlanning(self):   
@@ -96,6 +124,18 @@ class Test_Suite_for_Planner(unittest.TestCase):
     
             
     """Inserting sequences in planning"""
+    
+    def test_PLAN_unit_planner_Planning_schedule_checkTSPandTEPValuesAfterScheduling(self):
+        """
+        precond: new sequence in empty planning with jd1Owner = 3 and jd2Owner = 5
+        action: Test if a sequence is given the proper plannification
+        postcond: TSP = 3   TEP = 5
+        """
+        self.planning.initFromMemory([self.s1], self.planStart, self.planEnd)        
+        self.planning.schedule()        
+        self.assertTrue(self.s1.TSP == 3 )
+        self.assertTrue(self.s1.TEP == 5 )
+        
 
     def test_PLAN_unit_planner_Planning_schedule_insertSequenceInEmptyPlanning(self):
         """
@@ -363,11 +403,11 @@ class Test_Suite_for_Planner(unittest.TestCase):
         postcond: the third sequence is planned between the first and second. The first and second must both move
         
         """     
-        self.planning.initFromMemory([self.s13, self.s14, self.s1314], self.planStart, self.planEnd)
+        self.planning.initFromMemory([self.s17, self.s18, self.s1718], self.planStart, self.planEnd)
         self.planning.schedule()
 #         self.planning.display()
 #         self.planning.displayGUI()
-#         self.subtest_PLAN_unit_planner_Planning_schedule_orderNSequences()
+        self.subtest_PLAN_unit_planner_Planning_schedule_order3SequencesAfterShift()          
         
     
     def test_PLAN_unit_planner_Planning_schedule_scheduleWithShiftLeft(self):
@@ -377,6 +417,12 @@ class Test_Suite_for_Planner(unittest.TestCase):
         postcond: the third sequence is planned between the first and second. The first must shift left
         
         """
+        self.planning.initFromMemory([self.s13, self.s14, self.s1314], self.planStart, self.planEnd)
+        self.planning.schedule()
+#         self.planning.display()
+#         self.planning.displayGUI()
+        self.subtest_PLAN_unit_planner_Planning_schedule_order3SequencesAfterShift()
+        
        
     
     def test_PLAN_unit_planner_Planning_schedule_scheduleWithShiftRight(self):
@@ -386,29 +432,82 @@ class Test_Suite_for_Planner(unittest.TestCase):
         postcond: the third sequence is planned between the first and second. The second must shift right
         
         """
-     
-    def test_PLAN_nonfunc_planner_Planning_schedule_durationOfScheduling(self):   
-        
-        import time
-        
-        self.planning.initFromMemory([self.s1, self.s2], self.planStart, self.planEnd)        
-        t0 = time.time()
+        self.planning.initFromMemory([self.s15, self.s16, self.s1516], self.planStart, self.planEnd)
         self.planning.schedule()
-        t1 = time.time()
-        print t0
-        print t1
-        print t1-t0
-
-
-
-    """tPreference tests"""
+#         self.planning.display()
+#         self.planning.displayGUI()
+        self.subtest_PLAN_unit_planner_Planning_schedule_order3SequencesAfterShift() 
+    
     
         
         
     """More complex tests"""
     
+    def test_PLAN_unit_planner_Planning_schedule_scheduleWith2RealSequences(self):
+        """
+        precond: 2 sequences
+        action: Test if sequences with real julian dates are correctly scheduled
+        postcond: sequences are planned in the correct order
+        
+        """
+        self.planning.initFromFile("planning.txt")
+        self.planning.schedule()
+        self.planning.display()
+        self.planning.displayGUI()
+        self.subtest_PLAN_unit_planner_Planning_schedule_orderNSequences()
+        
     
     
+    """Non functional tests (ex: performance) """
+    
+#     def test_PLAN_nonfunc_unit_planner_Planning_generateSequencesToFile_createRandomSequencesAndLoadInPlanning(self):
+#         """
+#         precond: Empty Planning
+#         action: Test if sequences are generated in file and loaded in planning
+#         postcond: nr of sequences equal to the value provided in tested function
+#          
+#         """
+#                  
+#         self.planning.generateSequencesToFile(100)
+#         self.planning.initFromFile("planning.txt")
+#         myList = []
+#         f = open('workfile.txt', 'r+')
+#         for i in xrange(0,10):       
+#             t0 = t.clock()
+#             self.planning.schedule()
+#             t1 = t.clock() 
+#             myList.append(t1-t0)           
+#             f.write("Try: "+str(i)+" "+str(t0) + " " + str(t1) + " " + str(t1-t0) + "\n")      
+#         f.write("\naverage: \n"+self.avg(myList))
+#         f.write("\nmin: \n"+str(min(myList)))
+#         f.write("\nmax: \n"+str(max(myList)))
+#         f.close()
+# #         self.planning.displayGUI()
+#         self.subtest_PLAN_unit_planner_Planning_schedule_orderNSequences()
+#           
+#       
+#     def test_PLAN_nonfunc_planner_Planning_schedule_durationOfScheduling(self):   
+#         """
+#         precond: non empty planning 
+#         action: Test if the duration of schedule falls within requirements parameters
+#         postcond: the execution time of the schedule function must be < X (TO DEFINE)
+#          
+#         note: 
+#         This non functional test computes execution times and checks average, max and min of the durations
+#         """      
+#         self.planning.initFromMemory([self.s1, self.s2], self.planStart, self.planEnd) 
+#         myList = []
+#         f = open('workfile.txt', 'r+')
+#         for i in xrange(0,10):       
+#             t0 = t.clock()
+#             self.planning.schedule()
+#             t1 = t.clock() 
+#             myList.append(t1-t0)           
+#             f.write("Try: "+str(i)+" "+str(t0) + " " + str(t1) + " " + str(t1-t0) + "\n")      
+#         f.write("\naverage: \n"+self.avg(myList))
+#         f.write("\nmin: \n"+str(min(myList)))
+#         f.write("\nmax: \n"+str(max(myList)))
+#         f.close()
     
 
 if __name__ == '__main__':

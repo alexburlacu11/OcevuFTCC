@@ -53,19 +53,22 @@ add jd1 et jd2 de ./astro comme interval maximale de visibilite.
                everything               
                point 3:
                    order by priority
-                   order by JD2              
+                   order by JD2 
+                   
+                   
+    tPref closest to jd1Owner, jd2Owner in case its outside visible interval
+    
+    jd - 20450404 et entre parantheses la date
+    
+    
+                 
         """
-        
 
-
-# tPrefereds =   (
-#                     ('BEST_ELEVATION', '0'),                   
-#                     ('IMMEDIATE', '1'),
-#                     ('BETWEEN_JD1_JD2', '2'),  
-#                     ('FIXED', 3),  
-#                 )
 
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FormatStrFormatter 
+import operator
+import copy
 
 JULIAN_SECOND = 115740
 
@@ -127,75 +130,108 @@ class Planning:
         self.currentSequence = currentSequence
         self.currentTime = currentTime               
         self.intervals = [Interval(planStart, planEnd, planEnd-planStart),]
-#         self.planStart = [planStart] 
-#         self.planEnd = [planEnd]
-#         self.durations = [planStart - planEnd ]
+        self.sequencesHistory = {}
         
     def initFromMemory(self, sequences, planStart, planEnd): 
-        self.mode = "CLASSIC"
+        self.mode = "DEBUG"
         self.sequences = sequences
         self.intervals = [Interval(planStart, planEnd, planEnd-planStart) ,]
-#         self.planStart = planStart
-#         self.planEnd = planEnd
         self.currentSequence = sequences[0]
         self.currentTime = 1
         
     def initFromFile(self, fileName): 
-        self.loadPlanningFromFile(fileName)  
-        
-                
-                
+        with open(fileName, 'r') as f:
+#             print "Reading data in file "
+            data = f.readlines()
+            """remove comments"""
+            parsedData1 = [i for i in data if i[0] != '#']
+            """remove empty slots like \n"""
+            parsedData2 = [i for i in parsedData1 if i != '\n']
+            """instantiate objects"""
+            mode = str(parsedData2[0].split('=')[1]).rstrip()
+            planStart = float(parsedData2[1].split('=')[1])
+            planEnd = float(parsedData2[2].split('=')[1]) 
+            sequences = []
+            for i in xrange(3,len(parsedData2)):
+                sequenceParameters = parsedData2[i].split(',')
+                idSeq = sequenceParameters[0]
+                """The owner data will be modified accordingly"""
+                ownerName = sequenceParameters[1]
+                owner = Owner(ownerName, 'France', 60)
+                quota = Quota(owner, 100, 50,  60)
+                jd1Owner = float(sequenceParameters[2])
+                jd2Owner = float(sequenceParameters[3])
+                duration = (float(sequenceParameters[4])/86400.0)*100000000
+                priority = float(sequenceParameters[5])
+                tPreferedTime = float(sequenceParameters[6])
+                seq = Sequence(idSeq, owner, jd1Owner, jd2Owner, duration, priority, tPreferedTime)
+                sequences.append(seq)
+#             print "Creating planning"             
+            self.initFromMemory(sequences, planStart, planEnd)
+#             print "Done"   
+        f.closed               
                    
     def schedule(self):    
-        if self.mode == "CLASSIC":
-                        
-            """pre-configuration : initial sorting by priority and jd2Owner"""
+                                
+        """pre-configuration : initial sorting by priority and jd2Owner"""          
+        self.initialSort()
+                                    
+        """loop through sequences which are TOBEPLANNED"""
+        instant = 0
+        for seq in [sequence for sequence in self.sequences if sequence.status == "TOBEPLANNED"]:      
             
-            self.initialSort()
-                                        
-            """loop through sequences which are TOBEPLANNED"""
-            for seq in [i for i in self.sequences if i.status == "TOBEPLANNED"]:      
-                
-                """and try to plan them"""
-                seq.status = "PLANNED" if self.placeSequence(seq) else "UNPLANABLE"
-                 
-                             
+            """and try to plan them"""
+            seq.status = "PLANNED" if self.placeSequence(seq) else "UNPLANABLE"
+                           
+            """save a history of the sequences and their states during the planning"""            
+            if self.mode == "DEBUG":   
+                self.saveInHistory(instant)
+                instant += 1
+            
+                           
     def placeSequence(self, seq):
         
         """get indexes list of intervals where the interval duration is > duration of the sequence"""        
-        longEnoughIntervals = self.filterByDuration(seq)
+        compatibleIntervals = self.filterByDuration(seq) 
                
-        if (longEnoughIntervals):  
+        if (compatibleIntervals):  
              
             """if there are slots available"""                          
-            return self.placeSequenceWithoutShift(longEnoughIntervals, seq)
+            return self.placeSequenceWithoutShift(compatibleIntervals, seq)
          
         else:
              
             """no slots available, shift to make room"""
             return self.placeSequenceWithShift(seq)
-                    
         
+                    
+    def saveInHistory(self, instant):
+        """save a history of the state of the sequences at each instant in the planning"""
+        """TODO if debug, make it facultative"""
+        currentSequencesInPlanning = [ s for s in self.sequences if s.status == "PLANNED" ]
+        self.sequencesHistory[instant] = copy.deepcopy(currentSequencesInPlanning) 
+            
 
-    def placeSequenceWithoutShift(self, longEnoughIntervals, seq):
+
+    def placeSequenceWithoutShift(self, compatibleIntervals, seq):
         """place the sequence in the planning without relocating other sequences"""
        
         """
-        for the list of intervals which have a duration greater than that of the sequence, choose just the ones that are between
-        jd1Owner and jd2Owner
+        for the list of intervals which have a duration greater than that of the sequence, choose just the one that is between
+        jd1Owner and jd2Owner and around tPrefered, if it exists (returns 0 or 1 interval)
         """
         
-        compatibleIntervals = [interval for interval in longEnoughIntervals if seq.tPrefered >= interval.start and seq.tPrefered <= interval.end]        
+        preferedIntervals = [interval for interval in compatibleIntervals if seq.tPrefered >= interval.start and seq.tPrefered <= interval.end]        
         
-        intervalToBeUsed = compatibleIntervals[0] if compatibleIntervals else longEnoughIntervals[0] 
+        intervalToBeUsed = preferedIntervals[0] if preferedIntervals else compatibleIntervals[0] 
         Dj = intervalToBeUsed.start
         Fj = intervalToBeUsed.end
+        
+        ok = False
                    
         if seq.tPrefered == -1:   
-            """this is the case where the user requests immediate observation, meaning tPrefered = -1 """   
-                           
-            seq.TSP = max(intervalToBeUsed.start, seq.jd1Owner)
-            seq.TEP = seq.TSP + seq.duration
+            """this is the case where the user requests immediate observation, meaning tPrefered = -1 """                          
+            ok = self.insertSequence("IMMEDIATE", max(intervalToBeUsed.start, seq.jd1Owner), seq)
         else:
             """
                 in case of choosing best elevation or between jd1Owner and jd2Owner for the tPrefered, the TSP and
@@ -204,33 +240,28 @@ class Planning:
                 duration
             """
                        
-            if compatibleIntervals:       
+            if preferedIntervals:       
                                                                
-                seq.TSP = seq.tPrefered-(seq.duration/2)
-                seq.TEP = seq.tPrefered+(seq.duration/2)
+                ok = self.insertSequence("MIDDLE", None, seq)
                 
                 """adjusting TSP and TEP """
                 
                 if seq.TSP <= max(Dj, seq.jd1Owner):
-                    seq.TSP = max(Dj, seq.jd1Owner)
-                    seq.TEP = seq.TSP + seq.duration                    
+                    ok = self.insertSequence("LEFT", max(Dj, seq.jd1Owner), seq)                                        
                 else:
                     if seq.TEP >= min(Fj, seq.jd2Owner):
-                        seq.TEP = min(Fj, seq.jd2Owner)
-                        seq.TSP = seq.TEP - seq.duration
+                        ok = self.insertSequence("RIGHT", min(Fj, seq.jd2Owner), seq)
                        
             else:
                 
-                if compatibleIntervals is None:
+                if preferedIntervals is None:
                 
-                    for interval in longEnoughIntervals:
+                    for interval in compatibleIntervals:
                         if interval.start > seq.tPrefered:
-                            seq.TSP = Dj                            
-                            seq.TEP= seq.TSP + seq.duration
+                            ok = self.insertSequence("LEFT", Dj, seq)
                         else:
                             if interval.end < seq.tPrefered:
-                                self.TEP = Fj
-                                self.TSP= self.TEP - self.duration     
+                                ok = self.insertSequence("RIGHT", Fj, seq)   
                         break      
                        
         """compute the possiblity of shifting the sequences to make room for future sequences"""
@@ -238,73 +269,86 @@ class Planning:
         self.computeDeltaTR(Fj, seq)
         self.updateIntervals(intervalToBeUsed, seq)
         
-        if seq.TSP == -1 or seq.TEP == -1:
-            return False
-        else:          
-            return True
+        return ok
         
     def placeSequenceWithShift(self, seq):    
         """place the sequence in the largest available interval by shifting previous and/or next sequences"""
-        print "Placement with shift"
-        seq.display()
+
         """Look for the largest available interval between jd1Owner and jd2Owner. """
-        possibleIntervals = []
-        for interval in self.intervals:
-            if interval.start >= seq.jd1Owner and interval.end <= seq.jd2Owner:
-                possibleIntervals.append(interval)
-        if len(possibleIntervals) == 0:
+        possibleIntervals = [interval for interval in self.intervals if interval.start >= seq.jd1Owner and interval.end <= seq.jd2Owner]
+        longestInterval = Interval(-1,-1,-1)
+        if len(possibleIntervals) != 0:
+            """get the largest available interval between jd1Owner and jd2Owner"""
+            longestInterval = max(self.intervals, key=operator.attrgetter('duration'))
+        else:            
             """Abandon sequence, there are no available slots left"""            
             return False
-        else:            
-            """get the largest available interval between jd1Owner and jd2Owner"""
-            import operator
-            largestDurationInterval = max(self.intervals, key=operator.attrgetter('duration'))
                         
         """Test shift left: search for the sequence which ends at the start of the interval"""        
-        resultLeftSequences = [sequence for sequence in self.sequences if sequence.TEP == largestDurationInterval.start]
+        resultLeftSequences = [sequence for sequence in self.sequences if sequence.TEP == longestInterval.start]
         sequenceLeft = resultLeftSequences[0]
-        print sequenceLeft.display()
-        if sequenceLeft:
-            """ check its shift left value """
-            if sequenceLeft.deltaTL != 0 and sequenceLeft.sequencePriority >= seq.sequencePriority:            
-                """TODO : Shift left sequence"""
-                sequenceLeft.TSP -= sequenceLeft.deltaTL
-                sequenceLeft.TEP = sequenceLeft.TSP + sequenceLeft.duration
-                seq.TSP = sequenceLeft.TEP
-                seq.TEP = seq.TSP + seq.duration
-                self.updateIntervals(largestDurationInterval, sequenceLeft)
-#                 self.updateIntervals(largestDurationInterval, seq)
-                """Try to place the sequence, if it is not enough, check right shift"""
-                
+        if sequenceLeft.deltaTL != 0 and seq.duration <= sequenceLeft.deltaTL + longestInterval.duration:            
+                """Shift left sequence"""
+#                 sequenceLeft.display()
+                self.insertSequence("LEFT", sequenceLeft.TSP-sequenceLeft.deltaTL, sequenceLeft)
+#                 self.updateIntervals(largestDurationInterval, sequenceLeft)
+                self.insertSequence("LEFT", sequenceLeft.TEP, seq)
+                self.updateIntervals(longestInterval, seq)                
         else:
             """Try the right side"""
             """Test shift right: search for the sequence which starts in end of interval"""        
-            sequenceRight = [i for i in self.sequences if i.TSP == largestDurationInterval.end]
-            if sequenceRight:
-                """ check its shift right value """
-                if sequenceRight.deltaTR != 0 and sequenceRight.sequencePriority >= seq.sequencePriority:
-                    """Try to place the sequence, if it is not enough, it is UNPLANNABLE"""
-                    sequenceRight.TSP += sequenceRight.deltaTR
-                    sequenceRight.TEP = sequenceRight.TSP + sequenceRight.duration
-                    seq.TEP = sequenceRight.TSP
-                    seq.TSP = seq.TEP  - seq.duration
-                    
-                    self.updateIntervals(largestDurationInterval, sequenceRight)
-#                     self.updateIntervals(largestDurationInterval, seq)
-                     
+            resultRightSequences = [sequence for sequence in self.sequences if sequence.TSP == longestInterval.end]
+            sequenceRight = resultRightSequences[0]
+            if sequenceRight.deltaTR != 0 and seq.duration <= sequenceRight.deltaTR + longestInterval.duration:
+                """Try to place the sequence, if it is not enough, it is UNPLANNABLE"""
+                self.insertSequence("LEFT", sequenceRight.TSP + sequenceRight.deltaTR, sequenceRight)
+#                 self.updateIntervals(largestDurationInterval, sequenceRight)
+                self.insertSequence("RIGHT", sequenceRight.TSP, seq)               
+                self.updateIntervals(longestInterval, seq)             
+            else:
+                """Try to shift to the left first then to the right"""
+                if seq.duration <= sequenceRight.deltaTR + sequenceLeft.deltaTL + longestInterval.duration and \
+                    sequenceLeft.deltaTL != 0 and sequenceRight.deltaTR != 0:
+                    """Shift left right"""
+                    self.insertSequence("LEFT", sequenceLeft.TSP-sequenceLeft.deltaTL, sequenceLeft)
+#                     self.updateIntervals(largestDurationInterval, sequenceLeft)
+                    self.insertSequence("LEFT", sequenceRight.TSP+sequenceRight.deltaTR, sequenceRight)
+#                     self.updateIntervals(largestDurationInterval, sequenceRight)
+                    self.insertSequence("LEFT", sequenceLeft.TEP, seq)
+                    self.updateIntervals(longestInterval, seq)
                 else:
-                    seq.status = "UNPLANABLE"
-                         
-        
-                
+                    return False
+                            
         """Update shifts"""
-        Dj = largestDurationInterval.start
-        Fj = largestDurationInterval.end
+        Dj = longestInterval.start
+        Fj = longestInterval.end
         self.computeDeltaTL(Dj, seq)
         self.computeDeltaTR(Fj, seq)
         
         return True
        
+    def insertSequence(self, choice, timeInstant, seq,):  
+        """insert the sequence at a certain time in the planning"""      
+        
+        if (choice == "IMMEDIATE"):            
+            seq.TSP = timeInstant
+            seq.TEP = seq.TSP + seq.duration
+            return True
+        if (choice == "MIDDLE"):
+            seq.TSP = seq.tPrefered-(seq.duration/2)
+            seq.TEP = seq.tPrefered+(seq.duration/2)
+            return True
+        if (choice == "LEFT"):
+            seq.TSP = timeInstant
+            seq.TEP = seq.TSP + seq.duration
+            return True
+        if (choice == "RIGHT"):
+            seq.TEP = timeInstant
+            seq.TSP = seq.TEP - seq.duration
+            return True
+        
+        return False   
+        
                
     def initialSort(self):
         """sort in an ascending order according to priority and jd2Owner"""
@@ -335,66 +379,53 @@ class Planning:
         if intervalAfter.start >= intervalAfter.end:
             self.intervals.remove(intervalAfter)
         self.intervals = sorted(self.intervals, key=lambda interval: interval.start)
-        
-        
-   
-    def getLargestcompatibleIntervals(self):
-        """get largest interval where we can shift to place sequence"""        
-        return max(self.intervals.duration)
-    
+       
     def computeDeltaTL(self, Dj, seq):
         """compute the possible value of shifting the sequence to the left"""
-        seq.deltaTL = seq.TSP - max(Dj, seq.jd1Owner) if seq.tPrefered != -1 else 0     
+        seq.deltaTL = seq.TSP - max(Dj, seq.jd1Owner) #if seq.tPrefered != -1 else 0     
      
     def computeDeltaTR(self, Fj, seq):
         """compute the possible value of shifting the sequence to the right"""
-        seq.deltaTR = min(Fj, seq.jd2Owner) - seq.TEP if seq.tPrefered != -1 else 0
+        seq.deltaTR = min(Fj, seq.jd2Owner) - seq.TEP #if seq.tPrefered != -1 else 0
     
                     
     def display(self):       
-          
+        """text way of displaying the planning: intervals and sequences"""
         for interval in self.intervals:
-            interval.display()
-            
+            interval.display()            
         for seq in self.sequences:            
             seq.display()
 
             
     def displayGUI(self):
-        from matplotlib.ticker import FormatStrFormatter  
-            
+                     
         if self.sequences is not None:      
             yAxisMin = -0.5
             yAxisMax = len(self.sequences) + 1
             xAxisMin = -1.5
-            xAxisMax = self.intervals[len(self.intervals)-1].end
+            xAxisMax = self.intervals[len(self.intervals)-1].end + 1
     
-            plt.figure(figsize=(20,10))
+            plt.figure(figsize=(20,10), facecolor='orange')
             plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%.1f'))
             plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.1f')) 
-            plt.yticks([a for a in range(0, len(self.sequences))]) 
-            plt.xticks([a for a in range(0, self.intervals[len(self.intervals)-1].end+1)])            
-#             plt.xticks(range(self.planStart[0], self.planEnd[len(self.planEnd)-1], JULIAN_SECOND*120), rotation='vertical')
+            plt.yticks([a for a in xrange(0, len(self.sequences))]) 
+#             plt.xticks([a for a in xrange(0.0, self.intervals[len(self.intervals)-1].end+1)])            
+#             plt.xticks(xxrange(self.planStart[0], self.planEnd[len(self.planEnd)-1], JULIAN_SECOND*120), rotation='vertical')
             plt.grid(True)
             plt.xlabel('Sequences in planing')
             plt.ylabel('Evolution in time') 
-            plt.title('Scheduling of sequences in time')
+            plt.title('Scheduling of sequences in time. Time is computed in using a julian date. We eliminate the integer part and multiply by 10*pow(10)')
             plt.ylim([yAxisMin,yAxisMax])
             plt.xlim([xAxisMin, xAxisMax])     
             
-            
-            for a in range(0, len(self.sequences)):    
+            for a in xrange(0, len(self.sequences)):    
                 plt.axhline(y=a, xmin=0, xmax=xAxisMax, hold=None, label='free')  
             
-            y = 0             
-            for seq in self.sequences:      
-                self.plotSequence(seq, y)
-                if (y>0):
-                    a = 0
-                    while a <= y:                    
-                        self.plotSequence(self.sequences[a], y)
-                        a += 1
-                y+=1
+            for i in xrange(0, len(self.sequences)):
+                ss = self.sequencesHistory[i]    
+                   
+                for seq in ss:
+                    self.plotSequence(seq, i)
             
     #         plt.legend()
             plt.show()
@@ -403,11 +434,11 @@ class Planning:
         
     def plotSequence(self, seq, y):      
         
-        plt.plot([seq.TSP, seq.TEP], [y, y], color='r', linestyle='-', linewidth=2, label='Seq'+str(seq.id)+'['+str(seq.TSP)+']['+str(seq.TEP)+']')            
-        plt.plot(seq.TSP, y, marker='x', color='r', linewidth=3)
-        plt.plot(seq.TEP, y, marker='x', color='r', linewidth=3)
-        plt.plot(seq.tPrefered, y, marker='o', color='g', linewidth=3)
-        plt.annotate('id_seq:'+str(seq.id), xy=((seq.TSP+seq.TEP)/2,y), xytext=(0, 20), ha='center',
+        plt.plot([seq.TSP, seq.TEP], [y, y], color='r', linestyle='-', linewidth=5, label='Seq'+str(seq.id)+'['+str(seq.TSP)+']['+str(seq.TEP)+']')            
+        plt.plot(seq.TSP, y, marker='o', color='g', linewidth=8)
+        plt.plot(seq.TEP, y, marker='o', color='g', linewidth=8)
+        plt.plot(seq.tPrefered, y, marker='p', color='m', linewidth=8)
+        plt.annotate('seq: '+str(seq.id), xy=((seq.TSP+seq.TEP)/2,y), xytext=(0, 20), ha='center',
             textcoords='offset points')
         plt.annotate('TSP', xy=(seq.TSP,y), xytext=(-5, 5), ha='center',
             textcoords='offset points')
@@ -416,48 +447,14 @@ class Planning:
         plt.annotate('TPref', xy=(seq.tPrefered,y), xytext=(0, -20), ha='center',
             textcoords='offset points')
 
-    def getSequencesFromDB(self):
-        """connect to db and get sequences """
-        
-    def loadPlanningFromFile(self, fileName):
-        with open(fileName, 'r') as f:
-#             print "Reading data in file "
-            data = f.readlines()
-            """remove comments"""
-            parsedData1 = [i for i in data if i[0] != '#']
-            """remove empty slots like \n"""
-            parsedData2 = [i for i in parsedData1 if i != '\n']
-            """instantiate objects"""
-            mode = str(parsedData2[0].split('=')[1]).rstrip()
-            planStart = []
-            planStart.append(int(parsedData2[1].split('=')[1]))
-            planEnd = []
-            planEnd.append(int(parsedData2[2].split('=')[1]))
-            sequences = []
-            for i in range(3,len(parsedData2)):
-                sequenceParameters = parsedData2[i].split(',')
-                idSeq = sequenceParameters[0]
-                """The owner data will be modified accordingly"""
-                ownerName = sequenceParameters[1]
-                owner = Owner(ownerName, 'France', 60)
-                quota = Quota(owner, 100, 50,  60)
-                jd1Owner = int(sequenceParameters[2])
-                jd2Owner = int(sequenceParameters[3])
-                duration = int(sequenceParameters[4])
-                priority = int(sequenceParameters[5])
-                tPreferedTime = int(sequenceParameters[6])
-                seq = Sequence(idSeq, owner, jd1Owner, jd2Owner, duration, priority, tPreferedTime)
-                sequences.append(seq)
-#             print "Creating planning"  
-            self.mode = mode
-            self.planStart = planStart
-            self.planEnd =  planEnd
-            self.intervals = [].append(Interval(planStart[0], planEnd[0], planEnd[0]-planStart[0])) 
-            self.currentSequence = sequences[0]
-            self.currentTime = 1
-            self.sequences = sequences  
-#             print "Done"   
-        f.closed
+           
+ 
+    def generateSequencesToFile(self, numberOfSequences):
+        """this function generates sequences and inserts them into a file"""
+        for i in range(1, numberOfSequences, 2):            
+            with open('planning.txt', 'a') as f:
+                f.write(str(i)+","+"\"alex\""+","+str(i)+","+str(i+2)+",2,12,-1\n")
+
         
         
 
