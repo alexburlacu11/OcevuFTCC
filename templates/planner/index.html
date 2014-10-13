@@ -1,0 +1,38 @@
+ {% extends "base_templates/base.html" %} 
+ 
+ {% block title %}Planner{% endblock %} 
+ 
+ 
+ {% block content %}
+ 
+<h3>List of Sequences - <span class="label label-primary">{{object_list|length}}</span></h3>	
+		<div class="table-responsive">
+			<table
+				class="table table-bordered table-hover table-striped tablesorter">
+				<thead>
+					<tr>
+						<th>ID <i class="fa fa-sort"></i></th>
+						<th>TSP <i class="fa fa-sort"></i></th>
+						<th>TEP <i class="fa fa-sort"></i></th>
+						<th>Status <i class="fa fa-sort"></i></th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					{% for row in object_list %}
+					<tr>					
+						
+			     		<td>{{ row.id }}</td> 			     		 
+			     		<td>{{ row.TSP }}</td> 
+			     		<td>{{ row.TEP }}</td>
+			     		<td>{{ row.status }}</td>
+					
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>	    
+		</div>	 
+ 
+ 
+ 
+{% endblock %}

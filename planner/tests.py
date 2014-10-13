@@ -21,26 +21,26 @@ class Test_Suite_for_Planner(unittest.TestCase):
 
         """
         self.planning = Planning( 0.0, [] , 0.0, 0.0, 0.0, 0.0)
-        self.planStart = 2456916.18
-        self.planEnd =   2456916.99
+        self.planStart = 2456920.18
+        self.planEnd =   2456920.99
         self.owner1 = Owner(name="John", affiliation='France', priority=60)
         self.owner1.save()
-        self.quota1 = Quota(owner=self.owner1, quotaTotal=100, quotaRemaining=60)
+        self.quota1 = Quota(owner=self.owner1, quotaNightTotal=100, quotaNightLeft=60)
         self.quota1.save()
         """simple database sequences for performance testing"""
-        self.s1 = Sequence(id=1, owner=self.owner1, jd1Owner=3, jd2Owner=5, duration=2, sequencePriority=12, tPrefered=-1)
-        self.s2 = Sequence(id=2, owner=self.owner1, jd1Owner=7, jd2Owner=12, duration=5, sequencePriority=12, tPrefered=-1)        
+        self.s1 = Sequence(id=1, owner=self.owner1, jd1Owner=3, jd2Owner=5, duration=2, priority=12, tPrefered=-1)
+        self.s2 = Sequence(id=2, owner=self.owner1, jd1Owner=7, jd2Owner=12, duration=5, priority=12, tPrefered=-1)        
         
         """delay tests"""
         """both left and right"""
-        self.s17 = Sequence(id=17, owner=self.owner1, jd1Owner=1, jd2Owner=8, duration=6, sequencePriority=12, tPrefered=5)
-        self.s18 = Sequence(id=18, owner=self.owner1, jd1Owner=14, jd2Owner=20, duration=4, sequencePriority=12, tPrefered=16)
-        self.s1718 = Sequence(id=1718, owner=self.owner1, jd1Owner=1, jd2Owner=20, duration=9, sequencePriority=12, tPrefered=12 )
+        self.s17 = Sequence(id=17, owner=self.owner1, jd1Owner=1, jd2Owner=8, duration=6, priority=12, tPrefered=5)
+        self.s18 = Sequence(id=18, owner=self.owner1, jd1Owner=14, jd2Owner=20, duration=4, priority=12, tPrefered=16)
+        self.s1718 = Sequence(id=1718, owner=self.owner1, jd1Owner=1, jd2Owner=20, duration=9, priority=12, tPrefered=12 )
         
         """complex tests"""
-        self.s20 = Sequence(id=20, owner=self.owner1, jd1Owner=1, jd2Owner=8, duration=6, sequencePriority=12, tPrefered=5)
-        self.s21 = Sequence(id=21, owner=self.owner1, jd1Owner=3, jd2Owner=5, duration=2, sequencePriority=12, tPrefered=-1)
-        self.s22 = Sequence(id=22, owner=self.owner1, jd1Owner=7, jd2Owner=12, duration=5, sequencePriority=12, tPrefered=-1)
+        self.s20 = Sequence(id=20, owner=self.owner1, jd1Owner=1, jd2Owner=8, duration=6, priority=12, tPrefered=5)
+        self.s21 = Sequence(id=21, owner=self.owner1, jd1Owner=3, jd2Owner=5, duration=2, priority=12, tPrefered=-1)
+        self.s22 = Sequence(id=22, owner=self.owner1, jd1Owner=7, jd2Owner=12, duration=5, priority=12, tPrefered=-1)
         
     """Reusable tests and other functions"""   
     def subtest_PLAN_unit_planner_Planning_schedule_orderNSequences(self):
@@ -105,7 +105,7 @@ class Test_Suite_for_Planner(unittest.TestCase):
         action: Test if the planning is correctly loaded with the sequences from the db
         postcond: non empty planning
         """
-        self.planning.initFromCadorFile(self.owner1, self.quota1)    
+        self.planning.initFromCador(self.owner1, self.quota1)    
         self.planning.initFromDB(self.planStart, self.planEnd)
 #         self.planning.display()
         self.planning.schedule()
@@ -126,6 +126,9 @@ class Test_Suite_for_Planner(unittest.TestCase):
         print "Seq in Planning that are both in my planning and in Klotz"
         print list(set(listOfSeqInNewPlanning) & set(listOfSeqInKlotz))
         print len(list(set(listOfSeqInNewPlanning) & set(listOfSeqInKlotz)))
+        
+        self.planning.reschedule(2456920.30)
+        self.planning.display()
 
         
 #     def test_PLAN_planner_Planning_schedule_planSequencesFromFile(self):

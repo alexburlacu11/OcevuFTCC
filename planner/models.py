@@ -111,14 +111,14 @@ class Owner(models.Model):
             
 class Quota(models.Model):
     owner = models.ForeignKey(Owner)
-    quotaRemaining = models.IntegerField(default=-1)
-    quotaTotal = models.IntegerField(default=-1)
+    quotaNightLeft = models.IntegerField(default=-1)
+    quotaNightTotal = models.IntegerField(default=-1)
         
     def addQuota(self, val ):
-        self.quotaRemaining += val
+        self.quotaNightLeft += val
         
     def substractQuota(self, val):
-        self.quotaRemaining -= val
+        self.quotaNightLeft -= val
          
         
 class Interval:
@@ -143,7 +143,7 @@ class Sequence(models.Model):
     owner = models.ForeignKey(Owner)
     jd1Owner = models.DecimalField(default=0.0, max_digits=15, decimal_places=8)
     jd2Owner = models.DecimalField(default=0.0, max_digits=15, decimal_places=8)      
-    sequencePriority = models.IntegerField(default=0)
+    priority = models.IntegerField(default=0)
     duration = models.DecimalField(default=0.0, max_digits=15, decimal_places=8)
     tPrefered = models.DecimalField(default=-1.0, max_digits=15, decimal_places=8)   #temps en seconds compris entre jd1Owner et jd2Owner      
     status = models.CharField(max_length="21", default="TOBEPLANNED")
@@ -154,7 +154,7 @@ class Sequence(models.Model):
     
         
     def display(self):
-        print "Seq:"+str(self.id)+" TSP:"+str(self.TSP)+" TEP:"+str(self.TEP)+" tPref:"+str(self.tPrefered)+" duration:"+str(self.duration)+" jd1Owner:"+str(self.jd1Owner)+" j2Owner:"+str(self.jd2Owner)+" shiftLeft:"+str(self.deltaTL)+" shiftRight:"+str(self.deltaTR)+" priority:"+str(self.sequencePriority)+" status:"+str(self.status)
+        print "Seq:"+str(self.id)+" TSP:"+str(self.TSP)+" TEP:"+str(self.TEP)+" tPref:"+str(self.tPrefered)+" duration:"+str(self.duration)+" jd1Owner:"+str(self.jd1Owner)+" j2Owner:"+str(self.jd2Owner)+" shiftLeft:"+str(self.deltaTL)+" shiftRight:"+str(self.deltaTR)+" priority:"+str(self.priority)+" status:"+str(self.status)
            
         
 class SequenceOrder(models.Model):                
@@ -213,7 +213,7 @@ class Planning:
             jd2Owner = "%.8f" % float(sequenceArray[6])
             duration = (float(sequenceArray[4])/86400.0)
             priority = int(sequenceArray[2])
-            sequence = Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, sequencePriority=priority, duration=duration)
+            sequence = Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration)
             sequence.save()
 #             sequence.display()
         
@@ -238,13 +238,13 @@ class Planning:
             jd2Owner = "%.8f" % float(sequenceArray[6])
             duration = (float(sequenceArray[4])/86400.0)
             priority = int(sequenceArray[2])
-            sequence = Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, sequencePriority=priority, duration=duration)
+            sequence = Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration)
             sequence.save()
 #             sequence.display()
 
     def getPlanningSequenceIDs(self):
         """ returned planned sequences from db """
-        return [int(seq.id) for seq in self.sequences if seq.status=="PLANNED"]
+        return [int(seq.id) for seq in self.sequences if seq.status=="PLANNED" or seq.status=="FIXED"]
     
     def getFillingRate(self):
         """get the free space in the planning""" 
@@ -298,21 +298,15 @@ class Planning:
                 jd2Owner = "%.8f" % float(sequenceParameters[3])
                 duration = (float(sequenceParameters[4])/86400.0)
                 priority = int(sequenceParameters[5])
-                sequence = Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, sequencePriority=priority, duration=duration)
+                sequence = Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration)
                 sequence.save()
 #                 sequence.display()
         f.closed               
                    
     def schedule(self):   
-        
-        """get current date"""
-        
-                                
+            
         """pre-configuration : initial sorting by priority and jd2Owner"""          
         self.initialSort()
-#         print "After initial sort"
-#         for seq in self.sequences:
-#             seq.display()
         """loop through sequences which are TOBEPLANNED"""
         instant = 0
         for seq in [sequence for sequence in self.sequences if sequence.status == "TOBEPLANNED"]:      
@@ -327,10 +321,18 @@ class Planning:
                         self.saveInHistory(instant)
                         instant += 1
                 else:
-                    if (seq.jd2Owner <= seq.jd1Owner ) :
+                    
+                    if (seq.jd2Owner < seq.jd1Owner + seq.duration ) :
                         seq.status = "UNPLANNABLE"
-                    else:
-                        seq.status = "TOBEPLANNED"               
+                    
+                    else:                        
+                        if (float(seq.jd2Owner) == float(seq.jd1Owner) ) :
+                            
+                            seq.status = "FIXED"               
+                        
+                        else:
+                            
+                            seq.status = "TOBEPLANNED"               
                 
             else:
                 if seq.jd1Owner <= self.planStart:
@@ -352,6 +354,24 @@ class Planning:
         sequences = [ seq.id for seq in self.sequences]
         planHistory = PlanningHistory(sequences=sequences, planStart=self.planStart, planEnd=self.planEnd)
         planHistory.save()
+        
+    def reschedule(self, planStart):
+        
+        """the function reschedules the planning according to a new planStart"""
+        
+        for seq in Sequence.objects.all():
+            if seq.jd2Owner <= self.planStart and seq.status=="PLANNED":
+                seq.status = "EXECUTED" 
+                seq.save()
+        
+        self.planStart = planStart
+        
+        for seq in self.sequences:
+            if seq.status == "PLANNED":
+                seq.status = "TOBEPLANNED" 
+                seq.save()
+        
+        self.schedule()
                            
     def placeSequence(self, seq):
         
@@ -519,7 +539,7 @@ class Planning:
     def initialSort(self):
         """sort in an ascending order according to priority and jd2Owner"""
         """@to do: sort by tPrefered instead of jd2Owner to gain in precision ??"""
-        self.sequences.sort(key=lambda x: ( x.sequencePriority, x.jd2Owner ), reverse=False)
+        self.sequences.sort(key=lambda x: ( x.priority, x.jd2Owner ), reverse=False)
         
     def filterByDuration(self, seq):
         """ Search for an interval where the duration is > duration of the sequence"""

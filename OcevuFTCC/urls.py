@@ -99,6 +99,9 @@ urlpatterns = patterns('',
 #     url(r'^alertmanager/alert_to_db', 'alertManager.views.alert_to_db', name='alert_to_db'),
 #     url(r'^alertmanager/update_to_db', 'alertManager.views.update_to_db', name='update_to_db'),
 #     url(r'^alertmanager/upload_file', 'alertManager.views.upload_file', name='upload_file'),
+
+    url(r'^planner/$', 'planner.views.index', name='index'),  
+    
     
 
 )
