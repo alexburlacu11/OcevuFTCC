@@ -1,0 +1,76 @@
+ {% extends "base_templates/base.html" %} 
+ 
+ {% block title %}Planning{% endblock %} 
+ 
+ 
+ {% block content %}
+ 
+ 
+ 
+ <div class="row">
+
+<h3>Planning info </h3>
+         <div class="well">
+             Plan ID: {{planning.id}}
+         </div>
+         <div class="well">
+			 Plan Start: {{planning.planStart}}
+		 </div>
+		 <div class="well">
+			 Plan End: {{planning.planEnd}}
+         </div>
+
+
+ </div>
+                    
+ 
+<div class="row">
+<h3>List of Sequences - <span class="label label-primary">{{object_list|length}}</span></h3>	
+		<div class="table-responsive">
+			<table
+				class="table table-bordered table-hover table-striped tablesorter">
+				<thead>
+					<tr>
+						<th>ID <i class="fa fa-sort"></i></th>
+						<th>Owner <i class="fa fa-sort"></i></th>
+						<th>TSP <i class="fa fa-sort"></i></th>
+						<th>TEP <i class="fa fa-sort"></i></th>
+						<th>JD1 <i class="fa fa-sort"></i></th>
+						<th>JD2 <i class="fa fa-sort"></i></th>
+						<th>Duration <i class="fa fa-sort"></i></th>
+						<th>Priority <i class="fa fa-sort"></i></th>
+						<th>Status <i class="fa fa-sort"></i></th>
+						<th>Details <i class="fa fa-sort"></i></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for row in object_list %}
+					<tr>						
+			     		<td>{{ row.id }}</td>
+			     		<td>{{ row.owner.name }}</td>
+						<td>{{ row.TSP }}</td>
+						<td>{{ row.TEP }}</td>
+						<td>{{ row.jd1Owner }}</td>
+						<td>{{ row.jd2Owner }}</td>
+						<td>{{ row.duration }}</td>
+						<td>{{ row.priority }}</td>
+						<td>{{ row.status }}</td>
+						<td>
+							<form action="/routinemanagerprocedural/edit_sequence/{{row.id}}/" method="get"
+						enctype="multipart/form-data">
+							{% csrf_token %}						
+							<center>
+							<button type="submit" class="btn btn-primary" name="action" value="edit">View</button>	
+							
+							</center>
+							</form>		
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>	    
+		</div>	 
+ </div>
+ 
+ 
+{% endblock %}

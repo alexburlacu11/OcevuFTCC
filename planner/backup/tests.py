@@ -405,8 +405,8 @@ class Test_Suite_for_Planner(unittest.TestCase):
         """     
         self.planning.initFromMemory([self.s17, self.s18, self.s1718], self.planStart, self.planEnd)
         self.planning.schedule()
-#         self.planning.display()
-#         self.planning.displayGUI()
+        self.planning.display()
+        self.planning.displayGUI()
         self.subtest_PLAN_unit_planner_Planning_schedule_order3SequencesAfterShift()          
         
     
@@ -452,8 +452,8 @@ class Test_Suite_for_Planner(unittest.TestCase):
         """
         self.planning.initFromFile("planning.txt")
         self.planning.schedule()
-        self.planning.display()
-        self.planning.displayGUI()
+#         self.planning.display()
+#         self.planning.displayGUI()
         self.subtest_PLAN_unit_planner_Planning_schedule_orderNSequences()
         
     

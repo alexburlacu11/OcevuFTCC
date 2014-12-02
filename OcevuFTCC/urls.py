@@ -60,9 +60,9 @@ urlpatterns = patterns('',
 #     url(r'^ztest/alert/(?P<pk>\d+)/$', AlertUpdate.as_view(), name='alert_update'),
 #     url(r'^ztest/alert/(?P<pk>\d+)/delete/$', AlertDelete.as_view(), name='alert_delete'),
     
-    url(r'^guardian/', 'guardian.views.index', name='index'),
-    url(r'^guardian/status', 'guardian.views.status', name='status'),
-    url(r'^guardian/history', 'guardian.views.history', name='history'),
+    url(r'^monitoring/', 'monitoring.views.index', name='index'),
+    url(r'^monitoring/status', 'monitoring.views.status', name='status'),
+    url(r'^monitoring/history', 'monitoring.views.history', name='history'),
     
 #     url(r'^routinemanager/main', 'routineManager.views.index', name='index'),
 #     url(r'^routinemanager/add', 'routineManager.views.add', name='add'),
@@ -101,7 +101,9 @@ urlpatterns = patterns('',
 #     url(r'^alertmanager/upload_file', 'alertManager.views.upload_file', name='upload_file'),
 
     url(r'^planner/$', 'planner.views.index', name='index'),  
-    
+    url(r'^planner/current_planning/$', 'planner.views.viewCurrentPlanning', name='viewCurrentPlanning'),  
+    url(r'^planner/older_plannings/list/$', 'planner.views.getOlderPlannings', name='getOlderPlannings'),  
+    url(r'^planner/older_plannings/view/(?P<idPlan>\d+)/', 'planner.views.viewOlderPlanning', name='viewOlderPlanning'), 
     
 
 )

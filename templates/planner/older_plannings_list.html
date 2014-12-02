@@ -1,0 +1,51 @@
+ {% extends "base_templates/base.html" %} 
+ 
+ {% block title %}Older Plannings{% endblock %} 
+ 
+ 
+ {% block content %}
+ 
+<div class="row">
+ 						
+                                <h3>Nr of Plannings - <span class="label label-primary">{{object_list|length}}</span></h3>	
+									<div class="table-responsive">
+										<table
+											class="table table-bordered table-hover table-striped tablesorter">
+											<thead>
+												<tr>
+													<th>ID <i class="fa fa-sort"></i></th>
+													<th>Plan Start <i class="fa fa-sort"></i></th>
+													<th>Plan End <i class="fa fa-sort"></i></th>
+													<th>Date <i class="fa fa-sort"></i></th>
+													<th>Details <i class="fa fa-sort"></i></th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for row in object_list %}
+												<tr>					
+													
+										     		<td>{{ row.id }}</td> 			     		 
+										     		<td>{{ row.planStart }}</td> 
+										     		<td>{{ row.planEnd }}</td>
+										     		<td>{{ row.creationDate }}</td>
+													<td>
+														<form action="/planner/older_plannings/view/{{row.id}}/" method="get"
+															enctype="multipart/form-data">
+																{% csrf_token %} 							
+																<input type="hidden" value="{{ row.id }}" name="id"/>
+																<center>
+																<input type="submit" class="btn btn-primary" value="View Details" />
+																</center>
+														</form>		
+													</td>
+												</tr>
+												{% endfor %}
+											</tbody>
+										</table>	    
+									</div>
+                          
+ </div>
+ 
+ 
+ 
+{% endblock %}

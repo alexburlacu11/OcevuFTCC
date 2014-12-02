@@ -414,7 +414,7 @@ class Planning:
             plt.grid(True)
             plt.xlabel('Sequences in planing')
             plt.ylabel('Evolution in time') 
-            plt.title('Scheduling of sequences in time. Time is computed in using a julian date. We eliminate the integer part and multiply by 10*pow(10)')
+            plt.title('Example featuring the rescheduling of 2 sequences to make room for the third')
             plt.ylim([yAxisMin,yAxisMax])
             plt.xlim([xAxisMin, xAxisMax])     
             

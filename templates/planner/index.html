@@ -1,38 +1,56 @@
  {% extends "base_templates/base.html" %} 
  
- {% block title %}Planner{% endblock %} 
+ {% block title %} Planner {% endblock %} 
  
  
  {% block content %}
  
-<h3>List of Sequences - <span class="label label-primary">{{object_list|length}}</span></h3>	
-		<div class="table-responsive">
-			<table
-				class="table table-bordered table-hover table-striped tablesorter">
-				<thead>
-					<tr>
-						<th>ID <i class="fa fa-sort"></i></th>
-						<th>TSP <i class="fa fa-sort"></i></th>
-						<th>TEP <i class="fa fa-sort"></i></th>
-						<th>Status <i class="fa fa-sort"></i></th>
-						
-					</tr>
-				</thead>
-				<tbody>
-					{% for row in object_list %}
-					<tr>					
-						
-			     		<td>{{ row.id }}</td> 			     		 
-			     		<td>{{ row.TSP }}</td> 
-			     		<td>{{ row.TEP }}</td>
-			     		<td>{{ row.status }}</td>
-					
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>	    
-		</div>	 
- 
- 
+
+		
+<div class="row">
+<br>
+<br>
+<br>
+</div> 
+<div class="row">
+	<a href="/planner/current_planning/">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xl-4 text-center">
+                                        <i class="fa fa-comments fa-5x">Current Planning</i>
+                                    </div>
+                                    <div class="col-xl-9 fa-2x text-center">
+                                        <div class="huge">{{nr_of_seq}}</div>
+                                        <div>Sequences</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+       </a>
+                    
+
+     <a href="/planner/older_plannings/list">
+ 				<div class="col-lg-6 col-md-6">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xl-4 text-center">
+                                        <i class="fa fa-comments fa-5x">Older Plannings</i>
+                                    </div>
+                                   <div class="col-xl-9 fa-2x text-center">
+                                        <div class="huge">{{nr_of_plannings}}</div>
+                                        <div>Plannings</div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                       </div>
+                    </div>		
+      </a>
+ </div>
  
 {% endblock %}

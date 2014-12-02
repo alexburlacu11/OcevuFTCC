@@ -44,11 +44,12 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'jquery',
     'djangoformsetjs',
+    'common',
     'routineManager',
     'routineManagerProcedural',
     'alertManager',
     'dashboard',
-    'guardian',
+    'monitoring',
     'ztest',
     'planner',       
   #  'django_jenkins',    
@@ -123,7 +124,6 @@ STATICFILES_DIRS = (
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.load_template_source',
 )
 
 TEMPLATE_DIRS = (

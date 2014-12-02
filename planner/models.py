@@ -4,7 +4,6 @@ Created on Jul 7, 2014
 
 @author: alex
 '''
-from _abcoll import Sequence
 
 
 """ 
@@ -15,7 +14,7 @@ priority: 0
 parameter : 5 seconds delay between plannifications
 
 1st planning midi solaire 
-
+    
 quota affiliation : fr / mx 50 % de temps restant sauf pour les alerts
 
 add to dashboard configuration for quota
@@ -81,6 +80,7 @@ add jd1 et jd2 de ./astro comme interval maximale de visibilite.
 
 
 import matplotlib.pyplot as plt
+import matplotlib.dates as dates
 from operator import itemgetter, attrgetter
 from matplotlib.ticker import FormatStrFormatter 
 from django.db import models
@@ -88,6 +88,7 @@ import operator
 import copy
 import urllib2
 from decimal import *
+from common.models import Agent
 
 JULIAN_SECOND = 115740
 PRECISION = 8
@@ -146,22 +147,175 @@ class Sequence(models.Model):
     priority = models.IntegerField(default=0)
     duration = models.DecimalField(default=0.0, max_digits=15, decimal_places=8)
     tPrefered = models.DecimalField(default=-1.0, max_digits=15, decimal_places=8)   #temps en seconds compris entre jd1Owner et jd2Owner      
-    status = models.CharField(max_length="21", default="TOBEPLANNED")
+    status = models.CharField(max_length="21", default="SUBMITTED")
     TSP = models.DecimalField(default=-1.0, max_digits=15, decimal_places=8)
     TEP = models.DecimalField(default=-1.0, max_digits=15, decimal_places=8)
     deltaTL = models.DecimalField(default=-1.0, max_digits=15, decimal_places=8) 
     deltaTR = models.DecimalField(default=-1.0, max_digits=15, decimal_places=8)
+    darkness = models.DecimalField(default=-1.0, max_digits=15, decimal_places=2)
+    seeing = models.DecimalField(default=-1.0, max_digits=15, decimal_places=2)
+    rain = models.DecimalField(default=-1.0, max_digits=15, decimal_places=2)
+    clouds = models.DecimalField(default=-1.0, max_digits=15, decimal_places=2)
     
         
     def display(self):
         print "Seq:"+str(self.id)+" TSP:"+str(self.TSP)+" TEP:"+str(self.TEP)+" tPref:"+str(self.tPrefered)+" duration:"+str(self.duration)+" jd1Owner:"+str(self.jd1Owner)+" j2Owner:"+str(self.jd2Owner)+" shiftLeft:"+str(self.deltaTL)+" shiftRight:"+str(self.deltaTR)+" priority:"+str(self.priority)+" status:"+str(self.status)
-           
+     
+    def gd2jd(self, datestr):
+        """ Convert a string Gregorian date into a Julian date using Pylab.
+            If no time is given (i.e., only a date), then noon is assumed.
+            Times given are assumed to be UTC (Greenwich Mean Time).
+    
+           EXAMPLES:
+                print gd2jd('Aug 11 2007')   ---------------> 2454324.5
+                print gd2jd('12:00 PM, January 1, 2000')  --> 2451545.0
+    
+           SEE ALSO: jd2gd
+           """
+        # 2008-08-26 14:03 IJC: Created        
+        
+        if datestr.__class__==str:
+            d = dates.datestr2num(datestr)
+            jd = dates.num2julian(d) + 3442850
+        else:
+            jd = []
+    
+        return jd
+
+                
+    def jd2gd(self, juldat):
+        """ Convert a numerial Julian date into a Gregorian date using Pylab.
+            Timezone returned will be UTC.
+    
+           EXAMPLES:
+              print jd2gd(2454324.5)  --> 2007-08-12 00:00:00
+              print jd2gd(2451545)    --> 2000-01-01 12:00:00
+    
+           SEE ALSO: gd2jd"""
+        # 2008-08-26 14:03 IJC: Created    
+        d = dates.julian2num(juldat)
+        gd = dates.num2date(d - 3442850)
+    
+        return gd
+          
         
 class SequenceOrder(models.Model):                
     id = models.AutoField(primary_key=True)
     sequence = models.ForeignKey(Sequence)
     
+class PlanningController(Agent):
     
+    def __init__(self):
+        Agent.__init__(self, 'Planning')
+        self.planning = Planning( 0, [] , 0, 0, 0, 0)
+    
+    def work(self):
+        """TO DO register with monitoring controller at 18:00"""
+        
+        planStart = 2456981.68
+        planEnd = 2456981.76     
+        
+        self.generateFakeSequences()
+
+        sequences = list(Sequence.objects.filter(jd1Owner__gte=planStart).filter(jd2Owner__lte=planEnd)) 
+        for seq in sequences:
+            seq.status = "OBSERVABLE" 
+            seq.save()
+              
+        self.planning.initFromDB(planStart, planEnd)
+        self.planning.schedule()
+        self.planning.display()
+        self.registerTo("Monitoring")
+        """ 
+            during day -> observable -> first plannification
+            planning controller prends certains observables et planned-> pass to tobeplanned si il y a eu un passage
+            replan
+            
+            at a precise hour 
+            
+        """
+    
+    def generateFakeSequences(self):
+        Sequence.objects.all().delete()
+        owner = Owner()
+        owner.save()
+        idSeq = 1                       
+        jd1Owner = 2456981.68341667
+        jd2Owner = 2456981.73684001
+        duration = jd2Owner-jd1Owner
+        priority = 10
+        darkness = 11
+        sequence = Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration, darkness=darkness)
+        sequence.save()
+        idSeq = 2                       
+        jd1Owner = 2456981.74117667
+        jd2Owner = 2456981.75684001
+        duration = jd2Owner-jd1Owner
+        priority = 10
+        darkness = 12
+        sequence1 = Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration, darkness=darkness)
+        sequence1.save()         
+   
+    def analyseMessage(self, conn, data):
+        
+        print "Planning controller received : "+data
+        
+        if data == "start" or data == "plan":
+            """normally get all sequences from db which are to be planned and pass them o observable if conditions are good"""
+            self.work()                        
+        else: 
+            if data == "stop":
+                Agent.analyseMessage(self, data)                
+            else:
+                dataSet = data.split(":")
+                parameterName = dataSet[0]
+                parameterCurrentValue = dataSet[1]
+                print str(parameterName)+":"+str(parameterCurrentValue)
+                ok = self.update(dataSet)
+                if ok == True:
+                    self.planning.reschedule(self.planning.planStart)
+                    self.planning.display()
+        conn.send("ok\n")
+    
+    def update(self, dataSet):
+        """if function returns True then reschedule, else do nothing"""        
+        sequencesPlanned = list(Sequence.objects.filter(status="PLANNED"))
+        sequencesObservable = list(Sequence.objects.filter(status="OBSERVABLE"))
+        sequencesTobeplanned = list(Sequence.objects.filter(status="TOBEPLANNED"))        
+        sequences = sequencesPlanned + sequencesObservable + sequencesTobeplanned
+        mustReplan = False
+        for seq in sequences:
+            """if conditions have not changed, checkConditions returns false, else true"""
+            changeStatusFlag = self.checkConditions(seq, dataSet)
+            if changeStatusFlag and seq.status == "PLANNED" or seq.status == "OBSERVABLE":
+                seq.status = "TOBEPLANNED" 
+                seq.save()
+                mustReplan = True
+            else:
+                if changeStatusFlag and seq.status == "TOBEPLANNED":
+                    seq.status = "OBSERVABLE"
+                    seq.save()
+                    mustReplan = True
+                
+        self.planning.sequences = Sequence.objects.filter(status="PLANNED").filter(status="OBSERVABLE").filter(status="TOBEPLANNED")
+        """ if there are no sequences that changed, there is no need to replan so return false, else replan"""
+              
+        return mustReplan
+        
+                
+    def checkConditions(self, seq, dataSet):
+        """checks to see if observation conditions are ok, if they are not, then a status change is needed so return true"""
+        parameterName = dataSet[0]
+        parameterCurrentValue = dataSet[1]
+        if seq.darkness <= float(parameterCurrentValue):
+            """change because seq needs a higher darkness"""
+            return True
+        else:
+            return False
+        
+        
+        
+        
 class Planning:
     def __init__(self, mode, sequences, currentSequence, currentTime, planStart, planEnd, ):
         """mode 1 classic entre 2 journees de planification, 2 cas alerte, 3 request, 4 apres alarme""" 
@@ -184,8 +338,8 @@ class Planning:
 #         self.currentSequence = sequences[0]
 #         self.currentTime = 1
         
-    def initFromDB(self, planStart, planEnd):
-        sequences = list(Sequence.objects.all()) 
+    def initFromDB(self, planStart, planEnd):        
+        sequences = list(Sequence.objects.filter(status="OBSERVABLE")) 
         self.initFromMemory(sequences, planStart, planEnd)
         
     def initFromCadorFile(self, owner, quota):
@@ -309,7 +463,7 @@ class Planning:
         self.initialSort()
         """loop through sequences which are TOBEPLANNED"""
         instant = 0
-        for seq in [sequence for sequence in self.sequences if sequence.status == "TOBEPLANNED"]:      
+        for seq in [sequence for sequence in self.sequences if sequence.status == "OBSERVABLE"]:      
             
             """and try to plan them"""
             if seq.jd1Owner >= self.planStart and seq.jd2Owner <= self.planEnd:
@@ -332,14 +486,14 @@ class Planning:
                         
                         else:
                             
-                            seq.status = "TOBEPLANNED"               
+                            seq.status = "OBSERVABLE"               
                 
             else:
                 if seq.jd1Owner <= self.planStart:
                     seq.status = "UNPLANNABLE"
                 else:
                     if seq.jd2Owner >= self.planEnd:
-                        seq.status = "TOBEPLANNED"
+                        seq.status = "SUBMITTED"
                                    
                 
             seq.save()
@@ -359,18 +513,22 @@ class Planning:
         
         """the function reschedules the planning according to a new planStart"""
         
-        for seq in Sequence.objects.all():
+        self.planStart = planStart
+        del self.intervals[:]
+        self.intervals.append(Interval(self.planStart, self.planEnd, self.planEnd-self.planStart))
+        seqs = list(Sequence.objects.all()) 
+        
+        for seq in seqs:
             if seq.jd2Owner <= self.planStart and seq.status=="PLANNED":
                 seq.status = "EXECUTED" 
-                seq.save()
+                seq.save()       
         
-        self.planStart = planStart
-        
-        for seq in self.sequences:
+        for seq in seqs:
             if seq.status == "PLANNED":
-                seq.status = "TOBEPLANNED" 
+                seq.status = "OBSERVABLE" 
                 seq.save()
         
+        self.sequences = list(Sequence.objects.all()) 
         self.schedule()
                            
     def placeSequence(self, seq):
@@ -596,6 +754,7 @@ class Planning:
             seq.display()
             
         print "\nPLANNED sequences: "+str(len([i for i in self.sequences if i.status == "PLANNED"]))
+        print "OBSERVABLE sequences: "+str(len([i for i in self.sequences if i.status == "OBSERVABLE"]))
         print "TOBEPLANNED today sequences: "+str(len([i for i in self.sequences if i.status == "TOBEPLANNED" and i.jd2Owner <= self.planEnd]))
         for i in self.sequences:
             if i.status == "TOBEPLANNED" and i.jd2Owner <= self.planEnd:
@@ -680,6 +839,10 @@ class Planning:
         for i in range(1, numberOfSequences, 2):            
             with open('planning.txt', 'a') as f:
                 f.write(str(i)+","+"\"alex\""+","+str(i)+","+str(i+2)+",2,12,-1\n")
+    
+    
+
+
     
     
 

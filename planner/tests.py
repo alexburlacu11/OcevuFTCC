@@ -1,9 +1,12 @@
 from django.test import TestCase
 
 import unittest
-from models import Planning, Owner, Sequence, Quota, SequenceOrder
+from models import Planning, Owner, Sequence, Quota, SequenceOrder, Interval
 import time as t
-from decimal import *
+from decimal import * 
+
+
+   
 
 class Test_Suite_for_Planner(unittest.TestCase):
     
@@ -21,8 +24,8 @@ class Test_Suite_for_Planner(unittest.TestCase):
 
         """
         self.planning = Planning( 0.0, [] , 0.0, 0.0, 0.0, 0.0)
-        self.planStart = 2456920.18
-        self.planEnd =   2456920.99
+        self.planStart = 2456959.18000000
+        self.planEnd =   2456959.99000000
         self.owner1 = Owner(name="John", affiliation='France', priority=60)
         self.owner1.save()
         self.quota1 = Quota(owner=self.owner1, quotaNightTotal=100, quotaNightLeft=60)
@@ -127,9 +130,26 @@ class Test_Suite_for_Planner(unittest.TestCase):
         print list(set(listOfSeqInNewPlanning) & set(listOfSeqInKlotz))
         print len(list(set(listOfSeqInNewPlanning) & set(listOfSeqInKlotz)))
         
-        self.planning.reschedule(2456920.30)
+        idSeq = 1
+        """The owner data will be modified accordingly"""
+        jd1Owner = "%.8f" % float(2456945.31600001)
+        jd2Owner = "%.8f" % float(2456945.32000001)
+        duration = (float(180)/86400.0)
+        priority = int(1)
+        sequence = Sequence(id=idSeq, owner=self.owner1, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration)
+        sequence.save()
+        
+        print "New alert received ! Replanning ... "
+#         sequence.display()
+
+        self.planning.reschedule(2456945.30000001)
+        
         self.planning.display()
 
+        print "The alert: "
+        sequence = list(Sequence.objects.filter(pk=1))[0]
+        sequence.display()
+        
         
 #     def test_PLAN_planner_Planning_schedule_planSequencesFromFile(self):
 #         """
@@ -195,30 +215,36 @@ class Test_Suite_for_Planner(unittest.TestCase):
     
     """Non functional tests (ex: performance) """
     
-#     def test_PLAN_nonfunc_planner_Planning_schedule_durationOfScheduling(self):   
-#         """
-#         precond: non empty planning
-#         action: Test if the duration of schedule falls within requirements parameters
-#         postcond: the execution time of the schedule function must be < X (TO DEFINE)
-#          
-#         note: 
-#         This non functional test computes execution times and checks average, max and min of the durations
-#         """ 
-#         self.s1.save()
-#         self.s2.save()     
-#         self.planning.initFromDB(self.planStart, self.planEnd) 
-#         myList = []
-#         f = open('workfile.txt', 'r+')
-#         for i in xrange(0,10):       
-#             t0 = t.clock()
-#             self.planning.schedule()
-#             t1 = t.clock() 
-#             myList.append(t1-t0)           
-#             f.write("Try: "+str(i)+" "+str(t0) + " " + str(t1) + " " + str(t1-t0) + "\n")      
-#         f.write("\naverage: \n"+self.avg(myList))
-#         f.write("\nmin: \n"+str(min(myList)))
-#         f.write("\nmax: \n"+str(max(myList)))
-#         f.close()
+    def test_PLAN_nonfunc_planner_Planning_schedule_durationOfScheduling(self):   
+        """
+        precond: non empty planning
+        action: Test if the duration of schedule falls within requirements parameters
+        postcond: the execution time of the schedule function must be < X (TO DEFINE)
+          
+        note: 
+        This non functional test computes execution times and checks average, max and min of the durations
+        """ 
+            
+        myList = []
+        f = open('workfile.txt', 'r+')
+        for i in xrange(0,1000): 
+#             self.planning.initFromFile("planning.txt", self.owner1, self.quota1)    
+            self.planning.generateSequencesToFile(100)    
+            self.planning.planStart = 1
+            self.planning.planEnd = 1500
+            t0 = t.clock()
+            self.planning.schedule()
+            t1 = t.clock() 
+            del self.planning.intervals[:]
+            self.planning.intervals.append(Interval(self.planStart, self.planEnd, self.planEnd-self.planStart))        
+            del self.planning.sequences[:]
+#             del self.planning.sequencesHistory[:]
+            myList.append(t1-t0)           
+            f.write("Try: "+str(i)+" "+str(t0) + " " + str(t1) + " " + str(t1-t0) + "\n")      
+        f.write("\naverage: \n"+self.avg(myList))
+        f.write("\nmin: \n"+str(min(myList)))
+        f.write("\nmax: \n"+str(max(myList)))
+        f.close()
         
     
     """multiple situation complex tests"""   
