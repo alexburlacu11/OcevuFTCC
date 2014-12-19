@@ -85,17 +85,17 @@ class RequestWizard(SessionWizardView):
         r = Request.objects.filter(pk=1)
         
         if self.steps.current == '0':
-            context.update({'object_list': Sequence.objects.filter(request=r)})
+            context.updateSequenceForConditions({'object_list': Sequence.objects.filter(request=r)})
         if self.steps.current == '1':
             
             email = self.request.user.email
            
             req = Request.objects.filter(email=email).order_by('-creation_date').first()
    
-            context.update({'object_list': Album.objects.all(), 'request':req})
+            context.updateSequenceForConditions({'object_list': Album.objects.all(), 'request':req})
             
         if self.steps.current == '2':
-            context.update({'object_list': Plan.objects.all()})
+            context.updateSequenceForConditions({'object_list': Plan.objects.all()})
          
         return context
     
@@ -105,7 +105,7 @@ class RequestWizard(SessionWizardView):
             email = self.request.user.email        
             laboratory = self.request.user.laboratory
             telnumber = self.request.user.telnumber        
-            initial.update({                    
+            initial.updateSequenceForConditions({                    
                         'email': email, 
                         'laboratory': laboratory, 
                         'telnumber': telnumber, 
@@ -135,15 +135,15 @@ class RequestWizard(SessionWizardView):
             if self.steps.current == '0':
                 request = form.save()      
                 id = request.id
-#                 context.update({'request_id': id})  
+#                 context.updateSequenceForConditions({'request_id': id})  
             if self.steps.current == '1':
                 sequence = form.save()      
                 id = sequence.id
-#                 context.update({'sequence_id': id})
+#                 context.updateSequenceForConditions({'sequence_id': id})
             if self.steps.current == '2':
                 album = form.save()      
                 id = album.id
-#                 context.update({'album_id': id}) 
+#                 context.updateSequenceForConditions({'album_id': id}) 
          
         return self.get_form_step_data(form)       
 #             

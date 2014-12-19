@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from models import Request, Sequence, Album, Plan, SummaryManager
 from forms import RequestForm, SequenceForm, AlbumForm, PlanForm
-from routineManagerProcedural.models import OFTThreadManager
+from common.models import OFTThreadManager
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 

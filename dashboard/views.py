@@ -9,8 +9,67 @@ from django.contrib.auth import authenticate, login, logout
 from admin import UserCreationForm, UserChangeForm
 from django.core.urlresolvers import reverse
 from models import MyUserManager
+from common.models import OFTThreadManager
+import json
+from django_websocket import require_websocket
+
+from django.http import HttpResponse
+from django_websocket import accept_websocket
+
+
+
+# @accept_websocket
+# def consoleOutput(request):
+#     if not request.is_websocket():
+#         
+#         print "bad shit"
+#         
+#         result = OFTThreadManager.getConsoleOutput()  
+#   
+#         if result == None or result == "":
+#             result = 'No data received' 
+#         data = ( {'c1':result[0] , 'c2':result[1] })
+#     
+#         convertedJSON = json.dumps(data, ensure_ascii=False)   
+#     
+#         return HttpResponse(convertedJSON)
+#     
+#     else:
+#         
+#         print "good shit"
+#         
+#         for i in xrange(0,10):
+#            
+#             request.websocket.send(i)
+    
 
 # Create your views here.
+
+# def console(request):
+#     """redirect to console page"""
+#     template = loader.get_template('dashboard/console.html')
+#     context = RequestContext(request, {          
+#                 
+#     })
+#     return HttpResponse(template.render(context))
+#     return redirect('http://localhost:8001/', permanent=True)
+
+
+# def consoleOutput_ORIGINAL(request):
+#     result = OFTThreadManager.getConsoleOutput()  
+#   
+#     if result == None or result == "":
+#         result = 'No data received' 
+#     data = ( {'c1':result[0] , 'c2':result[1] })
+# 
+#     convertedJSON = json.dumps(data, ensure_ascii=False)   
+# 
+#     return HttpResponse(convertedJSON)
+    
+    
+    
+    
+    
 def index(request):
     """redirect to index page for logging in"""
     state = "Please log in or create a new account."
@@ -80,9 +139,9 @@ def create(request):
                
     return HttpResponse(template.render(context))    
    
-def update(request):
+def updateSequenceForConditions(request):
     
-    """update a user profile"""
+    """updateSequenceForConditions a user profile"""
        
     form = UserChangeForm(request.POST)
     if request.POST:           

@@ -45,13 +45,14 @@ INSTALLED_APPS = (
     'jquery',
     'djangoformsetjs',
     'common',
-    'routineManager',
     'routineManagerProcedural',
     'alertManager',
     'dashboard',
     'monitoring',
     'ztest',
-    'planner',       
+    'planner',
+    'scientificDataManagement',
+    'execution',       
   #  'django_jenkins',    
 )
 
@@ -75,6 +76,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_websocket.middleware.WebSocketMiddleware',
     
 )
 

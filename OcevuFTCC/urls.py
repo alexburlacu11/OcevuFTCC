@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from httplib import HTTPResponse
 from django.http.response import HttpResponseRedirect
+from django.views.generic.base import RedirectView
 
 # from ztest.views import GenericView, AlertListView, AlertCreate, AlertDelete, AlertUpdate
 
@@ -105,5 +106,8 @@ urlpatterns = patterns('',
     url(r'^planner/older_plannings/list/$', 'planner.views.getOlderPlannings', name='getOlderPlannings'),  
     url(r'^planner/older_plannings/view/(?P<idPlan>\d+)/', 'planner.views.viewOlderPlanning', name='viewOlderPlanning'), 
     
+#     url(r'^console/$', 'dashboard.views.console', name='console'),    
+    url(r'^console/$', RedirectView.as_view(url='http://localhost:8001')),
+   
 
 )

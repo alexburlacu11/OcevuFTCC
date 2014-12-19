@@ -1,8 +1,63 @@
 from django.db import models
 from django.template.defaultfilters import length
+from decimal import Decimal
+from random import randint
 
 # Create your models here.
 
+from common.models import Agent, Sender
+from planner.models import Sequence, Owner
+import planner
+
+import time
+import datetime
+
+   
+
+class RoutineManagerSender(Sender):   
+    
+#     def work(self):
+#         while True:
+#             
+#             """create some fake sequences here"""
+#             self.createFakeSequence("User")
+#             
+#             message = "request"
+#             print "["+str(datetime.datetime.now())+"]"+"Sending Request to observers"    
+#             self.notifyObservers(message)                                  
+#             time.sleep(10)
+            
+    def createFakeSequence(self, data):
+        n = randint(1,1000)
+        owner = Owner(name=data)
+        owner.save()
+        idSeq = n
+        n1 = str(randint(100000, 999999))             
+        n2 = str(randint(100000, 999999))          
+        jd1Owner = Decimal(str(2456981.68)+n1)
+        jd2Owner = Decimal(str(2456981.73)+n2)
+        duration = jd2Owner-jd1Owner
+        priority = 10
+        darkness = Decimal(11)
+        sequence = planner.models.Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration, darkness=darkness)
+        sequence.save()
+        
+
+class RoutineManagerController(Agent):
+    
+    def __init__(self):
+        Agent.__init__(self, 'RoutineManager')
+        self.sender = RoutineManagerSender(self.agentName+" Sender", self.ip, self.receivePort, self.sendBufferSize)
+         
+    def analyseMessage(self, conn, data):
+        
+        if data == "request_sim":            
+            message = "request"
+            self.sender.createFakeSequence("RequestSim")
+            self.sender.notifyObservers(message)
+            conn.send("ok\n")
+        else:
+            Agent.analyseMessage(self, conn, data) 
 
 class Request(models.Model):
     id = models.AutoField(primary_key=True)
@@ -199,7 +254,7 @@ class SummaryManager():
 #            for idx, col in enumerate(row):
 #                x[row.name][idx] = col
        
-#         print global_summary[0].itervalues()
+#         print "["+str(datetime.datetime.now())+"]"+global_summary[0].itervalues()
        
         return global_summary
     
@@ -236,24 +291,7 @@ class SummaryManager():
 #                             
 #                             <hr>
     
-class OFTThreadManager():
-    
-    @staticmethod   
-    def getJd1Jd2(location):
-        
-        import subprocess
 
-        p = subprocess.Popen(["/home/oftcc/git/ext/jd1jd2_Cpp_V1.0/astro", "-o", "Toulouse"], stdout=subprocess.PIPE)
-
-        a =  p.communicate()
-
-        values = a[0].split()  
-        
-        jd1 = values[2]
-        jd2 = values[5]
-        data = [ jd1, jd2 ]        
-        
-        return data
     
     
     

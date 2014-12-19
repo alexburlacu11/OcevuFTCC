@@ -126,14 +126,14 @@ table.tablesorter thead tr th:hover {
   }
 
   .side-nav>li.dropdown>ul.dropdown-menu>li>a {
-	color: #999999;
+	color: white;
 	padding: 15px 15px 15px 25px;
   }
 
   .side-nav>li.dropdown>ul.dropdown-menu>li>a:hover,
   .side-nav>li.dropdown>ul.dropdown-menu>li>a.active,
   .side-nav>li.dropdown>ul.dropdown-menu>li>a:focus {
-	color: #fff;
+	color: white;
 	background-color: #080808;
   }
 

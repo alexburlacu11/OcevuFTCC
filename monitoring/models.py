@@ -5,29 +5,29 @@ import time
 from random import randint
 from threading import Thread
 import math
-
+import datetime
 
 
 class MonitoringSender(Sender):   
     
-    def run(self):
-        print "Monitoring Sender started"
-        while True:
-            """send data to others if value is outside min max or difference is higher than delta"""          
-            darkness = ConditionsStatus.objects.filter(parameterName="Darkness").first()
-            if (math.fabs(float(darkness.parameterCurrentValue) - float(darkness.parameterPreviousValue) >= float(darkness.parameterDelta)) or darkness.parameterCurrentValue < darkness.parameterMin or darkness.parameterCurrentValue > darkness.parameterMax):
-                
-                self.notifyObservers("Darkness:"+str(darkness.parameterCurrentValue))
-                                  
-            time.sleep(4)
-                
-            """send all parameters in socket instead of each separately"""
+    def work(self):
+        """keep world updated"""
+#         while True:
+#             """send data to others if value is outside min max or difference is higher than delta"""          
+#             darkness = ConditionsStatus.objects.filter(parameterName="Darkness").first()
+#             if (math.fabs(float(darkness.parameterCurrentValue) - float(darkness.parameterPreviousValue) >= float(darkness.parameterDelta)) or darkness.parameterCurrentValue < darkness.parameterMin or darkness.parameterCurrentValue > darkness.parameterMax):
+#                 
+#                 self.notifyObservers("Darkness:"+str(darkness.parameterCurrentValue))
+#                                   
+#             time.sleep(10)
+#                 
+#             """send all parameters in socket instead of each separately"""
 
 class MonitoringController(Agent):
     
     def __init__(self):
         Agent.__init__(self, 'Monitoring')
-        self.sender = MonitoringSender(self.agentName+"Sender", self.ip, self.receivePort, self.sendBufferSize)
+        self.sender = MonitoringSender(self.agentName+" Sender", self.ip, self.receivePort, self.sendBufferSize)
         self.weather = WeatherWatcher()
         self.conditions = ConditionsWatcher()
         self.watchers = [self.weather, self.conditions ]#SecurityWatcher, SiteWatcher ]
@@ -40,24 +40,20 @@ class MonitoringController(Agent):
         
         for watcher in self.watchers:
             watcher.start()
-            time.sleep(1)
-              
+            time.sleep(.1)
+            
+        print "["+str(datetime.datetime.now())+"]"+"Monitoring watchers started"
+            
+    def analyseMessage(self, conn, data):
         
-      
-    def analyseMessage(self, conn , data):        
-        dataSet = data.split(":")
-        rtype = dataSet[0]
-        ip = dataSet[1]
-        port = dataSet[2]
-        if rtype == "register":
-            obs = [o for o in self.sender.observers if o == ip+":"+str(port)]
-            if len(obs) == 0:
-                print "New client registered"
-                self.addObserver(ip+":"+str(port))
-                conn.send("ok\n")
-            else:
-                print "Client already registered"
-                conn.send("Already registered\n")
+        if data == "obs_sim":            
+            darkness = ConditionsStatus.objects.filter(parameterName="Darkness").first()
+            message = "Darkness:"+str(darkness.parameterCurrentValue)            
+            self.sender.notifyObservers(message)
+            conn.send("ok\n")
+        else:
+            Agent.analyseMessage(self, conn, data) 
+
 
 class Status(models.Model):
     parameterName = models.CharField(max_length=20)
@@ -117,20 +113,27 @@ class WeatherWatcher(Watcher):
             rain.parameterPreviousValue = rain.parameterCurrentValue
             rain.parameterCurrentValue = self.getValueFromSensor(60)
             rain.save()
-            print "Rain: "+ str(rain.parameterCurrentValue)
-            time.sleep(4)
+#             print "["+str(datetime.datetime.now())+"]"+"Rain conditions update: "+ str(rain.parameterCurrentValue)
+            time.sleep(1)
             
             
 class ConditionsWatcher(Watcher):
-    """gets information such as cloud, transparency, seeing, darkness"""
+    """
+    gets information such as cloud, transparency, seeing, darkness, seeing is in arcseconds 0.07 at san pedro
+    dim 
+    good seeing = 0.1
+    
+    
+    """
+    """TODO:change to observationConditionsWatcher"""
     def run(self):
         while True:            
             darkness = ConditionsStatus.objects.filter(parameterName="Darkness").first() 
             darkness.parameterPreviousValue = darkness.parameterCurrentValue           
             darkness.parameterCurrentValue = self.getValueFromSensor(60)
             darkness.save()
-            print "Darkness: "+ str(darkness.parameterCurrentValue)
-            time.sleep(4)
+#             print "["+str(datetime.datetime.now())+"]"+"Darkness conditions update: "+ str(darkness.parameterCurrentValue)
+            time.sleep(1)
             
     
     

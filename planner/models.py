@@ -72,7 +72,7 @@ add jd1 et jd2 de ./astro comme interval maximale de visibilite.
         todo:
         read seq and put in db
         schedule
-        update sequences in db
+        updateSequenceForConditions sequences in db
         view seq verticale on web
         sequences complexe tests with decallage
          
@@ -89,6 +89,7 @@ import copy
 import urllib2
 from decimal import *
 from common.models import Agent
+import datetime
 
 JULIAN_SECOND = 115740
 PRECISION = 8
@@ -159,7 +160,7 @@ class Sequence(models.Model):
     
         
     def display(self):
-        print "Seq:"+str(self.id)+" TSP:"+str(self.TSP)+" TEP:"+str(self.TEP)+" tPref:"+str(self.tPrefered)+" duration:"+str(self.duration)+" jd1Owner:"+str(self.jd1Owner)+" j2Owner:"+str(self.jd2Owner)+" shiftLeft:"+str(self.deltaTL)+" shiftRight:"+str(self.deltaTR)+" priority:"+str(self.priority)+" status:"+str(self.status)
+        print "["+str(datetime.datetime.now())+"]"+"Seq:"+str(self.id)+" TSP:"+str(self.TSP)+" TEP:"+str(self.TEP)+" tPref:"+str(self.tPrefered)+" duration:"+str(self.duration)+" jd1Owner:"+str(self.jd1Owner)+" j2Owner:"+str(self.jd2Owner)+" shiftLeft:"+str(self.deltaTL)+" shiftRight:"+str(self.deltaTR)+" priority:"+str(self.priority)+" status:"+str(self.status)
      
     def gd2jd(self, datestr):
         """ Convert a string Gregorian date into a Julian date using Pylab.
@@ -167,8 +168,8 @@ class Sequence(models.Model):
             Times given are assumed to be UTC (Greenwich Mean Time).
     
            EXAMPLES:
-                print gd2jd('Aug 11 2007')   ---------------> 2454324.5
-                print gd2jd('12:00 PM, January 1, 2000')  --> 2451545.0
+                print "["+str(datetime.datetime.now())+"]"+gd2jd('Aug 11 2007')   ---------------> 2454324.5
+                print "["+str(datetime.datetime.now())+"]"+gd2jd('12:00 PM, January 1, 2000')  --> 2451545.0
     
            SEE ALSO: jd2gd
            """
@@ -188,8 +189,8 @@ class Sequence(models.Model):
             Timezone returned will be UTC.
     
            EXAMPLES:
-              print jd2gd(2454324.5)  --> 2007-08-12 00:00:00
-              print jd2gd(2451545)    --> 2000-01-01 12:00:00
+              print "["+str(datetime.datetime.now())+"]"+jd2gd(2454324.5)  --> 2007-08-12 00:00:00
+              print "["+str(datetime.datetime.now())+"]"+jd2gd(2451545)    --> 2000-01-01 12:00:00
     
            SEE ALSO: gd2jd"""
         # 2008-08-26 14:03 IJC: Created    
@@ -208,6 +209,13 @@ class PlanningController(Agent):
     def __init__(self):
         Agent.__init__(self, 'Planning')
         self.planning = Planning( 0, [] , 0, 0, 0, 0)
+        
+    def updateWithNewSequences(self, planStart, planEnd):
+        sequences = list(Sequence.objects.filter(jd1Owner__gte=planStart).filter(jd2Owner__lte=planEnd)) 
+        for seq in sequences:
+#             seq.display()
+            seq.status = "TOBEPLANNED" 
+            seq.save()
     
     def work(self):
         """TO DO register with monitoring controller at 18:00"""
@@ -215,17 +223,16 @@ class PlanningController(Agent):
         planStart = 2456981.68
         planEnd = 2456981.76     
         
-        self.generateFakeSequences()
+#         self.generateFakeSequences()
 
-        sequences = list(Sequence.objects.filter(jd1Owner__gte=planStart).filter(jd2Owner__lte=planEnd)) 
-        for seq in sequences:
-            seq.status = "OBSERVABLE" 
-            seq.save()
+        self.updateWithNewSequences(planStart, planEnd)
               
         self.planning.initFromDB(planStart, planEnd)
         self.planning.schedule()
-        self.planning.display()
+        self.planning.displaySimple()
         self.registerTo("Monitoring")
+        self.registerTo("AlertManager")
+        self.registerTo("RoutineManager")
         """ 
             during day -> observable -> first plannification
             planning controller prends certains observables et planned-> pass to tobeplanned si il y a eu un passage
@@ -258,7 +265,13 @@ class PlanningController(Agent):
    
     def analyseMessage(self, conn, data):
         
-        print "Planning controller received : "+data
+#         print "["+str(datetime.datetime.now())+"]"+"Planning controller received : "+data
+#         
+#         data = data.rstrip('\n')
+        
+        """This is to pass from submitted to TOBEPLANNED"""
+        self.updateWithNewSequences(self.planning.planStart, self.planning.planEnd)
+        
         
         if data == "start" or data == "plan":
             """normally get all sequences from db which are to be planned and pass them o observable if conditions are good"""
@@ -267,17 +280,35 @@ class PlanningController(Agent):
             if data == "stop":
                 Agent.analyseMessage(self, data)                
             else:
-                dataSet = data.split(":")
-                parameterName = dataSet[0]
-                parameterCurrentValue = dataSet[1]
-                print str(parameterName)+":"+str(parameterCurrentValue)
-                ok = self.update(dataSet)
-                if ok == True:
-                    self.planning.reschedule(self.planning.planStart)
-                    self.planning.display()
+                """ the alert and routine case """ 
+                if data == "alert":
+                    print "["+str(datetime.datetime.now())+"]"+"Alert has been received,  interrupting and replanning " 
+                    dataSet=["Darkness", 20]                   
+                    ok = self.updateSequenceForConditions(dataSet)
+                    if ok == True:
+                        self.planning.reschedule(self.planning.planStart)
+                        self.planning.displaySimple()
+                    """ TODO : add logic for interrupting observation system and replan after""" 
+                else:
+                    if data == "request":
+                        print "["+str(datetime.datetime.now())+"]"+"Request has been received, don't interrupt anything but replan"
+                        dataSet=["Darkness", 20]                   
+                        ok = self.updateSequenceForConditions(dataSet)
+                        if ok == True:
+                            self.planning.reschedule(self.planning.planStart)
+                            self.planning.displaySimple()
+                    else:
+                        dataSet = data.split(":")
+                        parameterName = dataSet[0]
+                        parameterCurrentValue = dataSet[1]
+#                         print "["+str(datetime.datetime.now())+"]"+str(parameterName)+":"+str(parameterCurrentValue)
+                        ok = self.updateSequenceForConditions(dataSet)
+                        if ok == True:
+                            self.planning.reschedule(self.planning.planStart)
+                            self.planning.displaySimple()
         conn.send("ok\n")
     
-    def update(self, dataSet):
+    def updateSequenceForConditions(self, dataSet):
         """if function returns True then reschedule, else do nothing"""        
         sequencesPlanned = list(Sequence.objects.filter(status="PLANNED"))
         sequencesObservable = list(Sequence.objects.filter(status="OBSERVABLE"))
@@ -354,7 +385,7 @@ class Planning:
         """filter unwanted \n and other data"""
         filteredList = map(lambda s: s.strip(), parser.data)
         pageText = filteredList[9]
-        print pageText
+        print "["+str(datetime.datetime.now())+"]"+pageText
         rawSequences = pageText.split("\n")
         del rawSequences[0]
         """Create the sequences"""
@@ -434,7 +465,7 @@ class Planning:
         
     def initFromFile(self, fileName, owner, quota): 
         with open(fileName, 'r') as f:
-#             print "Reading data in file "
+#             print "["+str(datetime.datetime.now())+"]"+"Reading data in file "
             data = f.readlines()
             """remove comments"""
             parsedData1 = [i for i in data if i[0] != '#']
@@ -523,10 +554,10 @@ class Planning:
                 seq.status = "EXECUTED" 
                 seq.save()       
         
-        for seq in seqs:
-            if seq.status == "PLANNED":
-                seq.status = "OBSERVABLE" 
-                seq.save()
+#         for seq in seqs:
+#             if seq.status == "PLANNED":
+#                 seq.status = "OBSERVABLE" 
+#                 seq.save()
         
         self.sequences = list(Sequence.objects.all()) 
         self.schedule()
@@ -706,25 +737,25 @@ class Planning:
         for interval in self.intervals:
             leftLimit = max(interval.start,seq.jd1Owner)
             rightLimit = min(interval.end,seq.jd2Owner)
-#             print "interval start and jd1Owner"
-#             print interval.start
-#             print seq.jd1Owner
-#             print leftLimit
-#             print "interval end and jd2Owner"
-#             print interval.end
-#             print seq.jd2Owner
-#             print rightLimit
-#             print "rightLimit - leftLimit:"
-#             print rightLimit - leftLimit
-#             print "duration:"
-#             print seq.duration
+#             print "["+str(datetime.datetime.now())+"]"+"interval start and jd1Owner"
+#             print "["+str(datetime.datetime.now())+"]"+interval.start
+#             print "["+str(datetime.datetime.now())+"]"+seq.jd1Owner
+#             print "["+str(datetime.datetime.now())+"]"+leftLimit
+#             print "["+str(datetime.datetime.now())+"]"+"interval end and jd2Owner"
+#             print "["+str(datetime.datetime.now())+"]"+interval.end
+#             print "["+str(datetime.datetime.now())+"]"+seq.jd2Owner
+#             print "["+str(datetime.datetime.now())+"]"+rightLimit
+#             print "["+str(datetime.datetime.now())+"]"+"rightLimit - leftLimit:"
+#             print "["+str(datetime.datetime.now())+"]"+rightLimit - leftLimit
+#             print "["+str(datetime.datetime.now())+"]"+"duration:"
+#             print "["+str(datetime.datetime.now())+"]"+seq.duration
             if rightLimit - leftLimit >= seq.duration:
                 longEnoughIntervals.append(interval)
         return longEnoughIntervals
 
            
     def updateIntervals(self, usedInterval, seq):
-        """update new free intervals"""
+        """updateSequenceForConditions new free intervals"""
         intervalBefore = Interval(usedInterval.start, seq.TSP, seq.TSP - usedInterval.start)
         intervalAfter = Interval(seq.TEP, usedInterval.end, usedInterval.end - seq.TEP)
         """remove old interval from the list"""
@@ -753,19 +784,29 @@ class Planning:
         for seq in self.sequences:            
             seq.display()
             
-        print "\nPLANNED sequences: "+str(len([i for i in self.sequences if i.status == "PLANNED"]))
-        print "OBSERVABLE sequences: "+str(len([i for i in self.sequences if i.status == "OBSERVABLE"]))
-        print "TOBEPLANNED today sequences: "+str(len([i for i in self.sequences if i.status == "TOBEPLANNED" and i.jd2Owner <= self.planEnd]))
+        print "["+str(datetime.datetime.now())+"]"+"\nPLANNED sequences: "+str(len([i for i in self.sequences if i.status == "PLANNED"]))
+        print "["+str(datetime.datetime.now())+"]"+"OBSERVABLE sequences: "+str(len([i for i in self.sequences if i.status == "OBSERVABLE"]))
+        print "["+str(datetime.datetime.now())+"]"+"TOBEPLANNED today sequences: "+str(len([i for i in self.sequences if i.status == "TOBEPLANNED" and i.jd2Owner <= self.planEnd]))
         for i in self.sequences:
             if i.status == "TOBEPLANNED" and i.jd2Owner <= self.planEnd:
                 i.display()
-        print "TOTAL for today: "+str(len([i for i in self.sequences if i.status == "PLANNED"])+len([i for i in self.sequences if i.status == "TOBEPLANNED" and i.jd2Owner <= self.planEnd]))
-        print "UNPLANNABLE sequences: "+str(len([i for i in self.sequences if i.status == "UNPLANNABLE"]))
-        print "TOBEPLANNED another night sequences: "+str(len([i for i in self.sequences if i.status == "TOBEPLANNED"]))
-        print "TOTAL sequences: "+str(len(self.sequences))
-        print "FILLING RATE: "+str(self.getFillingRate())
-        print "\n"
+        print "["+str(datetime.datetime.now())+"]"+"TOTAL for today: "+str(len([i for i in self.sequences if i.status == "PLANNED"])+len([i for i in self.sequences if i.status == "TOBEPLANNED" and i.jd2Owner <= self.planEnd]))
+        print "["+str(datetime.datetime.now())+"]"+"UNPLANNABLE sequences: "+str(len([i for i in self.sequences if i.status == "UNPLANNABLE"]))
+        print "["+str(datetime.datetime.now())+"]"+"TOBEPLANNED another night sequences: "+str(len([i for i in self.sequences if i.status == "TOBEPLANNED"]))
+        print "["+str(datetime.datetime.now())+"]"+"TOTAL sequences: "+str(len(self.sequences))
+        print "["+str(datetime.datetime.now())+"]"+"FILLING RATE: "+str(self.getFillingRate())
+        print "["+str(datetime.datetime.now())+"]"+"\n"
 
+    def displaySimple(self):
+        print "["+str(datetime.datetime.now())+"]"+"------------------------------------------\n"
+        print "["+str(datetime.datetime.now())+"]"+"PLANNED sequences: "+str(len([i for i in self.sequences if i.status == "PLANNED"]))
+        print "["+str(datetime.datetime.now())+"]"+"OBSERVABLE sequences: "+str(len([i for i in self.sequences if i.status == "OBSERVABLE"]))
+        print "["+str(datetime.datetime.now())+"]"+"TOBEPLANNED today sequences: "+str(len([i for i in self.sequences if i.status == "TOBEPLANNED" and i.jd2Owner <= self.planEnd]))
+        print "["+str(datetime.datetime.now())+"]"+"TOTAL for today: "+str(len([i for i in self.sequences if i.status == "PLANNED"])+len([i for i in self.sequences if i.status == "TOBEPLANNED" and i.jd2Owner <= self.planEnd]))
+        print "["+str(datetime.datetime.now())+"]"+"UNPLANNABLE sequences: "+str(len([i for i in self.sequences if i.status == "UNPLANNABLE"]))
+        print "["+str(datetime.datetime.now())+"]"+"TOBEPLANNED another night sequences: "+str(len([i for i in self.sequences if i.status == "TOBEPLANNED"]))
+        print "["+str(datetime.datetime.now())+"]"+"TOTAL sequences: "+str(len(self.sequences))
+        print "["+str(datetime.datetime.now())+"]"+"------------------------------------------\n"
             
     def displayGUI(self):
         import numpy as np
@@ -815,7 +856,7 @@ class Planning:
     #         plt.legend()
             plt.show()
         else:
-            print "No data available in planning"
+            print "["+str(datetime.datetime.now())+"]"+"No data available in planning"
         
     def plotSequence(self, seq, y, PLT):      
         

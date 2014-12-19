@@ -17,11 +17,3 @@ def index(self):
     html = "<html><body>Guardian status: </br>%s.</body></html>"# % monitoring.to_string()
     return HttpResponse(html)
         
-def status(self):
-    #returns watcher values from their respective tables
-    weather = Weather.objects.first()
-    site = Site.objects.first()
-    security = Security.objects.first()
-    
-def history(self):
-    guardian = Guardian.objects.all()

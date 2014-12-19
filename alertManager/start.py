@@ -8,12 +8,11 @@ class Monitoring Controller
 '''
 
 
-from monitoring.models import MonitoringController 
+from alertManager.models import AlertManagerController 
 
 if __name__ == '__main__':
     
-    controller = MonitoringController()    
+    controller = AlertManagerController()    
     controller.start()
-
     
 

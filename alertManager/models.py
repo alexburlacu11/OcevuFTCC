@@ -7,16 +7,80 @@ import os
 from uuid import uuid4
 import sys
 import os
-import getopt
+import getopt 
 import VOEventLib.VOEvent
 import VOEventLib.Vutil
+from common.models import Agent, Sender
+import time
+from planner.models import Sequence, Owner
+from decimal import Decimal
+from random import randint
 
 try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
    
- 
+
+class AlertManagerSender(Sender):   
+    
+#     def work(self):
+#         while True:
+#             
+#             """create some fake sequences here"""
+#             self.createFakeSequence("Alert")
+#             
+#             message = "alert"
+#             
+#             self.notifyObservers(message)                                  
+#             time.sleep(10)
+            
+    def createFakeSequence(self, data):
+#         owner = Owner(name=data)
+#         owner.save()
+#         idSeq = 1                       
+#         jd1Owner = 2456981.68341667
+#         jd2Owner = 2456981.73684001
+#         duration = jd2Owner-jd1Owner
+#         priority = 1
+#         darkness = 11
+#         sequence = Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration, darkness=darkness)
+#         sequence.save()
+               
+        
+        n = randint(1,1000)
+        owner = Owner(name=data)
+        owner.save()
+        idSeq = n
+        n1 = str(randint(100000, 999999))             
+        n2 = str(randint(100000, 999999))          
+        jd1Owner = Decimal(str(2456981.68)+n1)
+        jd2Owner = Decimal(str(2456981.73)+n2)
+        duration = jd2Owner-jd1Owner
+        priority = 1
+        darkness = Decimal(11)
+        sequence = Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration, darkness=darkness)
+        sequence.save()
+        
+    
+        
+
+class AlertManagerController(Agent):
+    
+    def __init__(self):
+        Agent.__init__(self, 'AlertManager')
+        self.sender = AlertManagerSender(self.agentName+" Sender", self.ip, self.receivePort, self.sendBufferSize)
+      
+    def analyseMessage(self, conn, data):
+        
+        if data == "alert_sim":            
+            message = "alert"
+            self.sender.createFakeSequence("AlertSim")
+            self.sender.notifyObservers(message)
+            conn.send("ok\n")
+        else:
+            Agent.analyseMessage(self, conn, data) 
+    
    
 class Alert(models.Model):
     ivorn = models.CharField(max_length=100)
@@ -241,7 +305,7 @@ class Alert(models.Model):
             format_to_file(infilename, outfilename, force)
         if text:
             content = format_to_string(infilename)
-            print content
+            print "["+str(datetime.datetime.now())+"]"+content
         if not stdout and outfilename is None and not text:
             usage()
             
