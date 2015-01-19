@@ -306,7 +306,7 @@ class PlanningController(Agent):
                         if ok == True:
                             self.planning.reschedule(self.planning.planStart)
                             self.planning.displaySimple()
-        conn.send("ok\n")
+        conn.send(bytes("ok", 'UTF-8'))
     
     def updateSequenceForConditions(self, dataSet):
         """if function returns True then reschedule, else do nothing"""        

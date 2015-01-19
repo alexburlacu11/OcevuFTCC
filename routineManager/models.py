@@ -55,7 +55,7 @@ class RoutineManagerController(Agent):
             message = "request"
             self.sender.createFakeSequence("RequestSim")
             self.sender.notifyObservers(message)
-            conn.send("ok\n")
+            conn.send(bytes("ok", 'UTF-8'))
         else:
             Agent.analyseMessage(self, conn, data) 
 

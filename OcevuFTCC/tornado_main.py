@@ -13,6 +13,8 @@ import socket
 import datetime
 import configparser as ConfigParser
 
+
+
 clients = []
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -37,13 +39,12 @@ class SocketHandler(websocket.WebSocketHandler):
 class SuperSTDOUTThread(Thread):
     
     def updateToWebPage(self, info):
-        print ("Info: "+str(info))
-        data = json.dumps(str(info), ensure_ascii=False)
-        print (data)
+        
+        data = json.dumps(info)
+
         for client in clients:
             while True:
-                try:
-                    
+                try:                    
                     client.write_message(data)
                     break
                 except Exception:
@@ -54,13 +55,15 @@ class MonitoringThread(SuperSTDOUTThread):
     def run(self):             
         monitoring = subprocess.Popen(["python", BASE_DIR+"\\"+"monitoring\start.py"], stdout=subprocess.PIPE)
         for line in iter(monitoring.stdout.readline, b''):            
+            line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]
             data = {"moni": line}
             self.updateToWebPage(data)
                 
 class PlanningThread(SuperSTDOUTThread):
     def run(self):             
         planning = subprocess.Popen(["python", BASE_DIR+"\\"+"planner\start.py"], stdout=subprocess.PIPE)
-        for line in iter(planning.stdout.readline, b''):            
+        for line in iter(planning.stdout.readline, b''):  
+            line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]          
             data = {"plan": line}
             self.updateToWebPage(data)
             
@@ -68,27 +71,31 @@ class AlertThread(SuperSTDOUTThread):
     def run(self):             
         alertManager = subprocess.Popen(["python", BASE_DIR+"\\"+"alertManager\start.py"], stdout=subprocess.PIPE)
         for line in iter(alertManager.stdout.readline, b''):            
+            line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]
             data = {"almn": line}
             self.updateToWebPage(data)
                 
 class RoutineThread(SuperSTDOUTThread):
     def run(self):             
         routineManager = subprocess.Popen(["python", BASE_DIR+"\\"+"routineManager\start.py"], stdout=subprocess.PIPE)
-        for line in iter(routineManager.stdout.readline, b''):            
+        for line in iter(routineManager.stdout.readline, b''): 
+            line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]           
             data = {"romn": line}
             self.updateToWebPage(data)
             
 class ExecThread(SuperSTDOUTThread):
     def run(self):             
         execution = subprocess.Popen(["python", BASE_DIR+"\\"+"execution\start.py"], stdout=subprocess.PIPE)
-        for line in iter(execution.stdout.readline, b''):            
+        for line in iter(execution.stdout.readline, b''):          
+            line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]  
             data = {"exec": line}
             self.updateToWebPage(data)
             
 class ScientificDataManagementThread(SuperSTDOUTThread):
     def run(self):             
         sdmn = subprocess.Popen(["python", BASE_DIR+"\\"+"scientificDataManager\start.py"], stdout=subprocess.PIPE)
-        for line in iter(sdmn.stdout.readline, b''):            
+        for line in iter(sdmn.stdout.readline, b''):  
+            line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]          
             data = {"sdmn": line}
             self.updateToWebPage(data)
 
@@ -149,10 +156,10 @@ class CommandHandler(web.RequestHandler):
     @web.asynchronous
     def get(self, *args):
         self.finish()
-        print ("received command ajax")
         configFile = BASE_DIR+"\\"+"common\oft_config.ini"
         command = self.get_argument("command")
-        command = command.rstrip('\n')
+
+        print ("["+str(datetime.datetime.now())+"]"+"Received ajax command: "+command)
         if command == "alert_sim":
             """send socket to alertManager to create a new sequence and notify observers"""
             message = "alert_sim"
@@ -175,8 +182,8 @@ class CommandHandler(web.RequestHandler):
     def send(self, message, ip, port):        
         clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clientsocket.connect((ip, port))
-        clientsocket.send(str(message)+"\n")
-        data = clientsocket.recv(64)
+        clientsocket.send(bytes(message, 'UTF-8'))
+        data = clientsocket.recv(64).decode()
         print ("["+str(datetime.datetime.now())+"]"+"Received data: ", data)
         clientsocket.close()
         

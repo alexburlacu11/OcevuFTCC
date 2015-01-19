@@ -10,6 +10,7 @@ from decimal import Decimal
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 
+
 class Sender(Thread): 
     def __init__(self, agentName, ip, port, sendBufferSize):
         self.agentName = agentName
@@ -43,8 +44,8 @@ class Sender(Thread):
          
         clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clientsocket.connect((ip, port))
-        clientsocket.send(message+"\n")
-        data = clientsocket.recv(64)
+        clientsocket.send(bytes(message, 'UTF-8'))
+        data = clientsocket.recv(64).decode()
         print( "["+str(datetime.datetime.now())+"]"+"Received data: ", data)
         clientsocket.close()
 #         else:
@@ -82,6 +83,8 @@ class Agent(Thread):
         
     def start(self):
         """loop which accepts connections"""
+        import django
+        django.setup()
         self.status = "running"
         self.display()  
         Thread.start(self)
@@ -110,11 +113,9 @@ class Agent(Thread):
                     except socket.error:
                         break
                     
-                    conn.setblocking(False)
+#                     conn.setblocking(False)
               
-                    data = conn.recv(self.receiveBufferSize)     
-                    
-                    data = data.decode('utf-8').rstrip('\n')
+                    data = conn.recv(self.receiveBufferSize).decode()
                     print( "["+str(datetime.datetime.now())+"]"+self.agentName+" received : "+data )                     
                     
                     self.analyseMessage(conn, data)
@@ -138,10 +139,12 @@ class Agent(Thread):
             if len(obs) == 0:
                 print( "["+str(datetime.datetime.now())+"]"+"New client registered")
                 self.addObserver(ip+":"+str(port))
-                conn.send("ok\n")
+                message = "ok"
             else:
                 print( "["+str(datetime.datetime.now())+"]"+"Client already registered")
-                conn.send("Already registered\n")
+                message = "Already registered"
+                
+            conn.send(bytes(message, 'UTF-8'))
         
             
         

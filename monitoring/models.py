@@ -50,7 +50,7 @@ class MonitoringController(Agent):
             darkness = ConditionsStatus.objects.filter(parameterName="Darkness").first()
             message = "Darkness:"+str(darkness.parameterCurrentValue)            
             self.sender.notifyObservers(message)
-            conn.send("ok\n")
+            conn.send(bytes("ok", 'UTF-8'))
         else:
             Agent.analyseMessage(self, conn, data) 
 
