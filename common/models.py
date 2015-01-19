@@ -114,7 +114,7 @@ class Agent(Thread):
               
                     data = conn.recv(self.receiveBufferSize)     
                     
-                    data = data.rstrip('\n')
+                    data = data.decode('utf-8').rstrip('\n')
                     print( "["+str(datetime.datetime.now())+"]"+self.agentName+" received : "+data )                     
                     
                     self.analyseMessage(conn, data)

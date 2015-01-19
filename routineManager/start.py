@@ -8,7 +8,7 @@ class Monitoring Controller
 '''
 
 
-from routineManagerProcedural.models import RoutineManagerController 
+from routineManager.models import RoutineManagerController 
 
 if __name__ == '__main__':
     

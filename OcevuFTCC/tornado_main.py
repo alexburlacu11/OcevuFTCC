@@ -3,7 +3,7 @@ Created on Dec 2, 2014
 
 @author: alex
 '''
-from tornado import websocket, web, ioloop
+from tornado import websocket, web, ioloop 
 import json
 import time
 import os
@@ -11,7 +11,7 @@ import subprocess
 from threading import Thread
 import socket
 import datetime
-import ConfigParser
+import configparser as ConfigParser
 
 clients = []
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -36,8 +36,10 @@ class SocketHandler(websocket.WebSocketHandler):
             
 class SuperSTDOUTThread(Thread):
     
-    def updateToWebPage(self, data):
-        data = json.dumps(data, ensure_ascii=False)
+    def updateToWebPage(self, info):
+        print ("Info: "+str(info))
+        data = json.dumps(str(info), ensure_ascii=False)
+        print (data)
         for client in clients:
             while True:
                 try:
@@ -45,7 +47,7 @@ class SuperSTDOUTThread(Thread):
                     client.write_message(data)
                     break
                 except Exception:
-                    print Exception.message 
+                    print ("Exception in sending data to web page") 
 #                     print "Error sending data, retrying"
             
 class MonitoringThread(SuperSTDOUTThread):
@@ -147,7 +149,7 @@ class CommandHandler(web.RequestHandler):
     @web.asynchronous
     def get(self, *args):
         self.finish()
-        print "received command ajax"
+        print ("received command ajax")
         configFile = BASE_DIR+"\\"+"common\oft_config.ini"
         command = self.get_argument("command")
         command = command.rstrip('\n')
@@ -173,9 +175,9 @@ class CommandHandler(web.RequestHandler):
     def send(self, message, ip, port):        
         clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clientsocket.connect((ip, port))
-        clientsocket.send(message+"\n")
+        clientsocket.send(str(message)+"\n")
         data = clientsocket.recv(64)
-        print "["+str(datetime.datetime.now())+"]"+"Received data: ", data
+        print ("["+str(datetime.datetime.now())+"]"+"Received data: ", data)
         clientsocket.close()
         
     def getAgentFromConfigFile(self, name, configFile):
@@ -222,7 +224,7 @@ app = web.Application([
 
 if __name__ == '__main__':
     app.listen(8001)
-    print "Tornado started on 8001"
+    print ("Tornado server started on 8001")
     ioloop.IOLoop.instance().start()
     
     
