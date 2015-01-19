@@ -7,7 +7,7 @@
 # The monitoring loop does not necessarily have to run
 # in order to request info about the watchers
 
-from django.shortcuts import render
+from django.shortcuts import render 
 from django.http import HttpResponse
 import datetime
 

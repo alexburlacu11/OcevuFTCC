@@ -1,7 +1,7 @@
 
 from django.http import HttpResponse
 from django.template import RequestContext, loader
-from models import Sequence, Planning, Owner, Quota, PlanningHistory
+from planner.models import Sequence, Planning, Owner, Quota, PlanningHistory
 from django.contrib.auth.decorators import login_required
 
  
@@ -40,7 +40,7 @@ def viewCurrentPlanning(request):
         'object_list': sequences,   
         'planning': planning     
     })
-  
+   
     return HttpResponse(template.render(context))
 
 def viewOlderPlanning(request, idPlan):

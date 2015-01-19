@@ -1,16 +1,14 @@
-from django.conf.urls import patterns, include, url
+from http.client import HTTPResponse
 
+from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from httplib import HTTPResponse
 from django.http.response import HttpResponseRedirect
 from django.views.generic.base import RedirectView
 
-# from ztest.views import GenericView, AlertListView, AlertCreate, AlertDelete, AlertUpdate
-
 from alertManager.views import AlertDetailView, AlertIndexView, AlertDeleteView, AlertCreateView, AlertUpdateView, AlertListView
-from routineManager.views import RequestDetailView, RequestIndexView, RequestDeleteView, RequestCreateView, RequestUpdateView, RequestListView
 
-from ztest.views import RequestWizard, RequestIndex
+
+# from ztest.views import GenericView, AlertListView, AlertCreate, AlertDelete, AlertUpdate
 #  RequestIndex, RequestCreate, SequenceCreate,AlbumCreate,PlanCreate
 admin.autodiscover()
 
@@ -31,29 +29,29 @@ urlpatterns = patterns('',
     url(r'^dashboard/profile', 'dashboard.views.profile', name='profile'),
     url(r'^dashboard/update', 'dashboard.views.update', name='update'),
     
-    url(r'^routinemanager2/$', RequestIndex.as_view() ),
+#     url(r'^routinemanager2/$', RequestIndex.as_view() ),
 #     url(r'^routinemanager2/create/', RequestCreate.as_view() ),
 #     url(r'^routinemanager2/new_sequence/', SequenceCreate.as_view() ),
 #     url(r'^routinemanager2/new_album/', AlbumCreate.as_view() ),
 #     url(r'^routinemanager2/new_plan/', PlanCreate.as_view() ),
-    url(r'^routinemanager2/wizard/', RequestWizard.as_view() ),
-    url(r'^routinemanager2/edit/(?P<request_id>[-\d]+)$', RequestWizard.as_view() ),
+#     url(r'^routinemanager2/wizard/', RequestWizard.as_view() ),
+#     url(r'^routinemanager2/edit/(?P<request_id>[-\d]+)$', RequestWizard.as_view() ),
     
-    url(r'^routinemanagerprocedural/$', 'routineManagerProcedural.views.index', name='index'),
-    url(r'^routinemanagerprocedural/request_create', 'routineManagerProcedural.views.request_create', name='request_create'),
-    url(r'^routinemanagerprocedural/request_save', 'routineManagerProcedural.views.request_save', name='request_save'),
-    url(r'^routinemanagerprocedural/sequence_save', 'routineManagerProcedural.views.sequence_save', name='sequence_save'),
-    url(r'^routinemanagerprocedural/album_save', 'routineManagerProcedural.views.album_save', name='album_save'),
-    url(r'^routinemanagerprocedural/plan_save', 'routineManagerProcedural.views.plan_save', name='plan_save'),
-    url(r'^routinemanagerprocedural/edit_request/(?P<slug>\d+)', 'routineManagerProcedural.views.edit_request', name='edit_request'),
-    url(r'^routinemanagerprocedural/edit_sequence/(?P<slug>\d+)', 'routineManagerProcedural.views.edit_sequence', name='edit_sequence'),
-    url(r'^routinemanagerprocedural/edit_album/(?P<slug>\d+)', 'routineManagerProcedural.views.edit_album', name='edit_album'),
-    url(r'^routinemanagerprocedural/edit_plan/(?P<slug>\d+)', 'routineManagerProcedural.views.edit_plan', name='edit_plan'),
-    url(r'^routinemanagerprocedural/help_request/', 'routineManagerProcedural.views.help_request', name='help_request'),
-    url(r'^routinemanagerprocedural/help_sequence/', 'routineManagerProcedural.views.help_sequence', name='help_sequence'),
-    url(r'^routinemanagerprocedural/help_album/', 'routineManagerProcedural.views.help_album', name='help_album'),
-    url(r'^routinemanagerprocedural/help_plan/', 'routineManagerProcedural.views.help_plan', name='help_plan'),     
-    url(r'^routinemanagerprocedural/getjd1jd2/$', 'routineManagerProcedural.views.getJd1Jd2', name='getJd1Jd2'),    
+    url(r'^routinemanager/$', 'routineManager.views.index', name='index'),
+    url(r'^routinemanager/request_create', 'routineManager.views.request_create', name='request_create'),
+    url(r'^routinemanager/request_save', 'routineManager.views.request_save', name='request_save'),
+    url(r'^routinemanager/sequence_save', 'routineManager.views.sequence_save', name='sequence_save'),
+    url(r'^routinemanager/album_save', 'routineManager.views.album_save', name='album_save'),
+    url(r'^routinemanager/plan_save', 'routineManager.views.plan_save', name='plan_save'),
+    url(r'^routinemanager/edit_request/(?P<slug>\d+)', 'routineManager.views.edit_request', name='edit_request'),
+    url(r'^routinemanager/edit_sequence/(?P<slug>\d+)', 'routineManager.views.edit_sequence', name='edit_sequence'),
+    url(r'^routinemanager/edit_album/(?P<slug>\d+)', 'routineManager.views.edit_album', name='edit_album'),
+    url(r'^routinemanager/edit_plan/(?P<slug>\d+)', 'routineManager.views.edit_plan', name='edit_plan'),
+    url(r'^routinemanager/help_request/', 'routineManager.views.help_request', name='help_request'),
+    url(r'^routinemanager/help_sequence/', 'routineManager.views.help_sequence', name='help_sequence'),
+    url(r'^routinemanager/help_album/', 'routineManager.views.help_album', name='help_album'),
+    url(r'^routinemanager/help_plan/', 'routineManager.views.help_plan', name='help_plan'),     
+    url(r'^routinemanager/getjd1jd2/$', 'routineManager.views.getJd1Jd2', name='getJd1Jd2'),    
 #     url(r'^ztest/main', GenericView.as_view() ),
 #     url(r'^ztest/insert', GenericView.as_view() ),
 #     url(r'^ztest/alert/list/$', AlertListView.as_view() ),
@@ -83,12 +81,12 @@ urlpatterns = patterns('',
     url(r'^alertmanager/list', AlertListView.as_view() ),
     url(r'^alertmanager/view/(?P<pk>\d+)/', AlertDetailView.as_view() ),
     
-    url(r'^routinemanager/$', RequestIndexView.as_view() ),
-    url(r'^routinemanager/create', RequestCreateView.as_view() ),
-    url(r'^routinemanager/delete/(?P<pk>\d+)/', RequestDeleteView.as_view() ),
-    url(r'^routinemanager/update/(?P<pk>\d+)/', RequestUpdateView.as_view() ),
-    url(r'^routinemanager/list', RequestListView.as_view() ),
-    url(r'^routinemanager/view/(?P<pk>\d+)/', RequestDetailView.as_view() ),
+#     url(r'^routinemanager/$', RequestIndexView.as_view() ),
+#     url(r'^routinemanager/create', RequestCreateView.as_view() ),
+#     url(r'^routinemanager/delete/(?P<pk>\d+)/', RequestDeleteView.as_view() ),
+#     url(r'^routinemanager/update/(?P<pk>\d+)/', RequestUpdateView.as_view() ),
+#     url(r'^routinemanager/list', RequestListView.as_view() ),
+#     url(r'^routinemanager/view/(?P<pk>\d+)/', RequestDetailView.as_view() ),
     
 #     url(r'^alertmanager/main', 'alertManager.views.index', name='index'),
 #     url(r'^alertmanager/add', 'alertManager.views.add', name='add'),

@@ -1,0 +1,242 @@
+
+ {% extends "base_templates/base_request.html" %} 
+ 
+ {% load static %}
+ 
+{% block heading %}	  
+<div class="row text-center">
+
+				<ul class="nav nav-tabs" style="margin-bottom: 15px;">
+	                <li class="active">
+	                <form action="/routinemanager/edit_request/{{request_object.id}}/" method="get"
+						enctype="multipart/form-data">
+						{% csrf_token %}
+					    <a href="javascript:;" onclick="parentNode.submit();">Request Info</a>
+					    <input type="hidden" name="action" value="edit" />
+					</form>
+					</li>
+	                <li class="active"><a data-toggle="tab">Sequence Info</a></li>	                
+	                <li class="disabled"><a>Album Info</a></li>
+	                <li class="disabled"><a>Plan Info</a></li>                
+	              </ul>
+
+</div> 
+	
+<div class="row">
+	
+	<div class="col-lg-12">
+		<h3>SEQUENCE &nbsp	
+		<a href="/routinemanager/help_sequence" onclick="window.open(this.href,'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=SomeSize,height=SomeSize');return false;">
+		Help <i class="fa fa-arrow-circle-right"></i></a></h3>	
+	</div>
+	
+</div>
+
+{% endblock %}
+
+
+
+
+
+{% block details %}
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	
+	<script type="text/javascript">
+	$( document ).ready(function() {
+		$('#get').click(function(e) {
+			$.get( "/routinemanager/getjd1jd2/?slug=coucou", {  } )
+			  .done(function( data ) {	
+				var json = JSON.parse(data);
+			    $('#id_julian_day_1').val(json.jd1);
+			    $('#id_julian_day_2').val(json.jd2);
+			  });
+		});	
+	});
+	</script>
+
+		<form action="/routinemanager/sequence_save" method="post"
+						enctype="multipart/form-data">
+			{% csrf_token %} <br>
+			<input type="hidden" name="instance" value="{{instance}}" />
+	    	<table class="table table-hover table-striped tablesorter">
+	    			    
+				<tr>
+					<td>
+						{{ form.name.label_tag }}
+						{% if form.name.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.name }}
+	              		{{ form.name.errors }}	
+	              	</td>
+	            </tr>	
+	            <tr>
+					<td>
+						{{ form.coord_system_id.label_tag }}
+						{% if form.coord_system_id.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.coord_system_id }}
+	              		{{ form.coord_system_id.errors }}	
+	              	</td>
+	            </tr>	
+	            <tr>
+					<td>
+						{{ form.target_ra_dec.label_tag }}
+						{% if form.target_ra_dec.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		ex: {{ form.format_ra_dec }} <br/> <br/> {{ form.target_ra_dec }}
+	              		{{ form.target_ra_dec.errors }}	
+	              	</td>
+	            </tr>    
+	            <tr>
+					<td>
+						{{ form.executing_night.label_tag }}
+						{% if form.executing_night.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.executing_night }} &nbsp &nbsp &nbsp
+	             		
+	             				<a href="#getjuliandays" id="get" class="btn btn-info btn-xs">Get JD1 and JD2</a>
+	              	
+	              		{{ form.executing_night.errors }}	
+	              	</td>
+	            </tr> 
+	            <tr>
+					<td>
+						{{ form.julian_day_1.label_tag }}
+						{% if form.julian_day_1.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.julian_day_1 }}
+	              		{{ form.julian_day_1.errors }}	
+	              	</td>
+	            </tr>
+	            <tr>
+					<td>
+						{{ form.julian_day_2.label_tag }}
+						{% if form.julian_day_2.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.julian_day_2 }}
+	              		{{ form.julian_day_2.errors }}	
+	              	</td>
+	            </tr> 
+	            <tr>
+					<td>
+						{{ form.start_exposure_preference.label_tag }}
+						{% if form.start_exposure_preference.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.start_exposure_preference }}
+	              		{{ form.start_exposure_preference.errors }}	
+	              	</td>
+	            </tr> 
+	            <tr>
+					<td>
+						{{ form.duration.label_tag }}
+						{% if form.duration.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.duration }}
+	              		{{ form.duration.errors }}	
+	              	</td>
+	            </tr> 
+	            <tr>
+					<td>
+						{{ form.has_priority.label_tag }}
+						{% if form.has_priority.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.has_priority }}
+	              		{{ form.has_priority.errors }}	
+	              	</td>
+	            </tr>
+	            <tr>
+					<td>
+						{{ form.status.label_tag }}
+						{% if form.status.field.required %}&nbsp*{% endif %}
+					</td>		           
+	             	<td>
+	             		{{ form.status }}
+	              		{{ form.status.errors }}	
+	              	</td>
+	            </tr>
+	              
+	    	
+	    	</table>
+	    				
+	    	<input type="hidden" name="request_id" value="{{request_object.id}}"/>
+	    	
+	    	<br>
+	    	<table>
+	    	<tr>
+	    	<td><button type="submit" class="btn btn-primary" name="action" value="cancel">Cancel</button></td>
+			<td>&nbsp</td>
+			<td><button type="submit" class="btn btn-success" name="action" value="sequence_save_and_back">SAVE</button></td>		
+			<td>&nbsp</td>
+			<td><button type="submit" class="btn btn-success" name="action" value="sequence_save_and_add">Add new album</button></td>				
+			<td>&nbsp</td>
+			<td>
+			{% if object_list %}
+			<button type="submit" class="btn btn-danger" name="action" value="validate">Validate</button>
+			{% else %}
+			<button type="submit" class="btn btn-danger disabled" name="action" value="validate"><i>Validate</i></button>
+			{% endif %}
+			</td>	
+			<td style="width:90%;">&nbsp</td>			
+			<td>
+			{% if object_list %}
+			<button type="submit" class="btn btn-warning" name="action" value="simulate">Simulate</button>
+			{% else %}
+			<button type="submit" class="btn btn-warning disabled" name="action" value="simulate"><i>Simulate</i></button>
+			{% endif %}
+			</td>
+	    	</tr>
+	    	</table>	
+		</form>		
+{% endblock %}
+
+
+{% block children_list %}	
+    	<h3>List of Albums - <span class="label label-primary">{{object_list|length}}</span></h3>	
+		<div class="table-responsive">
+			<table
+				class="table table-bordered table-hover table-striped tablesorter">
+				<thead>
+					<tr>
+						<th> &nbsp</th>
+						<th>Album Type <i class="fa fa-sort"></i></th>
+						<th>Creation Date <i class="fa fa-sort"></i></th>
+						<th>Status <i class="fa fa-sort"></i></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for row in object_list %}
+					<tr>					
+						<td>
+					<form action="/routinemanager/edit_album/{{row.id}}/" method="get"
+						enctype="multipart/form-data">
+							{% csrf_token %} 							
+							
+							<center>
+							<button type="submit" class="btn btn-primary" name="action" value="edit">Edit</button>	
+							<button type="submit" class="btn btn-danger" name="action" value="delete">Delete</button>	
+							</center>
+					</form>																		
+						</td>
+			     		<td>{{ row.type }}</td> 			     		 
+			     		<td>{{ row.creation_date }}</td> 
+			     		<td>{{ row.status }}</td>
+					
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>	    
+		</div>	  	 
+{% endblock %}	
+
+
+

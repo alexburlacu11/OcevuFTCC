@@ -1,6 +1,6 @@
 import socket
-from SocketServer import *
-import ConfigParser
+
+import configparser as ConfigParser
 from threading import Thread, Event
 import os
 import time
@@ -21,7 +21,7 @@ class Sender(Thread):
         
     def run(self):
         """Servers send different things"""   
-        print "["+str(datetime.datetime.now())+"]"+self.agentName+" started"
+        print( "["+str(datetime.datetime.now())+"]"+self.agentName+" started")
         self.work()
         
     def work(self):
@@ -30,25 +30,25 @@ class Sender(Thread):
         
     def notifyObservers(self, message):
         if len(self.observers) == 0:
-            print "["+str(datetime.datetime.now())+"]"+"No one listening"
+            print( "["+str(datetime.datetime.now())+"]"+"No one listening")
         else:
             for observer in self.observers:
                 data = observer.split(":")
                 ip = data[0]
                 port = data[1]
-                print "["+str(datetime.datetime.now())+"]"+"Sending "+message+" to "+ip+":"+str(port)
+                print( "["+str(datetime.datetime.now())+"]"+"Sending "+message+" to "+ip+":"+str(port))
                 self.send(message, ip, int(port))
                 
     def send(self, message, ip, port):
-        
+         
         clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clientsocket.connect((ip, port))
         clientsocket.send(message+"\n")
         data = clientsocket.recv(64)
-        print "["+str(datetime.datetime.now())+"]"+"Received data: ", data
+        print( "["+str(datetime.datetime.now())+"]"+"Received data: ", data)
         clientsocket.close()
 #         else:
-#             print "["+str(datetime.datetime.now())+"]"+"No observers for "+self.name
+#             print( "["+str(datetime.datetime.now())+"]"+"No observers for "+self.name
 
             
     
@@ -115,7 +115,7 @@ class Agent(Thread):
                     data = conn.recv(self.receiveBufferSize)     
                     
                     data = data.rstrip('\n')
-                    print "["+str(datetime.datetime.now())+"]"+self.agentName+" received : "+data                      
+                    print( "["+str(datetime.datetime.now())+"]"+self.agentName+" received : "+data )                     
                     
                     self.analyseMessage(conn, data)
                     
@@ -136,11 +136,11 @@ class Agent(Thread):
         if rtype == "register":
             obs = [o for o in self.sender.observers if o == ip+":"+str(port)]
             if len(obs) == 0:
-                print "["+str(datetime.datetime.now())+"]"+"New client registered"
+                print( "["+str(datetime.datetime.now())+"]"+"New client registered")
                 self.addObserver(ip+":"+str(port))
                 conn.send("ok\n")
             else:
-                print "["+str(datetime.datetime.now())+"]"+"Client already registered"
+                print( "["+str(datetime.datetime.now())+"]"+"Client already registered")
                 conn.send("Already registered\n")
         
             
@@ -150,14 +150,14 @@ class Agent(Thread):
         
     
     def display(self):
-        print "["+str(datetime.datetime.now())+"]"+str(self.agentName)+" is "+str(self.status)+" on "+str(self.ip)+":"+str(self.receivePort)  
+        print( "["+str(datetime.datetime.now())+"]"+str(self.agentName)+" is "+str(self.status)+" on "+str(self.ip)+":"+str(self.receivePort))  
                 
             
     def registerTo(self, agentName):
-        print "["+str(datetime.datetime.now())+"]"+self.agentName+" is registering to "+agentName
+        print( "["+str(datetime.datetime.now())+"]"+self.agentName+" is registering to "+agentName)
         ip, receivePort = self.getAgentFromConfigFile(agentName)
         message = "register:"+self.ip+":"+str(self.receivePort)
-#         print "["+str(datetime.datetime.now())+"]"+message+" will be sent to "+str(ip)+":"+str(receivePort)
+#         print( "["+str(datetime.datetime.now())+"]"+message+" will be sent to "+str(ip)+":"+str(receivePort)
         self.sender.send(message, ip, int(receivePort))
                 
         
@@ -188,7 +188,7 @@ class Agent(Thread):
         config.read(self.configFile)
         ip = config.get(agentSection,'ip')
         port = int(config.get(agentSection,'receivePort'))
-#         print "["+str(datetime.datetime.now())+"]"+"DEBUG: getAgentFromConfigFile: "+str(ip)+":"+str(port)
+#         print( "["+str(datetime.datetime.now())+"]"+"DEBUG: getAgentFromConfigFile: "+str(ip)+":"+str(port)
         return ip, port
         
         

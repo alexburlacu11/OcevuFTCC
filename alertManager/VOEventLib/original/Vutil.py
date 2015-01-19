@@ -1,10 +1,10 @@
 import sys
-import VOEvent
-
+import alertManager.VOEventLib.VOEvent as VOEvent
+ 
 try:
     from cStringIO import StringIO
 except ImportError:
-    from StringIO import StringIO
+    from io import StringIO
 
 
 def htmlList(list):
@@ -34,7 +34,7 @@ def htmlParam(g, p):
     s += '<td>' + str(p.get_ucd()) + '</td>'
     s += '<td>' + str(p.get_unit()) + '</td>'
     s += '<td>' + str(p.get_dataType()) + '</td>'
-    return s
+    return s 
 
 def parse(file):
     '''
@@ -51,7 +51,7 @@ def parseString(inString):
     '''
     Parses a string and builds the VOEvent DOM.
     '''
-    from StringIO import StringIO
+    from io import StringIO
     doc = VOEvent.parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = VOEvent.get_root_tag(rootNode)
@@ -133,7 +133,7 @@ def findParam(event, groupName, paramName):
     '''
     w = event.get_What()
     if not w:
-        print "No <What> section in the event!"
+        print ("No <What> section in the event!")
         return None
     if groupName == '':
         for p in event.get_What().get_Param():
@@ -145,7 +145,7 @@ def findParam(event, groupName, paramName):
                 for p in event.get_What().get_Param():
                     if p.get_name() == paramName:
                         return p
-    print 'Cannot find param named %s/%s' % (groupName, paramName)
+    print ('Cannot find param named %s/%s' % (groupName, paramName))
     return None
 
 ######## utilityTable ########################
@@ -209,7 +209,7 @@ class utilityTable(VOEvent.Table):
         dict = {}
         col = 0
         for colName in self.colNames.keys():
-            print "--> ", colName
+            print ("--> ", colName)
             dict[colName] = data[col]
             col += 1
         return dict

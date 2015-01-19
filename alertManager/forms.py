@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.forms import ModelForm
-from models import Alert
+from alertManager.models import Alert
 
 class DocumentForm(forms.Form):
     docfile = forms.FileField(
@@ -11,6 +11,7 @@ class DocumentForm(forms.Form):
 class AlertForm(ModelForm):
     class Meta:
         model = Alert
+        fields = ['ivorn', 'author', 'role']
        
     def __init__(self, *args, **kwargs):
         super(AlertForm, self).__init__(*args, **kwargs)

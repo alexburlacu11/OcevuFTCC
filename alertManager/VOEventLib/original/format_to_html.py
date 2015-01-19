@@ -23,19 +23,19 @@ Examples:
 
 """
 
-# Copyright 2010 Roy D. Williams and Dave Kuhlmann
-
+# Copyright 2010 Roy D. Williams and Dave Kuhlmann 
+ 
 
 import sys
 import os
 import getopt
-import VOEvent
-import Vutil
+import alertManager.VOEventLib.VOEvent as VOEvent
+import alertManager.VOEventLib.Vutil as Vutil
 
 try:
     from cStringIO import StringIO
 except ImportError:
-    from StringIO import StringIO
+    from io import StringIO 
 
 
 def display(source, o=sys.stdout):
@@ -222,7 +222,7 @@ def main():
         format_to_file(infilename, outfilename, force)
     if text:
         content = format_to_string(infilename)
-        print content
+        print (content)
     if not stdout and outfilename is None and not text:
         usage()
 

@@ -1,0 +1,175 @@
+ {% extends "base_templates/base.html" %} 
+ 
+ {% block title %}Create / Edit a Request {% endblock %}     
+
+
+ {% block content %}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+ 
+<style>
+	#owner {display:block;}
+	#sequences {display:none;}
+	#albums {display:none;}
+	#plans {display:none;}
+</style>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".inline.{{ Sequence_form.prefix }}").formset({
+            prefix: "{{ Sequence_form.prefix }}",
+            
+        })
+        $(".inline.{{ Album_form.prefix }}").formset({
+            prefix: "{{ Album_form.prefix }}",
+            
+        })
+        $(".inline.{{ Plan_form.prefix }}").formset({
+            prefix: "{{ Plan_form.prefix }}",
+            
+        })
+        
+        
+        $( "a.add-row" ).addClass( "btn btn-success" );
+ 
+        
+    });
+</script>
+
+<script>
+	$(document).ready(function(){
+	  $("#btn1").click(function(){
+		  $( "#owner" ).show();
+		  $( "#sequences" ).hide();
+		  $( "#albums" ).hide();
+		  $( "#plans" ).hide();
+	  	});
+	  $("#btn2").click(function(){
+		  $( "#owner" ).hide();
+		  $( "#sequences" ).show();
+		  $( "#albums" ).hide();
+		  $( "#plans" ).hide();
+	  	});
+	  $("#btn3").click(function(){
+		  $( "#owner" ).hide();
+		  $( "#sequences" ).hide();
+		  $( "#albums" ).show();
+		  $( "#plans" ).hide();
+	  	});
+	  $("#btn4").click(function(){
+		  $( "#owner" ).hide();
+		  $( "#sequences" ).hide();
+		  $( "#albums" ).hide();
+		  $( "#plans" ).show();
+	  	});
+	});
+</script>
+
+<div class="row">
+	<div class="col-lg-12 text-center">
+		
+				<button class="btn btn-primary btn-lg" id="btn1">Owner Info</button>
+			  	<button class="btn btn-primary btn-lg" id="btn2">Sequences Info</button>
+			    <button class="btn btn-primary btn-lg" id="btn3">Albums Info</button>
+			    <button class="btn btn-primary btn-lg" id="btn4">Plans Info</button>
+	
+	</div>
+</div>
+
+
+
+
+<form action="" method="post">
+            {% csrf_token %}
+            
+ <div class="row">
+	
+	<div class="row" id="owner">	
+       <div class="col-lg-5 text-left">
+        	<h3>Owner information</h3>
+        	<hr>
+            <div>
+                {{ form.as_p }}
+            </div>
+            <hr>
+       </div>
+    </div>
+    <div class="row" id="sequences">   
+       <div class="col-lg-5 text-left">
+            <fieldset>
+                <h3>Sequence information</h3>
+                {{ Sequence_form.management_form }}
+                {{ Sequence_form.non_form_errors }}
+                {% for form in Sequence_form %}
+                    {{ form.id }}
+                    <div class="inline {{ Sequence_form.prefix }}">
+                        <hr>
+                        {{ form.as_ul }}
+                        <hr>
+                    </div>
+                  
+                {% endfor %}
+         
+            </fieldset>
+        </div>
+     </div>
+     
+     <div class="row" id="albums">        
+        <div class="col-lg-5 text-left">    
+            <fieldset>
+                <h3>Album information</h3>
+                {{ Album_form.management_form }}
+                {{ Album_form.non_form_errors }}
+                {% for form in Album_form %}
+                    {{ form.id }}
+                    <div class="inline {{ Album_form.prefix }}">
+                        <hr>
+                        {{ form.as_ul }}
+                        <hr>
+                    </div>
+                  
+                {% endfor %}
+     
+            </fieldset>
+         </div>
+      </div>
+      
+      <div class="row" id="plans">   
+         <div class="col-lg-5 text-left">    
+            <fieldset>
+                <h3>Plan information</h3>
+                {{ Plan_form.management_form }}
+                {{ Plan_form.non_form_errors }}
+                {% for form in Plan_form %}
+                    {{ form.id }}
+                    <div class="inline {{ Plan_form.prefix }}">
+                    	<hr>
+                        {{ form.as_ul }}
+                        <hr>
+                    </div>               
+                {% endfor %}
+
+            </fieldset>
+         </div> 
+       </div>  
+       
+ </div>
+    
+    
+         <div class="row">  
+           <div class="col-lg-12 text-center"> 
+           	<input type="submit" class="btn btn-primary" value="Save" class="submit" />
+           </div>            
+         </div>
+         
+         
+</form>    
+
+
+ 
+
+					
+					
+ {% endblock %}

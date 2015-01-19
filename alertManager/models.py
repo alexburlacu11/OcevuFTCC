@@ -1,25 +1,30 @@
-from django.db import models
 import copy
-
-from lxml import etree as ET
 import datetime
-import os
-from uuid import uuid4
-import sys
-import os
-import getopt 
-import VOEventLib.VOEvent
-import VOEventLib.Vutil
-from common.models import Agent, Sender
-import time
-from planner.models import Sequence, Owner
 from decimal import Decimal
+import getopt 
+import os
+import os
 from random import randint
+import sys
+from uuid import uuid4
+
+from django.db import models
+from lxml import etree as ET 
+  
+import alertManager.VOEventLib.VOEvent 
+import alertManager.VOEventLib.Vutil
+from alertManager.VOEventLib import Vutil
+from alertManager.VOEventLib.VOEvent import usage
+from alertManager.VOEventLib.original.format_to_html import display, \
+    format_to_stdout, format_to_file, format_to_string
+from common.models import Agent, Sender
+from planner.models import Sequence, Owner
+
 
 try:
     from cStringIO import StringIO
 except ImportError:
-    from StringIO import StringIO
+    from io import StringIO
    
 
 class AlertManagerSender(Sender):   
@@ -114,125 +119,125 @@ class Alert(models.Model):
         '''Generate HTML that provides a display of an event.
         '''
         v = Vutil.parse(source)
-        print>>o, ''
-        print>>o, 'IVORN <i>%s</i><br/>' % v.get_ivorn()
-        print>>o, '(role is %s)' % v.get_role()
+        print( '' )
+        print( 'IVORN <i>%s</i><br/>' % v.get_ivorn())
+        print( '(role is %s)' % v.get_role())
     
-        print>>o, '<p>Event description: %s</p>\n' % v.get_Description()
+        print( '<p>Event description: %s</p>\n' % v.get_Description())
     
         r = v.get_Reference()
         if r:
-            print>>o, 'Reference<br/>Name=%s, Type=%s, uri=%s' \
-                        % (r.get_name(), r.get_type(), r.get_uri())
-        print>>o, '<h3>Who</h3>'
+            print( 'Reference<br/>Name=%s, Type=%s, uri=%s' \
+                        % (r.get_name(), r.get_type(), r.get_uri()))
+        print( '<h3>Who</h3>')
         who = v.get_Who()
         a = who.get_Author()
-        print>>o, 'Title: %s'                        % Vutil.htmlList(a.get_title())
-        print>>o, 'Name: %s'                         % Vutil.htmlList(a.get_contactName())
-        print>>o, 'Email: %s'                        % Vutil.htmlList(a.get_contactEmail())
-        print>>o, 'Phone: %s'                        % Vutil.htmlList(a.get_contactPhone())
-        print>>o, 'Contributor: %s<br/>' % Vutil.htmlList(a.get_contributor())
-        print>>o, '<h3>What</h3>'
-        print>>o, '<h4>Params</h4>'
-        print>>o, '<table border="1"><tr>'
-        print>>o, '<td>Group</td>'
-        print>>o, '<td>Name</td>'
-        print>>o, '<td>Description</td>'
-        print>>o, '<td><b>Value</b></td>'
-        print>>o, '<td>ucd</td>'
-        print>>o, '<td>unit</td>'
-        print>>o, '<td>dataType</td>'
-        print>>o, '</tr>'
+        print( 'Title: %s'                        % Vutil.htmlList(a.get_title()))
+        print( 'Name: %s'                         % Vutil.htmlList(a.get_contactName()))
+        print( 'Email: %s'                        % Vutil.htmlList(a.get_contactEmail()))
+        print( 'Phone: %s'                        % Vutil.htmlList(a.get_contactPhone()))
+        print( 'Contributor: %s<br/>' % Vutil.htmlList(a.get_contributor()))
+        print( '<h3>What</h3>')
+        print( '<h4>Params</h4>')
+        print( '<table border="1"><tr>')
+        print( '<td>Group</td>')
+        print( '<td>Name</td>')
+        print( '<td>Description</td>')
+        print( '<td><b>Value</b></td>')
+        print( '<td>ucd</td>')
+        print( '<td>unit</td>')
+        print( '<td>dataType</td>')
+        print( '</tr>')
         g = None
         params = v.get_What().get_Param()
         for p in params:
-            print>>o, '<tr>' + Vutil.htmlParam(g, p) + '</tr>'
+            print( '<tr>' + Vutil.htmlParam(g, p) + '</tr>')
     
         groups = v.get_What().get_Group()
         for g in groups:
             for p in g.get_Param():
-                print>>o, '<tr>' + Vutil.htmlParam(g, p) + '</tr>'
-        print>>o, '</table>'
-        print>>o, '<h4>Tables</h4>'
+                print( '<tr>' + Vutil.htmlParam(g, p) + '</tr>')
+        print( '</table>')
+        print( '<h4>Tables</h4>')
         tables = v.get_What().get_Table()
         for t in tables:
-            print>>o, '<table border="1">'
+            print( '<table border="1">')
     
-            print>>o, '<tr><td><i>Name</i></td>'
+            print( '<tr><td><i>Name</i></td>')
             for f in t.get_Field():
-                print>>o, '<td>' + str(f.get_name()) + '</td>'
-            print>>o, '</tr>'
+                print( '<td>' + str(f.get_name()) + '</td>')
+            print( '</tr>')
     
-            print>>o, '<tr><td><i>UCD</i></td>'
+            print( '<tr><td><i>UCD</i></td>')
             for f in t.get_Field():
-                print>>o, '<td>' + str(f.get_ucd()) + '</td>'
-            print>>o, '</tr>'
+                print( '<td>' + str(f.get_ucd()) + '</td>')
+            print( '</tr>')
     
-            print>>o, '<tr><td><i>unit</i></td>'
+            print( '<tr><td><i>unit</i></td>')
             for f in t.get_Field():
-                print>>o, '<td>' + str(f.get_unit()) + '</td>'
-            print>>o, '</tr>'
-            print>>o, '<tr><td><i>dataType</i></td>'
+                print( '<td>' + str(f.get_unit()) + '</td>')
+            print( '</tr>')
+            print( '<tr><td><i>dataType</i></td>')
             for f in t.get_Field():
-                print>>o, '<td>' + str(f.get_dataType()) + '</td>'
-            print>>o, '</tr>'
-            print>>o, '<tr><td/></tr>'
+                print( '<td>' + str(f.get_dataType()) + '</td>')
+            print( '</tr>')
+            print( '<tr><td/></tr>')
             d = t.get_Data()
             if d:
                 for tr in d.get_TR():
-                    print>>o, '<tr><td/>'
+                    print( '<tr><td/>')
                     for td in tr.get_TD():
-                        print>>o, '<td>' + td + '</td>'
-                    print>>o, '</tr>'
-            print>>o, '</table>'
-        print>>o, '<h3>WhereWhen</h3>'
+                        print( '<td>' + td + '</td>')
+                    print( '</tr>')
+            print( '</table>')
+        print( '<h3>WhereWhen</h3>')
         wwd = Vutil.whereWhenDict(v)
         if wwd:
-            print>>o, '<table border="1">'
-            print>>o, '<tr><td>Observatory</td> <td>%s</td></tr>' % wwd['observatory']
-            print>>o, '<tr><td>Coord system</td><td>%s</td></tr>' % wwd['coord_system']
-            print>>o, '<tr><td>Time</td>                <td>%s</td></tr>' % wwd['time']
-            print>>o, '<tr><td>Time error</td>  <td>%s</td></tr>' % wwd['timeError']
-            print>>o, '<tr><td>RA</td>                  <td>%s</td></tr>' % wwd['longitude']
-            print>>o, '<tr><td>Dec</td>                 <td>%s</td></tr>' % wwd['latitude']
-            print>>o, '<tr><td>Pos error</td>       <td>%s</td></tr>' % wwd['posError']
-            print>>o, '</table>'
-        print>>o, '<h3>Why</h3>'
+            print( '<table border="1">')
+            print( '<tr><td>Observatory</td> <td>%s</td></tr>' % wwd['observatory'])
+            print( '<tr><td>Coord system</td><td>%s</td></tr>' % wwd['coord_system'])
+            print( '<tr><td>Time</td>                <td>%s</td></tr>' % wwd['time'])
+            print( '<tr><td>Time error</td>  <td>%s</td></tr>' % wwd['timeError'])
+            print( '<tr><td>RA</td>                  <td>%s</td></tr>' % wwd['longitude'])
+            print( '<tr><td>Dec</td>                 <td>%s</td></tr>' % wwd['latitude'])
+            print( '<tr><td>Pos error</td>       <td>%s</td></tr>' % wwd['posError'])
+            print( '</table>')
+        print( '<h3>Why</h3>')
         w = v.get_Why()
         if w:
             if w.get_Concept():
-                print>>o, "Concept: %s" % Vutil.htmlList(w.get_Concept())
+                print( "Concept: %s" % Vutil.htmlList(w.get_Concept()))
             if w.get_Name():
-                print>>o, "Name: %s"        % Vutil.htmlList(w.get_Name())
+                print( "Name: %s"        % Vutil.htmlList(w.get_Name()))
     
-            print>>o, '<h4>Inferences</h4>'
+            print( '<h4>Inferences</h4>')
             inferences = w.get_Inference()
             for i in inferences:
-                print>>o, '<table border="1">'
-                print>>o, '<tr><td>probability</td><td>%s</td></tr>' % i.get_probability()
-                print>>o, '<tr><td>relation</td>     <td>%s</td></tr>' % i.get_relation()
-                print>>o, '<tr><td>Concept</td>      <td>%s</td></tr>' % Vutil.htmlList(i.get_Concept())
-                print>>o, '<tr><td>Description</td><td>%s</td></tr>' % Vutil.htmlList(i.get_Description())
-                print>>o, '<tr><td>Name</td>             <td>%s</td></tr>' % Vutil.htmlList(i.get_Name())
-                print>>o, '<tr><td>Reference</td>  <td>%s</td></tr>' % str(i.get_Reference())
-                print>>o, '</table>'
-        print>>o, '<h3>Citations</h3>'
+                print( '<table border="1">')
+                print( '<tr><td>probability</td><td>%s</td></tr>' % i.get_probability())
+                print( '<tr><td>relation</td>     <td>%s</td></tr>' % i.get_relation())
+                print( '<tr><td>Concept</td>      <td>%s</td></tr>' % Vutil.htmlList(i.get_Concept()))
+                print( '<tr><td>Description</td><td>%s</td></tr>' % Vutil.htmlList(i.get_Description()))
+                print( '<tr><td>Name</td>             <td>%s</td></tr>' % Vutil.htmlList(i.get_Name()))
+                print( '<tr><td>Reference</td>  <td>%s</td></tr>' % str(i.get_Reference()))
+                print( '</table>')
+        print( '<h3>Citations</h3>')
         cc = v.get_Citations()
         if cc:
             for c in cc.get_EventIVORN():
-                print>>o, '<ul>'
-                print>>o, '<li>%s with a %s</li>' % (c.get_valueOf_(), c.get_cite())
-                print>>o, '</ul>'
-        print>>o, ''
+                print( '<ul>')
+                print( '<li>%s with a %s</li>' % (c.get_valueOf_(), c.get_cite()))
+                print( '</ul>')
+        print( '' )
     
     
-    def format_to_stdout(infilename):
+    def format_to_stdout(self, infilename):
         '''Write HTML to standard output.
         '''
         display(infilename)
     
-    
-    def format_to_file(infilename, outfilename, force):
+     
+    def format_to_file(self,infilename, outfilename, force):
         '''Write HTML to a file.
         
         Check for existence of the file.  If it exists,
@@ -248,7 +253,7 @@ class Alert(models.Model):
         outfile.close()
     
         
-    def format_to_string(infilename):
+    def format_to_string(self, infilename):
         '''Format as HTML and capture in a string.  Return the string.
         '''
         outfile = StringIO()
@@ -269,12 +274,12 @@ class Alert(models.Model):
         return content
     
     
-    def usage():
+    def usage(self):
         sys.stderr.write(__doc__)
         sys.exit(1)
     
     
-    def main_old():
+    def main_old(self):
         args = sys.argv[1:]
         try:
             opts, args = getopt.getopt(args, 'hso:tf', ['help',
@@ -305,7 +310,7 @@ class Alert(models.Model):
             format_to_file(infilename, outfilename, force)
         if text:
             content = format_to_string(infilename)
-            print "["+str(datetime.datetime.now())+"]"+content
+            print( "["+str(datetime.datetime.now())+"]"+content )
         if not stdout and outfilename is None and not text:
             usage()
             
@@ -318,7 +323,7 @@ class Alert(models.Model):
         return a
     
     def getByIvorn(self, ivorn_):        
-        v = Alert.objects.get(ivorn=ivorn)
+        v = Alert.objects.get(ivorn=ivorn_)
         return v
     
     def getAll(self):        
@@ -330,7 +335,7 @@ class Alert(models.Model):
         with open (xml_filename, "r") as myfile:
             data=myfile.read()
             
-        v = voeparse.loads(data, False)
+#         v = voeparse.loads(data, False)
         
 #         alert = Alert(
 #                            ivorn=v.attrib['ivorn'],

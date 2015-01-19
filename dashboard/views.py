@@ -1,23 +1,22 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
-from django.http import HttpResponse
-from django.template import RequestContext, loader
-from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.contrib.auth import authenticate, login, logout
-# from forms import RegistrationForm, LoginForm
-from admin import UserCreationForm, UserChangeForm
-from django.core.urlresolvers import reverse
-from models import MyUserManager
-from common.models import OFTThreadManager
 import json
-from django_websocket import require_websocket
 
+from django.contrib.auth import authenticate, login, logout
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
-from django_websocket import accept_websocket
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
+from django.shortcuts import render
+from django.shortcuts import render_to_response
+from django.template import RequestContext, loader
+
+from dashboard.admin import UserCreationForm, UserChangeForm
+from common.models import OFTThreadManager
+
+from dashboard.models import MyUserManager
 
 
-
+# from forms import RegistrationForm, LoginForm
 # @accept_websocket
 # def consoleOutput(request):
 #     if not request.is_websocket():
@@ -41,10 +40,7 @@ from django_websocket import accept_websocket
 #         for i in xrange(0,10):
 #            
 #             request.websocket.send(i)
-    
-
 # Create your views here.
-
 # def console(request):
 #     """redirect to console page"""
 #     template = loader.get_template('dashboard/console.html')
@@ -53,8 +49,6 @@ from django_websocket import accept_websocket
 #     })
 #     return HttpResponse(template.render(context))
 #     return redirect('http://localhost:8001/', permanent=True)
-
-
 # def consoleOutput_ORIGINAL(request):
 #     result = OFTThreadManager.getConsoleOutput()  
 #   
@@ -65,11 +59,6 @@ from django_websocket import accept_websocket
 #     convertedJSON = json.dumps(data, ensure_ascii=False)   
 # 
 #     return HttpResponse(convertedJSON)
-    
-    
-    
-    
-    
 def index(request):
     """redirect to index page for logging in"""
     state = "Please log in or create a new account."
@@ -179,7 +168,7 @@ def updateSequenceForConditions(request):
 
 def login_user(request):
 
-    """login a user"""
+    """login a user""" 
        
     username = password = ''
     if request.POST:

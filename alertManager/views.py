@@ -11,8 +11,8 @@ from django.http import HttpResponseRedirect
 # 
 # from forms import DocumentForm
 # from models import Document
-from models import Alert
-from forms import AlertForm
+from alertManager.models import Alert
+from alertManager.forms import AlertForm
 
 
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView, ListView, DetailView

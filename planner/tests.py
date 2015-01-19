@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 import unittest
-from models import Planning, Owner, Sequence, Quota, SequenceOrder, Interval
+from planner.models import Planning, Owner, Sequence, Quota, SequenceOrder, Interval
 import time as t
 from decimal import * 
 
@@ -49,7 +49,7 @@ class Test_Suite_for_Planner(unittest.TestCase):
     def subtest_PLAN_unit_planner_Planning_schedule_orderNSequences(self):
         """Check that all sequences are in the proper order"""
         numberOfSequences = len(self.planning.sequences)
-        for i in xrange(0, numberOfSequences-1):
+        for i in range(0, numberOfSequences-1):
             self.assertLess(self.planning.sequences[i].TSP, self.planning.sequences[i+1].TSP)
             self.assertLess(self.planning.sequences[i].TEP, self.planning.sequences[i+1].TEP)
             self.assertLessEqual(self.planning.sequences[i].TEP, self.planning.sequences[i+1].TSP)
@@ -114,21 +114,21 @@ class Test_Suite_for_Planner(unittest.TestCase):
         self.planning.schedule()
         self.planning.display()
         listOfSeqInNewPlanning = self.planning.getPlanningSequenceIDs()
-        print "Total seq in my planning:"
-        print len(listOfSeqInNewPlanning)
+        print( "Total seq in my planning:")
+        print( len(listOfSeqInNewPlanning) )
         listOfSeqInKlotz= self.planning.getKlotzSequenceIDs()
-        print "Total seq in Klotz planning:"
-        print len(listOfSeqInKlotz)    
+        print( "Total seq in Klotz planning:")
+        print( len(listOfSeqInKlotz)    )
         
-        print "Seq in Klotz that are not in my planning"
-        print list(set(listOfSeqInKlotz) - set(listOfSeqInNewPlanning))
-        print len(list(set(listOfSeqInKlotz) - set(listOfSeqInNewPlanning)))
-        print "Seq in Planning that are not in Klotz planning"
-        print list(set(listOfSeqInNewPlanning) - set(listOfSeqInKlotz))
-        print len(list(set(listOfSeqInNewPlanning) - set(listOfSeqInKlotz)))
-        print "Seq in Planning that are both in my planning and in Klotz"
-        print list(set(listOfSeqInNewPlanning) & set(listOfSeqInKlotz))
-        print len(list(set(listOfSeqInNewPlanning) & set(listOfSeqInKlotz)))
+        print( "Seq in Klotz that are not in my planning" )
+        print( list(set(listOfSeqInKlotz) - set(listOfSeqInNewPlanning)) )
+        print( len(list(set(listOfSeqInKlotz) - set(listOfSeqInNewPlanning))) )
+        print( "Seq in Planning that are not in Klotz planning")
+        print( list(set(listOfSeqInNewPlanning) - set(listOfSeqInKlotz)))
+        print( len(list(set(listOfSeqInNewPlanning) - set(listOfSeqInKlotz))))
+        print( "Seq in Planning that are both in my planning and in Klotz")
+        print( list(set(listOfSeqInNewPlanning) & set(listOfSeqInKlotz)))
+        print( len(list(set(listOfSeqInNewPlanning) & set(listOfSeqInKlotz))))
         
         idSeq = 1
         """The owner data will be modified accordingly"""
@@ -139,14 +139,14 @@ class Test_Suite_for_Planner(unittest.TestCase):
         sequence = Sequence(id=idSeq, owner=self.owner1, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration)
         sequence.save()
         
-        print "New alert received ! Replanning ... "
+        print( "New alert received ! Replanning ... ")
 #         sequence.display()
 
         self.planning.reschedule(2456945.30000001)
         
         self.planning.display()
 
-        print "The alert: "
+        print( "The alert: ") 
         sequence = list(Sequence.objects.filter(pk=1))[0]
         sequence.display()
         
@@ -159,11 +159,11 @@ class Test_Suite_for_Planner(unittest.TestCase):
 #         """
 #         self.planning.initFromFile("planning.txt", self.owner1, self.quota1)  
 #         self.planning.initFromDB(0, 3000000)
-#         print "Before"
+#         print( "Before"
 #         self.planning.display()
 #         self.planning.schedule()
 # #         self.subtest_PLAN_unit_planner_Planning_schedule_orderNSequences()
-#         print "After"
+#         print( "After"
 #         self.planning.display()
 # #         self.planning.displayGUI()        
         
@@ -225,9 +225,9 @@ class Test_Suite_for_Planner(unittest.TestCase):
         This non functional test computes execution times and checks average, max and min of the durations
         """ 
             
-        myList = []
+        myList = [] 
         f = open('workfile.txt', 'r+')
-        for i in xrange(0,1000): 
+        for i in range(0,1000): 
 #             self.planning.initFromFile("planning.txt", self.owner1, self.quota1)    
             self.planning.generateSequencesToFile(100)    
             self.planning.planStart = 1

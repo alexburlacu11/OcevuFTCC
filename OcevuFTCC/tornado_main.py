@@ -8,7 +8,7 @@ import json
 import time
 import os
 import subprocess
-from threading import Thread, Event
+from threading import Thread
 import socket
 import datetime
 import ConfigParser
@@ -71,7 +71,7 @@ class AlertThread(SuperSTDOUTThread):
                 
 class RoutineThread(SuperSTDOUTThread):
     def run(self):             
-        routineManager = subprocess.Popen(["python", BASE_DIR+"\\"+"routineManagerProcedural\start.py"], stdout=subprocess.PIPE)
+        routineManager = subprocess.Popen(["python", BASE_DIR+"\\"+"routineManager\start.py"], stdout=subprocess.PIPE)
         for line in iter(routineManager.stdout.readline, b''):            
             data = {"romn": line}
             self.updateToWebPage(data)
@@ -85,7 +85,7 @@ class ExecThread(SuperSTDOUTThread):
             
 class ScientificDataManagementThread(SuperSTDOUTThread):
     def run(self):             
-        sdmn = subprocess.Popen(["python", BASE_DIR+"\\"+"scientificDataManagement\start.py"], stdout=subprocess.PIPE)
+        sdmn = subprocess.Popen(["python", BASE_DIR+"\\"+"scientificDataManager\start.py"], stdout=subprocess.PIPE)
         for line in iter(sdmn.stdout.readline, b''):            
             data = {"sdmn": line}
             self.updateToWebPage(data)

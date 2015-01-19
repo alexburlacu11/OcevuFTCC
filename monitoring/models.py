@@ -42,7 +42,7 @@ class MonitoringController(Agent):
             watcher.start()
             time.sleep(.1)
             
-        print "["+str(datetime.datetime.now())+"]"+"Monitoring watchers started"
+        print( "["+str(datetime.datetime.now())+"]"+"Monitoring watchers started")
             
     def analyseMessage(self, conn, data):
         
@@ -113,7 +113,7 @@ class WeatherWatcher(Watcher):
             rain.parameterPreviousValue = rain.parameterCurrentValue
             rain.parameterCurrentValue = self.getValueFromSensor(60)
             rain.save()
-#             print "["+str(datetime.datetime.now())+"]"+"Rain conditions update: "+ str(rain.parameterCurrentValue)
+#             print( "["+str(datetime.datetime.now())+"]"+"Rain conditions update: "+ str(rain.parameterCurrentValue)
             time.sleep(1)
             
             
@@ -121,7 +121,7 @@ class ConditionsWatcher(Watcher):
     """
     gets information such as cloud, transparency, seeing, darkness, seeing is in arcseconds 0.07 at san pedro
     dim 
-    good seeing = 0.1
+    good seeing = 0.1 
     
     
     """
@@ -132,7 +132,7 @@ class ConditionsWatcher(Watcher):
             darkness.parameterPreviousValue = darkness.parameterCurrentValue           
             darkness.parameterCurrentValue = self.getValueFromSensor(60)
             darkness.save()
-#             print "["+str(datetime.datetime.now())+"]"+"Darkness conditions update: "+ str(darkness.parameterCurrentValue)
+#             print( "["+str(datetime.datetime.now())+"]"+"Darkness conditions update: "+ str(darkness.parameterCurrentValue)
             time.sleep(1)
             
     

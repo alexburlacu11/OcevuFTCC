@@ -14,7 +14,7 @@ if len(sys.argv) > 1:
     filename = sys.argv[1]
 else:
     print "Usage: python modify.py <filename>"
-    sys.exit(1)
+    sys.exit(1) 
 
 # parse the event from the file name
 v = parse(filename)

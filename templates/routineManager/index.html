@@ -27,7 +27,7 @@
 
 <div class="row">
 
-	<div class="col-lg-6">
+	<div class="col-lg-6 text-center">
 		
 		<div class="table-responsive">
 			<table
@@ -35,8 +35,9 @@
 				<thead>
 					<tr>
 						<th> &nbsp</th>
-						<th>Target Type <i class="fa fa-sort"></i></th>
+						<th>Name</th>											
 						<th>Creation Date <i class="fa fa-sort"></i></th>
+						<th>Target Type <i class="fa fa-sort"></i></th>	
 						<th>Status <i class="fa fa-sort"></i></th>
 					</tr>
 				</thead>
@@ -44,17 +45,19 @@
 					{% for row in object_list %}
 					<tr>					
 						<td>
-					<form action="edit/{{row.id}}/" method="get"
+					<form action="/routinemanager/edit_request/{{row.id}}/" method="get"
 						enctype="multipart/form-data">
 							{% csrf_token %} 							
 							
 							<center>
-							<input type="submit" class="btn btn-primary" value="Edit" />
+							<button type="submit" class="btn btn-primary" name="action" value="edit">Edit</button>	
+							<button type="submit" class="btn btn-danger" name="action" value="delete">Delete</button>	
 							</center>
 							</form>											
 						</td>
-			     		<td>{{ row.target_type }}</td> 			     		 
+						<td>{{ row.name }}</td> 			     				     		 			     		
 			     		<td>{{ row.creation_date }}</td> 
+			     		<td>{{ row.target_type }}</td> 	
 			     		<td>{{ row.status }}</td>
 					
 					</tr>
@@ -75,7 +78,7 @@
 
 <div class="row">  
            <div class="col-lg-12 text-left"> 
-           	<a href="create"><button class="btn btn-primary">Add new routine observation request</button></a>
+           	<a href="/routinemanager/request_create"><button class="btn btn-primary">Add new routine observation request</button></a>
            </div>            
          </div>
 

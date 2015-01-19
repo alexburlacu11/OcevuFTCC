@@ -42,16 +42,13 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'jquery',
-    'djangoformsetjs',
     'common',
-    'routineManagerProcedural',
+    'routineManager',
     'alertManager',
     'dashboard',
     'monitoring',
-    'ztest',
     'planner',
-    'scientificDataManagement',
+    'scientificDataManager',
     'execution',       
   #  'django_jenkins',    
 )
@@ -76,7 +73,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_websocket.middleware.WebSocketMiddleware',
     
 )
 
@@ -90,12 +86,12 @@ WSGI_APPLICATION = 'OcevuFTCC.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
+        'ENGINE': 'mysql.connector.django',
         'NAME': 'ocevudb',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+#         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+#         'PORT': '3306',
     }
 }
 
