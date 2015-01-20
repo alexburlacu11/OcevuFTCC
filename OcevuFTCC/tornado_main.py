@@ -12,6 +12,7 @@ from threading import Thread
 import socket
 import datetime
 import configparser as ConfigParser
+from tornado.web import asynchronous
 
 
 
@@ -19,6 +20,7 @@ clients = []
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 class IndexHandler(web.RequestHandler):
+    @asynchronous
     def get(self):
         self.render("index.html")
 
@@ -85,7 +87,7 @@ class RoutineThread(SuperSTDOUTThread):
             
 class ExecThread(SuperSTDOUTThread):
     def run(self):             
-        execution = subprocess.Popen(["python", BASE_DIR+"\\"+"execution\start.py"], stdout=subprocess.PIPE)
+        execution = subprocess.Popen(["python", BASE_DIR+"\\"+"executor\start.py"], stdout=subprocess.PIPE)
         for line in iter(execution.stdout.readline, b''):          
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]  
             data = {"exec": line}
@@ -186,6 +188,7 @@ class CommandHandler(web.RequestHandler):
         data = clientsocket.recv(64).decode()
         print ("["+str(datetime.datetime.now())+"]"+"Received data: ", data)
         clientsocket.close()
+        return 
         
     def getAgentFromConfigFile(self, name, configFile):
         agentSection = name

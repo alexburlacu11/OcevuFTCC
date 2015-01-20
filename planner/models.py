@@ -61,7 +61,7 @@ add jd1 et jd2 de ./astro comme interval maximale de visibilite.
         message : le best eleve n est pas entre jd1 et jd2 show on the web page
         
         sequence plus prioritaires, et on elimine les sequences qui ne sont plus observables et les sequences dejq planned . on attend le fin 
-        de l execution de sequence en cours si c est une seq,  sauf si c est une alerte
+        de l executor de sequence en cours si c est une seq,  sauf si c est une alerte
         
         on atetnds 5 seconds at least from the last req inserted
         

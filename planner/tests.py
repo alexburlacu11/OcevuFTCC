@@ -217,10 +217,10 @@ class Test_Suite_for_Planner(unittest.TestCase):
 #         """
 #         precond: non empty planning
 #         action: Test if the duration of schedule falls within requirements parameters
-#         postcond: the execution time of the schedule function must be < X (TO DEFINE)
+#         postcond: the executor time of the schedule function must be < X (TO DEFINE)
 #           
 #         note: 
-#         This non functional test computes execution times and checks average, max and min of the durations
+#         This non functional test computes executor times and checks average, max and min of the durations
 #         """ 
 #             
 #         myList = [] 

@@ -49,7 +49,7 @@ INSTALLED_APPS = (
     'monitoring',
     'planner',
     'scientificDataManager',
-    'execution',       
+    'executor',       
   #  'django_jenkins',    
 )
 
