@@ -19,6 +19,14 @@ class Sender(Thread):
         self.sendBufferSize = sendBufferSize
         self.observers = []
         Thread.__init__(self, name=agentName)        
+
+    def __init2__(self, agentName, ip, port, sendBufferSize):
+        self.agentName = agentName 
+        self.ip = ip
+        self.receivePort = port
+        self.sendBufferSize = sendBufferSize
+        self.observers = []
+        Thread.__init__(self, name=agentName)
         
     def run(self):
         """Servers send different things"""   
