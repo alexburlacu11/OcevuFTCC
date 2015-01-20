@@ -9,4 +9,7 @@ if __name__ == "__main__":
     
 #     execfile('/home/ros/workspace/OcevuFTCC/monitoring/monitoring.py')
     
+
+    print ("Manage py start")
     execute_from_command_line(sys.argv)
+    
