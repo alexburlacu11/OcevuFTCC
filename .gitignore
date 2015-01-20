@@ -181,3 +181,11 @@ $RECYCLE.BIN/
 
 # PyDev
 .pydevproject
+
+# VisualStudio
+*.sln
+*.pyproj
+
+# PYC
+*.pyc
+
