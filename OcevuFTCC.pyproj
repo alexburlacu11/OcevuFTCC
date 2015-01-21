@@ -55,9 +55,7 @@
     <Compile Include="monitoring\tests.py" />
     <Compile Include="monitoring\views.py" />
     <Compile Include="monitoring\__init__.py" />
-    <Content Include="OcevuFTCC\index.html" />
     <Compile Include="OcevuFTCC\settings.py" />
-    <Compile Include="OcevuFTCC\tornado_main.py" />
     <Compile Include="OcevuFTCC\urls.py" />
     <Compile Include="OcevuFTCC\wsgi.py" />
     <Compile Include="OcevuFTCC\__init__.py" />
