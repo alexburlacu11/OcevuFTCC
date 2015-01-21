@@ -23,7 +23,7 @@ class IndexHandler(web.RequestHandler):
     @asynchronous
     def get(self):
         self.render("index.html")
-
+         
 
 class SocketHandler(websocket.WebSocketHandler):
 
@@ -128,6 +128,8 @@ class RoutineHandler(web.RequestHandler):
         routine = RoutineThread()
         routine.start()
         time.sleep(.1)
+        
+
         
 class ExecHandler(web.RequestHandler):
     
@@ -235,9 +237,11 @@ app = web.Application([
 if __name__ == '__main__':
     app.listen(8001)
     print ("Tornado server started on 8001")
+    import django
+    django.setup()
     ioloop.IOLoop.instance().start()
     
     
-    
+     
     
     

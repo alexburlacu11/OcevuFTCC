@@ -180,13 +180,14 @@ $RECYCLE.BIN/
 .texlipse
 
 # PyDev
-.pydevproject
+*.pydevproject
 
 # VisualStudio
 *.sln
 *.pyproj
 *.suo
+*.config
 
 # PYC
 *.pyc
-
+*/__pycache__/*

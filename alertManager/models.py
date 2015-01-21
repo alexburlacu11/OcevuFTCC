@@ -33,7 +33,7 @@ class AlertManagerSender(Sender):
 #         while True:
 #             
 #             """create some fake sequences here"""
-#             self.createFakeSequence("Alert")
+#             self.createFakeSequence("Alert") 
 #             
 #             message = "alert"
 #             
@@ -43,7 +43,7 @@ class AlertManagerSender(Sender):
     def createFakeSequence(self, data):
 #         owner = Owner(name=data)
 #         owner.save()
-#         idSeq = 1                       
+#         idSeq = 1                        
 #         jd1Owner = 2456981.68341667
 #         jd2Owner = 2456981.73684001
 #         duration = jd2Owner-jd1Owner
