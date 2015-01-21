@@ -239,7 +239,7 @@ if __name__ == '__main__':
     print ("Tornado server started on 8001")
     import django
     django.setup()
-    print ("Salut Alex")
+    print ("Salut Etienne")
     ioloop.IOLoop.instance().start()
     
     
