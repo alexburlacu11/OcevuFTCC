@@ -238,7 +238,8 @@ if __name__ == '__main__':
     app.listen(8001)
     print ("Tornado server started on 8001")
     import django
-    django.setup()
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "OcevuFTCC.settings")
+    
     ioloop.IOLoop.instance().start()
     
     

@@ -7,10 +7,19 @@ class Monitoring Controller
 
 '''
 
-from models import SDMNController
 
+
+import django 
+import os
+import sys
+ 
 if __name__ == '__main__':
-    
+
+    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "OcevuFTCC.settings")
+    sys.path.append(BASE_DIR) 
+
+    from models import SDMNController
     controller = SDMNController()     
     controller.start()
     

@@ -6,7 +6,7 @@
     <ProjectGuid>{508977fc-09f0-4b91-84fc-80da69a7e68a}</ProjectGuid>
     <ProjectHome />
     <StartupFile>manage.py</StartupFile>
-    <SearchPath />
+    <SearchPath>OcevuFTCC\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{5F0BE9CA-D677-4A4D-8806-6076C0FAAD37};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
@@ -26,7 +26,6 @@
     <Compile Include="alertManager\forms.py" />
     <Compile Include="alertManager\models.py" />
     <Compile Include="alertManager\start.py" />
-    <Compile Include="alertManager\stop.py" />
     <Compile Include="alertManager\tests.py" />
     <Compile Include="alertManager\views.py" />
     <Compile Include="alertManager\__init__.py" />
@@ -44,14 +43,12 @@
     <Compile Include="executor\admin.py" />
     <Compile Include="executor\models.py" />
     <Compile Include="executor\start.py" />
-    <Compile Include="executor\stop.py" />
     <Compile Include="executor\tests.py" />
     <Compile Include="executor\views.py" />
     <Compile Include="executor\__init__.py" />
     <Compile Include="monitoring\admin.py" />
     <Compile Include="monitoring\models.py" />
     <Compile Include="monitoring\start.py" />
-    <Compile Include="monitoring\stop.py" />
     <Compile Include="monitoring\tests.py" />
     <Compile Include="monitoring\views.py" />
     <Compile Include="monitoring\__init__.py" />
@@ -59,12 +56,13 @@
     <Compile Include="OcevuFTCC\urls.py" />
     <Compile Include="OcevuFTCC\wsgi.py" />
     <Compile Include="OcevuFTCC\__init__.py" />
+    <Content Include="OcevuFTCC\index.html" />
+    <Compile Include="OcevuFTCC\tornado_main.py" />
     <Content Include="planner\planning.txt" />
     <Content Include="planner\workfile.txt" />
     <Compile Include="planner\admin.py" />
     <Compile Include="planner\models.py" />
     <Compile Include="planner\start.py" />
-    <Compile Include="planner\stop.py" />
     <Compile Include="planner\tests.py" />
     <Compile Include="planner\views.py" />
     <Compile Include="planner\__init__.py" />
@@ -72,14 +70,12 @@
     <Compile Include="routineManager\forms.py" />
     <Compile Include="routineManager\models.py" />
     <Compile Include="routineManager\start.py" />
-    <Compile Include="routineManager\stop.py" />
     <Compile Include="routineManager\tests.py" />
     <Compile Include="routineManager\views.py" />
     <Compile Include="routineManager\__init__.py" />
     <Compile Include="scientificDataManager\admin.py" />
     <Compile Include="scientificDataManager\models.py" />
     <Compile Include="scientificDataManager\start.py" />
-    <Compile Include="scientificDataManager\stop.py" />
     <Compile Include="scientificDataManager\tests.py" />
     <Compile Include="scientificDataManager\views.py" />
     <Compile Include="scientificDataManager\__init__.py" />
@@ -107,6 +103,7 @@
     <Content Include="alertManager\VOEventLib\doc\_static\file.png" />
     <Content Include="alertManager\VOEventLib\doc\_static\minus.png" />
     <Content Include="alertManager\VOEventLib\doc\_static\plus.png" />
+    <Content Include="requirements.txt" />
     <Content Include="static\bootstrap\blank-page.html" />
     <Content Include="static\bootstrap\bootstrap-elements.html" />
     <Content Include="static\bootstrap\bootstrap-grid.html" />

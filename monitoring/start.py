@@ -8,12 +8,20 @@ class Monitoring Controller
 '''
 
 
-from monitoring.models import MonitoringController 
-
+import django 
+import os
+import sys
+ 
 if __name__ == '__main__':
+
+    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "OcevuFTCC.settings")
+    sys.path.append(BASE_DIR) 
     
-    controller = MonitoringController()    
-    controller.start()
+    from monitoring.models import MonitoringController 
+    moni = MonitoringController()
+    moni.start()
+    
 
     
 
