@@ -205,7 +205,7 @@ class CommandHandler(web.RequestHandler):
 class ConsoleHandler(web.RequestHandler):   
 
     @web.asynchronous
-    def get(self, *args):
+    def get(self, *args): 
         self.finish()     
         
         """
