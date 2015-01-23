@@ -1,152 +1,98 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{508977fc-09f0-4b91-84fc-80da69a7e68a}</ProjectGuid>
+    <ProjectGuid>{a1d188e2-87c4-4b0e-b0dd-7478221a74e6}</ProjectGuid>
     <ProjectHome />
     <StartupFile>manage.py</StartupFile>
-    <SearchPath>OcevuFTCC\</SearchPath>
+    <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <ProjectTypeGuids>{5F0BE9CA-D677-4A4D-8806-6076C0FAAD37};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <LaunchProvider>Django launcher</LaunchProvider>
     <InterpreterId>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</InterpreterId>
     <InterpreterVersion>3.4</InterpreterVersion>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <UseIISExpress>true</UseIISExpress>
-    <IsWindowsApplication>False</IsWindowsApplication>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
   <ItemGroup>
-    <Compile Include="manage.py" />
-    <Compile Include="alertManager\admin.py" />
-    <Compile Include="alertManager\forms.py" />
-    <Compile Include="alertManager\models.py" />
-    <Compile Include="alertManager\start.py" />
-    <Compile Include="alertManager\tests.py" />
-    <Compile Include="alertManager\views.py" />
-    <Compile Include="alertManager\__init__.py" />
-    <Compile Include="common\admin.py" />
-    <Compile Include="common\models.py" />
-    <Compile Include="common\tests.py" />
-    <Compile Include="common\views.py" />
-    <Compile Include="common\__init__.py" />
-    <Compile Include="dashboard\admin.py" />
-    <Compile Include="dashboard\forms.py" />
-    <Compile Include="dashboard\models.py" />
-    <Compile Include="dashboard\tests.py" />
-    <Compile Include="dashboard\views.py" />
-    <Compile Include="dashboard\__init__.py" />
-    <Compile Include="executor\admin.py" />
-    <Compile Include="executor\models.py" />
-    <Compile Include="executor\start.py" />
-    <Compile Include="executor\tests.py" />
-    <Compile Include="executor\views.py" />
-    <Compile Include="executor\__init__.py" />
-    <Compile Include="monitoring\admin.py" />
-    <Compile Include="monitoring\models.py" />
-    <Compile Include="monitoring\start.py" />
-    <Compile Include="monitoring\tests.py" />
-    <Compile Include="monitoring\views.py" />
-    <Compile Include="monitoring\__init__.py" />
-    <Compile Include="OcevuFTCC\settings.py" />
-    <Compile Include="OcevuFTCC\urls.py" />
-    <Compile Include="OcevuFTCC\wsgi.py" />
-    <Compile Include="OcevuFTCC\__init__.py" />
-    <Content Include="OcevuFTCC\index.html" />
-    <Compile Include="OcevuFTCC\tornado_main.py" />
-    <Content Include="planner\planning.txt" />
-    <Content Include="planner\workfile.txt" />
-    <Compile Include="planner\admin.py" />
-    <Compile Include="planner\models.py" />
-    <Compile Include="planner\start.py" />
-    <Compile Include="planner\tests.py" />
-    <Compile Include="planner\views.py" />
-    <Compile Include="planner\__init__.py" />
-    <Compile Include="routineManager\admin.py" />
-    <Compile Include="routineManager\forms.py" />
-    <Compile Include="routineManager\models.py" />
-    <Compile Include="routineManager\start.py" />
-    <Compile Include="routineManager\tests.py" />
-    <Compile Include="routineManager\views.py" />
-    <Compile Include="routineManager\__init__.py" />
-    <Compile Include="scientificDataManager\admin.py" />
-    <Compile Include="scientificDataManager\models.py" />
-    <Compile Include="scientificDataManager\start.py" />
-    <Compile Include="scientificDataManager\tests.py" />
-    <Compile Include="scientificDataManager\views.py" />
-    <Compile Include="scientificDataManager\__init__.py" />
-    <Compile Include="alertManager\VOEventLib\modify.py" />
-    <Compile Include="alertManager\VOEventLib\VOEvent.py" />
-    <Compile Include="alertManager\VOEventLib\Vutil.py" />
-    <Compile Include="alertManager\VOEventLib\__init__.py" />
     <Content Include="alertManager\VOEventLib\doc\genindex.html" />
     <Content Include="alertManager\VOEventLib\doc\index.html" />
     <Content Include="alertManager\VOEventLib\doc\py-modindex.html" />
     <Content Include="alertManager\VOEventLib\doc\search.html" />
     <Content Include="alertManager\VOEventLib\doc\VOEvent-20100722.html" />
-    <Compile Include="alertManager\VOEventLib\original\format_to_html.py" />
-    <Compile Include="alertManager\VOEventLib\original\VOEvent.py" />
-    <Compile Include="alertManager\VOEventLib\original\Vutil.py" />
-    <Compile Include="alertManager\VOEventLib\original\__init__.py" />
     <Content Include="alertManager\VOEventLib\doc\_static\basic.css" />
     <Content Include="alertManager\VOEventLib\doc\_static\default.css" />
-    <Content Include="alertManager\VOEventLib\doc\_static\pygments.css" />
     <Content Include="alertManager\VOEventLib\doc\_static\doctools.js" />
+    <Content Include="alertManager\VOEventLib\doc\_static\file.png" />
     <Content Include="alertManager\VOEventLib\doc\_static\jquery.js" />
+    <Content Include="alertManager\VOEventLib\doc\_static\minus.png" />
+    <Content Include="alertManager\VOEventLib\doc\_static\plus.png" />
+    <Content Include="alertManager\VOEventLib\doc\_static\pygments.css" />
     <Content Include="alertManager\VOEventLib\doc\_static\searchtools.js" />
     <Content Include="alertManager\VOEventLib\doc\_static\sidebar.js" />
     <Content Include="alertManager\VOEventLib\doc\_static\underscore.js" />
-    <Content Include="alertManager\VOEventLib\doc\_static\file.png" />
-    <Content Include="alertManager\VOEventLib\doc\_static\minus.png" />
-    <Content Include="alertManager\VOEventLib\doc\_static\plus.png" />
+    <Content Include="common\oft_config.ini" />
+    <Content Include="OcevuFTCC\index.html" />
+    <Content Include="planner\backup\planning.txt" />
+    <Content Include="planner\backup\workfile.txt" />
+    <Content Include="planner\planning.txt" />
+    <Content Include="planner\workfile.txt" />
     <Content Include="requirements.txt" />
     <Content Include="static\bootstrap\blank-page.html" />
     <Content Include="static\bootstrap\bootstrap-elements.html" />
     <Content Include="static\bootstrap\bootstrap-grid.html" />
     <Content Include="static\bootstrap\charts.html" />
-    <Content Include="static\bootstrap\forms.html" />
-    <Content Include="static\bootstrap\index.html" />
-    <Content Include="static\bootstrap\tables.html" />
-    <Content Include="static\bootstrap\typography.html" />
-    <Content Include="static\bootstrap\q.png" />
     <Content Include="static\bootstrap\css\bootstrap.css" />
     <Content Include="static\bootstrap\css\bootstrap.min.css" />
     <Content Include="static\bootstrap\css\sb-admin.css" />
     <Content Include="static\bootstrap\dist\jstree.js" />
     <Content Include="static\bootstrap\dist\jstree.min.js" />
-    <Content Include="static\bootstrap\js\bootstrap.js" />
-    <Content Include="static\bootstrap\js\bootstrap.min.js" />
-    <Content Include="static\bootstrap\js\jquery-1.10.2.js" />
-    <Content Include="static\bootstrap\js\jquery.formset.js" />
-    <Content Include="static\bootstrap\js\jquery.formset.min.js" />
     <Content Include="static\bootstrap\dist\libs\jquery.js" />
     <Content Include="static\bootstrap\dist\libs\require.js" />
-    <Content Include="static\bootstrap\dist\themes\default\style.css" />
-    <Content Include="static\bootstrap\dist\themes\default\style.min.css" />
     <Content Include="static\bootstrap\dist\themes\default\32px.png" />
     <Content Include="static\bootstrap\dist\themes\default\40px.png" />
+    <Content Include="static\bootstrap\dist\themes\default\style.css" />
+    <Content Include="static\bootstrap\dist\themes\default\style.min.css" />
     <Content Include="static\bootstrap\dist\themes\default\throbber.gif" />
     <Content Include="static\bootstrap\font-awesome\css\font-awesome.css" />
     <Content Include="static\bootstrap\font-awesome\css\font-awesome.min.css" />
     <Content Include="static\bootstrap\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="static\bootstrap\forms.html" />
+    <Content Include="static\bootstrap\index.html" />
+    <Content Include="static\bootstrap\js\bootstrap.js" />
+    <Content Include="static\bootstrap\js\bootstrap.min.js" />
     <Content Include="static\bootstrap\js\flot\chart-data-flot.js" />
     <Content Include="static\bootstrap\js\flot\excanvas.min.js" />
     <Content Include="static\bootstrap\js\flot\jquery.flot.js" />
     <Content Include="static\bootstrap\js\flot\jquery.flot.pie.js" />
     <Content Include="static\bootstrap\js\flot\jquery.flot.resize.js" />
     <Content Include="static\bootstrap\js\flot\jquery.flot.tooltip.min.js" />
+    <Content Include="static\bootstrap\js\jquery-1.10.2.js" />
+    <Content Include="static\bootstrap\js\jquery.formset.js" />
+    <Content Include="static\bootstrap\js\jquery.formset.min.js" />
     <Content Include="static\bootstrap\js\morris\chart-data-morris.js" />
     <Content Include="static\bootstrap\js\tablesorter\jquery.tablesorter.js" />
     <Content Include="static\bootstrap\js\tablesorter\tables.js" />
+    <Content Include="static\bootstrap\q.png" />
+    <Content Include="static\bootstrap\tables.html" />
+    <Content Include="static\bootstrap\typography.html" />
     <Content Include="templates\alertManager\alert_confirm_delete.html" />
     <Content Include="templates\alertManager\alert_detail.html" />
     <Content Include="templates\alertManager\alert_form.html" />
     <Content Include="templates\alertManager\alert_list.html" />
     <Content Include="templates\alertManager\index.html" />
+    <Content Include="templates\alertManager\old\add.html" />
+    <Content Include="templates\alertManager\old\edit.html" />
+    <Content Include="templates\alertManager\old\list.html" />
+    <Content Include="templates\alertManager\old\loadfromfile.html" />
+    <Content Include="templates\alertManager\old\view.html" />
+    <Content Include="templates\alertManager\old\voeventviewer.html" />
     <Content Include="templates\base_templates\base.html" />
     <Content Include="templates\base_templates\base_login.html" />
     <Content Include="templates\base_templates\base_request.html" />
@@ -166,12 +112,95 @@
     <Content Include="templates\routineManager\plan_form.html" />
     <Content Include="templates\routineManager\request_form.html" />
     <Content Include="templates\routineManager\sequence_form.html" />
-    <Content Include="templates\alertManager\old\add.html" />
-    <Content Include="templates\alertManager\old\edit.html" />
-    <Content Include="templates\alertManager\old\list.html" />
-    <Content Include="templates\alertManager\old\loadfromfile.html" />
-    <Content Include="templates\alertManager\old\view.html" />
-    <Content Include="templates\alertManager\old\voeventviewer.html" />
+    <Content Include="_code_dump\templates\routineManager\index.html" />
+    <Content Include="_code_dump\templates\routineManager\old\add.html" />
+    <Content Include="_code_dump\templates\routineManager\old\edit.html" />
+    <Content Include="_code_dump\templates\routineManager\old\list.html" />
+    <Content Include="_code_dump\templates\routineManager\old\loadfromfile.html" />
+    <Content Include="_code_dump\templates\routineManager\old\request_form_old.html" />
+    <Content Include="_code_dump\templates\routineManager\old\routinerequestviewer.html" />
+    <Content Include="_code_dump\templates\routineManager\old\view.html" />
+    <Content Include="_code_dump\templates\routineManager\request_confirm_delete.html" />
+    <Content Include="_code_dump\templates\routineManager\request_detail.html" />
+    <Content Include="_code_dump\templates\routineManager\request_form.html" />
+    <Content Include="_code_dump\templates\routineManager\request_list.html" />
+    <Content Include="_code_dump\templates\ztest\index.html" />
+    <Content Include="_code_dump\templates\ztest\old\album_form.html" />
+    <Content Include="_code_dump\templates\ztest\old\plan_form.html" />
+    <Content Include="_code_dump\templates\ztest\old\request_form.html" />
+    <Content Include="_code_dump\templates\ztest\old\sequence_form.html" />
+    <Content Include="_code_dump\templates\ztest\result.html" />
+    <Content Include="_code_dump\templates\ztest\step0.html" />
+    <Content Include="_code_dump\templates\ztest\step1.html" />
+    <Content Include="_code_dump\templates\ztest\step2.html" />
+    <Content Include="_code_dump\templates\ztest\wizard.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="alertManager\admin.py" />
+    <Compile Include="alertManager\forms.py" />
+    <Compile Include="alertManager\models.py" />
+    <Compile Include="alertManager\start.py" />
+    <Compile Include="alertManager\tests.py" />
+    <Compile Include="alertManager\views.py" />
+    <Compile Include="alertManager\VOEventLib\modify.py" />
+    <Compile Include="alertManager\VOEventLib\original\format_to_html.py" />
+    <Compile Include="alertManager\VOEventLib\original\VOEvent.py" />
+    <Compile Include="alertManager\VOEventLib\original\Vutil.py" />
+    <Compile Include="alertManager\VOEventLib\original\__init__.py" />
+    <Compile Include="alertManager\VOEventLib\VOEvent.py" />
+    <Compile Include="alertManager\VOEventLib\Vutil.py" />
+    <Compile Include="alertManager\VOEventLib\__init__.py" />
+    <Compile Include="alertManager\__init__.py" />
+    <Compile Include="common\admin.py" />
+    <Compile Include="common\models.py" />
+    <Compile Include="common\tests.py" />
+    <Compile Include="common\views.py" />
+    <Compile Include="common\__init__.py" />
+    <Compile Include="dashboard\admin.py" />
+    <Compile Include="dashboard\forms.py" />
+    <Compile Include="dashboard\models.py" />
+    <Compile Include="dashboard\tests.py" />
+    <Compile Include="dashboard\views.py" />
+    <Compile Include="dashboard\__init__.py" />
+    <Compile Include="executor\admin.py" />
+    <Compile Include="executor\models.py" />
+    <Compile Include="executor\start.py" />
+    <Compile Include="executor\tests.py" />
+    <Compile Include="executor\views.py" />
+    <Compile Include="executor\__init__.py" />
+    <Compile Include="manage.py" />
+    <Compile Include="monitoring\admin.py" />
+    <Compile Include="monitoring\models.py" />
+    <Compile Include="monitoring\start.py" />
+    <Compile Include="monitoring\tests.py" />
+    <Compile Include="monitoring\views.py" />
+    <Compile Include="monitoring\__init__.py" />
+    <Compile Include="OcevuFTCC\settings.py" />
+    <Compile Include="OcevuFTCC\tornado_main.py" />
+    <Compile Include="OcevuFTCC\urls.py" />
+    <Compile Include="OcevuFTCC\wsgi.py" />
+    <Compile Include="OcevuFTCC\__init__.py" />
+    <Compile Include="planner\admin.py" />
+    <Compile Include="planner\backup\scheduling.py" />
+    <Compile Include="planner\backup\tests_old.py" />
+    <Compile Include="planner\models.py" />
+    <Compile Include="planner\start.py" />
+    <Compile Include="planner\tests.py" />
+    <Compile Include="planner\views.py" />
+    <Compile Include="planner\__init__.py" />
+    <Compile Include="routineManager\admin.py" />
+    <Compile Include="routineManager\forms.py" />
+    <Compile Include="routineManager\models.py" />
+    <Compile Include="routineManager\start.py" />
+    <Compile Include="routineManager\tests.py" />
+    <Compile Include="routineManager\views.py" />
+    <Compile Include="routineManager\__init__.py" />
+    <Compile Include="scientificDataManager\admin.py" />
+    <Compile Include="scientificDataManager\models.py" />
+    <Compile Include="scientificDataManager\start.py" />
+    <Compile Include="scientificDataManager\tests.py" />
+    <Compile Include="scientificDataManager\views.py" />
+    <Compile Include="scientificDataManager\__init__.py" />
     <Compile Include="_code_dump\routineManager\admin.py" />
     <Compile Include="_code_dump\routineManager\forms.py" />
     <Compile Include="_code_dump\routineManager\models.py" />
@@ -181,31 +210,6 @@
     <Compile Include="_code_dump\ztest\admin.py" />
     <Compile Include="_code_dump\ztest\forms.py" />
     <Compile Include="_code_dump\ztest\models.py" />
-    <Compile Include="_code_dump\ztest\tests.py" />
-    <Compile Include="_code_dump\ztest\views.py" />
-    <Compile Include="_code_dump\ztest\__init__.py" />
-    <Content Include="_code_dump\templates\routineManager\index.html" />
-    <Content Include="_code_dump\templates\routineManager\request_confirm_delete.html" />
-    <Content Include="_code_dump\templates\routineManager\request_detail.html" />
-    <Content Include="_code_dump\templates\routineManager\request_form.html" />
-    <Content Include="_code_dump\templates\routineManager\request_list.html" />
-    <Content Include="_code_dump\templates\ztest\index.html" />
-    <Content Include="_code_dump\templates\ztest\result.html" />
-    <Content Include="_code_dump\templates\ztest\step0.html" />
-    <Content Include="_code_dump\templates\ztest\step1.html" />
-    <Content Include="_code_dump\templates\ztest\step2.html" />
-    <Content Include="_code_dump\templates\ztest\wizard.html" />
-    <Content Include="_code_dump\templates\routineManager\old\add.html" />
-    <Content Include="_code_dump\templates\routineManager\old\edit.html" />
-    <Content Include="_code_dump\templates\routineManager\old\list.html" />
-    <Content Include="_code_dump\templates\routineManager\old\loadfromfile.html" />
-    <Content Include="_code_dump\templates\routineManager\old\request_form_old.html" />
-    <Content Include="_code_dump\templates\routineManager\old\routinerequestviewer.html" />
-    <Content Include="_code_dump\templates\routineManager\old\view.html" />
-    <Content Include="_code_dump\templates\ztest\old\album_form.html" />
-    <Content Include="_code_dump\templates\ztest\old\plan_form.html" />
-    <Content Include="_code_dump\templates\ztest\old\request_form.html" />
-    <Content Include="_code_dump\templates\ztest\old\sequence_form.html" />
     <Compile Include="_code_dump\ztest\other\alertmanagerdump.py" />
     <Compile Include="_code_dump\ztest\other\arduinoTests.py" />
     <Compile Include="_code_dump\ztest\other\average.py" />
@@ -223,21 +227,11 @@
     <Compile Include="_code_dump\ztest\other\views_old.py" />
     <Compile Include="_code_dump\ztest\other\voeventparseexample.py" />
     <Compile Include="_code_dump\ztest\other\voevent_validator.py" />
+    <Compile Include="_code_dump\ztest\tests.py" />
+    <Compile Include="_code_dump\ztest\views.py" />
+    <Compile Include="_code_dump\ztest\__init__.py" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="static\" />
-    <Folder Include="static\bootstrap\dist\themes\" />
-    <Folder Include="static\bootstrap\font-awesome\" />
-    <Folder Include="templates\" />
-    <Folder Include="_code_dump\" />
-    <Folder Include="_code_dump\routineManager" />
-    <Folder Include="_code_dump\templates\" />
-    <Folder Include="_code_dump\templates\routineManager" />
-    <Folder Include="_code_dump\templates\routineManager\old" />
-    <Folder Include="_code_dump\templates\ztest" />
-    <Folder Include="_code_dump\templates\ztest\old" />
-    <Folder Include="_code_dump\ztest" />
-    <Folder Include="_code_dump\ztest\other" />
     <Folder Include="alertManager" />
     <Folder Include="alertManager\VOEventLib" />
     <Folder Include="alertManager\VOEventLib\doc" />
@@ -249,30 +243,44 @@
     <Folder Include="monitoring" />
     <Folder Include="OcevuFTCC" />
     <Folder Include="planner" />
+    <Folder Include="planner\backup" />
     <Folder Include="routineManager" />
     <Folder Include="scientificDataManager" />
+    <Folder Include="static\" />
     <Folder Include="static\bootstrap" />
     <Folder Include="static\bootstrap\css" />
     <Folder Include="static\bootstrap\dist" />
     <Folder Include="static\bootstrap\dist\libs" />
+    <Folder Include="static\bootstrap\dist\themes\" />
     <Folder Include="static\bootstrap\dist\themes\default" />
+    <Folder Include="static\bootstrap\font-awesome\" />
     <Folder Include="static\bootstrap\font-awesome\css" />
     <Folder Include="static\bootstrap\font-awesome\fonts" />
     <Folder Include="static\bootstrap\js" />
     <Folder Include="static\bootstrap\js\flot" />
     <Folder Include="static\bootstrap\js\morris" />
     <Folder Include="static\bootstrap\js\tablesorter" />
+    <Folder Include="templates\" />
     <Folder Include="templates\alertManager" />
     <Folder Include="templates\alertManager\old" />
     <Folder Include="templates\base_templates" />
     <Folder Include="templates\dashboard" />
     <Folder Include="templates\planner" />
     <Folder Include="templates\routineManager" />
+    <Folder Include="_code_dump\" />
+    <Folder Include="_code_dump\routineManager" />
+    <Folder Include="_code_dump\templates\" />
+    <Folder Include="_code_dump\templates\routineManager" />
+    <Folder Include="_code_dump\templates\routineManager\old" />
+    <Folder Include="_code_dump\templates\ztest" />
+    <Folder Include="_code_dump\templates\ztest\old" />
+    <Folder Include="_code_dump\ztest" />
+    <Folder Include="_code_dump\ztest\other" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\3.4" />
   </ItemGroup>
-  <Import Project="$(VSToolsPath)\Python Tools\Microsoft.PythonTools.Django.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
@@ -281,7 +289,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:32453/</IISUrl>
+          <IISUrl>http://localhost:6406/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
