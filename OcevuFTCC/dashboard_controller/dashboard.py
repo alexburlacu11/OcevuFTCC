@@ -7,6 +7,7 @@ from tornado import websocket, web, ioloop
 import json
 import time
 import os
+import sys
 import subprocess
 from threading import Thread
 import socket
@@ -17,7 +18,25 @@ from tornado.web import asynchronous
 
 
 clients = []
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "OcevuFTCC.settings")
+sys.path.append(BASE_DIR)
+
+import alertManager
+almn_path = os.path.abspath(alertManager.__path__[0])
+import routineManager
+romn_path = os.path.abspath(routineManager.__path__[0])
+import planner
+plan_path = os.path.abspath(planner.__path__[0])
+import monitoring
+moni_path = os.path.abspath(monitoring.__path__[0])
+import executor
+exec_path = os.path.abspath(executor.__path__[0])
+import scientificDataManager
+sdmn_path = os.path.abspath(scientificDataManager.__path__[0])
+
+    
 
 class IndexHandler(web.RequestHandler):
     @asynchronous
@@ -55,7 +74,7 @@ class SuperSTDOUTThread(Thread):
             
 class MonitoringThread(SuperSTDOUTThread):
     def run(self):             
-        monitoring = subprocess.Popen(["python", BASE_DIR+"\\"+"monitoring\start.py"], stdout=subprocess.PIPE)
+        monitoring = subprocess.Popen(["python", os.path.join(moni_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(monitoring.stdout.readline, b''):            
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]
             data = {"moni": line}
@@ -63,7 +82,7 @@ class MonitoringThread(SuperSTDOUTThread):
                 
 class PlanningThread(SuperSTDOUTThread):
     def run(self):             
-        planning = subprocess.Popen(["python", BASE_DIR+"\\"+"planner\start.py"], stdout=subprocess.PIPE)
+        planning = subprocess.Popen(["python", os.path.join(plan_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(planning.stdout.readline, b''):  
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]          
             data = {"plan": line}
@@ -71,7 +90,7 @@ class PlanningThread(SuperSTDOUTThread):
             
 class AlertThread(SuperSTDOUTThread):
     def run(self):             
-        alertManager = subprocess.Popen(["python", BASE_DIR+"\\"+"alertManager\start.py"], stdout=subprocess.PIPE)
+        alertManager = subprocess.Popen(["python", os.path.join(almn_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(alertManager.stdout.readline, b''):            
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]
             data = {"almn": line}
@@ -79,7 +98,7 @@ class AlertThread(SuperSTDOUTThread):
                 
 class RoutineThread(SuperSTDOUTThread):
     def run(self):             
-        routineManager = subprocess.Popen(["python", BASE_DIR+"\\"+"routineManager\start.py"], stdout=subprocess.PIPE)
+        routineManager = subprocess.Popen(["python", os.path.join(romn_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(routineManager.stdout.readline, b''): 
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]           
             data = {"romn": line}
@@ -87,7 +106,7 @@ class RoutineThread(SuperSTDOUTThread):
             
 class ExecThread(SuperSTDOUTThread):
     def run(self):             
-        execution = subprocess.Popen(["python", BASE_DIR+"\\"+"executor\start.py"], stdout=subprocess.PIPE)
+        execution = subprocess.Popen(["python", os.path.join(exec_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(execution.stdout.readline, b''):          
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]  
             data = {"exec": line}
@@ -95,7 +114,7 @@ class ExecThread(SuperSTDOUTThread):
             
 class ScientificDataManagementThread(SuperSTDOUTThread):
     def run(self):             
-        sdmn = subprocess.Popen(["python", BASE_DIR+"\\"+"scientificDataManager\start.py"], stdout=subprocess.PIPE)
+        sdmn = subprocess.Popen(["python", os.path.join(sdmn_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(sdmn.stdout.readline, b''):  
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]          
             data = {"sdmn": line}
@@ -237,9 +256,7 @@ app = web.Application([
 if __name__ == '__main__':
     app.listen(8001)
     print ("Tornado server started on 8001")
-
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "OcevuFTCC.settings")
-    print("Test6")
     ioloop.IOLoop.instance().start()
     
     
