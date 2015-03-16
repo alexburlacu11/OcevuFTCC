@@ -37,7 +37,9 @@ class FileListener:
             
             for item in diff:
         
-                print(item)        
+                if item != "voevent.xml":
+                
+                    print(item)        
             
         self.old_files = self.new_files
         

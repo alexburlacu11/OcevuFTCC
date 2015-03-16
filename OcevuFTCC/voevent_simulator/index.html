@@ -7,34 +7,70 @@
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<style>
 	
-	body { background-color: #383838; height:300px;}
+	body { color:black; background-color: #A9A9A9;}
 	hr {height:1px; border-style:solid; border-width:1px 0 0 0;
-		border-color:white;}
+		}
 	p,h1,h4,h5,hr { 
-	     color: white;
+	    color: black;
 	}
 	
-	.fixed{
-		height:700px;
-		overflow-y: scroll;
-		overflow-x: hidden;
-		background-color: black;
+	h4 {
+		color:white;
+		font-weight:bold;
+		font-size: 20px;
+	}
+	
+	#main_container {
+	
 		text-align: left;
+	
+	}
+	.fixed{
+		height:780px;		
+		overflow-x: hidden;
+		text-align: left;
+		background-color: #FFFFFF;
+		
+		
+	}
+	
+	#title_vo {
+	
+		background-color: #062A78;
+		text-color: white;
+		
+	}
+	
+	#footer_vo {
+	
+		background-color: black;
+		text-color: white;
+		position:relative;
+		bottom:0;
+		
+		width:101.7%
+		
 	}
 	
 	.fixed-details{
-		height:700px;
-		overflow-y: scroll;
+		height:780px;
+	
 		overflow-x: hidden;
-		background-color: black;
 		text-align: left;
+		background-color: #FFFFFF;
+		
+		
 	}
 	
 	#voevent{
-		height:70px;
-		overflow: hidden;
-		border: 1px solid white;
-		padding:1px;
+		font-weight: bold;
+		padding:1.5px;	
+		vertical-align: middle;	
+	}
+	#voevent:hover {
+	
+		border : 1px dotted;		
+		border-color:orange;
 		
 	}
 	
@@ -45,11 +81,12 @@
 	   
 	    
 	}
-	
 	li {
-	
-		text-align: center;
+		height:30px;		
+		border : .9px solid #C0C0C0;	
+		
 	}
+	
 	
 	
 	
@@ -73,6 +110,7 @@
 	 
 
 	 $("ul").on("click", "#voevent", function(event){
+	 	$( this ).css( "font-weight", "normal" );
 	    $.ajax({
 	    	url:"/voevent",
 	    	data: {"title": $(this).text() },
@@ -96,9 +134,10 @@
 
 <div class="container-fluid">
 
-  <div class="row">
+  <div class="row" id="title_vo">
     <div class="col-lg-12 text-center">
-    	<h4>VOEvent Simulator</h4>    	
+    
+    	<h4>VOEvent Viewer</h4>
 
     	<h5><button type="button" class="btn btn-success btn-sm" id="go">Subscribe</button></h5> 
     </div>
@@ -106,9 +145,9 @@
   
   
   <div class="row">
-    <div class="col-lg-6 text-center">
-	  	<div id="main_container" class="fixed" style="color:#00CC00;">
-	  		<ul>
+    <div class="col-lg-4 text-left">
+	  	<div id="main_container" class="fixed">
+	  		<ul class="list-unstyled">
 				<li class="insert_before"></li>
 			</ul>
 		</div>
@@ -116,13 +155,27 @@
 
   
 
-    <div class="col-lg-6 text-center">
-	  	<div id="details" class="fixed-details" style="color:#00CC00;">
+    <div class="col-lg-8 text-center">
+	  	<div id="details" class="fixed-details">
 		
 		</div>
 	</div>  
 
   </div>  
+  
+  <div class="row" id="footer_vo">
+    <div class="col-lg-12 text-center">
+    	<p style="color:white; font-size:12px;">
+    			9, avenue du Colonel Roche
+				BP 44346 - 31028 Toulouse Cedex 4
+				Tel : 05 61 55 66 66
+				Fax : 05 61 55 86 92
+				Copyright © 2015 IRAP - Tous droits réservés. 
+				
+		</p> 
+    </div>
+  </div>
+  
   
   
   
