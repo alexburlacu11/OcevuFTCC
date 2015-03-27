@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta id="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<style>
+	
+	body { background-color: #383838; height:300px;}
+	hr {height:1px; border-style:solid; border-width:1px 0 0 0;
+		border-color:white;}
+	p,h1,h4,h5,hr { 
+	     color: white;
+	 }
+	
+	.fixed{
+		height:340px;
+		overflow: hidden;
+		background-color: black;
+	}
+	
+	
+	</style>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script>
+	
+	$(document).ready(function(){
+	  $("button#ALMN_start").click(function(){
+	    $.ajax({
+	    	url:"/almn",
+	    	data: {"command":"start"},
+	    	success:function(result){
+	      $("#almn").html(result);
+	    }});
+	  });
+	  
+	  $("button#ROMN_start").click(function(){
+		    $.ajax({
+		    	url:"/romn",
+		    	data: {"command" : "start"},
+		    	success:function(result){
+		      $("#romn").html(result);
+		    }});
+	  });
+	  $("button#MONI_start").click(function(){
+		    $.ajax({
+		    	url:"/moni",
+		    	data: {"command" : "start"},
+		    	success:function(result){
+		      $("#moni").html(result);
+		    }});
+	  });
+	  $("button#PLAN_start").click(function(){
+		    $.ajax({
+		    	url:"/plan",
+		    	data: {"command" : "start"},
+		    	success:function(result){
+		      $("#plan").html(result);
+		    }});
+	  });
+	  $("button#EXEC_start").click(function(){
+		    $.ajax({
+		    	url:"/exec",
+		    	data: {"command" : "start"},
+		    	success:function(result){
+		      $("#exec").html(result);
+		    }});
+	  });
+	  $("button#SDMN_start").click(function(){
+		    $.ajax({
+		    	url:"/sdmn",
+		    	data: {"command" : "start"},
+		    	success:function(result){
+		      $("#sdmn").html(result);
+		    }});
+	  });
+	  
+	  $("button#ALMN_stop").click(function(){
+		    $.ajax({
+		    	url:"/almn",
+		    	data: {"command" : "stop"},
+		    	success:function(result){
+		      $("#almn").html(result);
+		    }});
+	  });
+	  $("button#ROMN_stop").click(function(){
+		    $.ajax({
+		    	url:"/romn",
+		    	data: {"command" : "stop"},
+		    	success:function(result){
+		      $("#romn").html(result);
+		    }});
+	  });
+	  $("button#MONI_stop").click(function(){
+		    $.ajax({
+		    	url:"/moni",
+		    	data: {"command" : "stop"},
+		    	success:function(result){
+		      $("#moni").html(result);
+		    }});
+	  });
+	  $("button#PLAN_stop").click(function(){
+		    $.ajax({
+		    	url:"/plan",
+		    	data: {"command" : "stop"},
+		    	success:function(result){
+		      $("#plan").html(result);
+		    }});
+	  });
+	  $("button#EXEC_stop").click(function(){
+		    $.ajax({
+		    	url:"/exec",
+		    	data: {"command" : "stop"},
+		    	success:function(result){
+		      $("#exec").html(result);
+		    }});
+	  });
+	  $("button#SDMN_stop").click(function(){
+		    $.ajax({
+		    	url:"/sdmn",
+		    	data: {"command" : "stop"},
+		    	success:function(result){
+		      $("#sdmn").html(result);
+		    }});
+	  });
+	  
+	  $("button#ALMN_send").click(function(){
+		    $.ajax({
+		    	url:"/command",
+		    	data: {"command" : "alert_sim"},
+		    	success:function(result){
+		      $("#almn").html(result);
+		    }});
+	  });
+	  $("button#ROMN_send").click(function(){
+		    $.ajax({
+		    	url:"/command",
+		    	data: {"command" : "request_sim"},
+		    	success:function(result){
+		      $("#romn").html(result);
+		    }});
+	  });
+	  $("button#MONI_send").click(function(){
+		    $.ajax({
+		    	url:"/command",
+		    	data: {"command" : "obs_sim"},
+		    	success:function(result){
+		      $("#moni").html(result);
+		    }});
+	  });
+	  
+	  
+	  
+	});
+	
+	</script>
+
+
+</head>
+<body onload="pageScroll()" >
+
+
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-lg-12 text-center">
+    	<h4>Agents Status</h4>
+    	<span id="message"></span>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-lg-4">
+    	<h5>Alert Management
+		<button type="button" class="btn btn-success btn-sm" id="ALMN_start">Start ALMN</button>
+		<button type="button" class="btn btn-success btn-sm" id="ALMN_stop">Stop ALMN</button>
+		<button type="button" class="btn btn-success btn-sm" id="ALMN_send">Send Alert Request</button>
+		</h5>
+		<hr>
+	</div>
+    <div class="col-lg-4">
+    	<h5>Routine Management
+		<button type="button" class="btn btn-success btn-sm" id="ROMN_start">Start ROMN</button>
+		<button type="button" class="btn btn-success btn-sm" id="ROMN_stop">Stop ROMN</button>
+		<button type="button" class="btn btn-success btn-sm" id="ROMN_send">Send Routine Request</button>	
+		</h5>
+		<hr>
+    </div>
+    <div class="col-lg-4">
+    	<h5>Monitoring
+		<button type="button" class="btn btn-success btn-sm" id="MONI_start">Start MONI</button>		
+		<button type="button" class="btn btn-success btn-sm" id="MONI_stop">Stop MONI</button>
+		<button type="button" class="btn btn-success btn-sm" id="MONI_send">Send Obs Cond</button>
+		<button type="button" class="btn btn-success btn-sm" id="MONI_pause">Pause</button>	
+		<button type="button" class="btn btn-success btn-sm" id="MONI_resume">Resume</button>		
+		</h5>		
+		<hr>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-lg-4">
+	  	<div id="almn" class="fixed" style="color:#00CC00;">
+		
+		</div>
+	</div>
+	
+    <div class="col-lg-4">
+		<div id="romn" class="fixed" style="color:#00FFFF;">
+		
+		</div>
+	</div>
+
+    <div class="col-lg-4">
+		<div id="moni" class="fixed" style="color:#FF4500;">
+			
+		</div> 
+	</div> 
+  
+  </div>
+  
+  <div class="row">
+    <div class="col-lg-4">
+    	<hr>
+    	<h5>Planning
+		<button type="button" class="btn btn-success btn-sm" id="PLAN_start">Start PLAN</button>
+		<button type="button" class="btn btn-success btn-sm" id="PLAN_stop">Stop PLAN</button>
+		</h5>
+		<hr>
+	</div>
+    <div class="col-lg-4">
+    	<hr>
+    	<h5>Execution
+		<button type="button" class="btn btn-success btn-sm" id="EXEC_start">Start EXEC</button>
+		<button type="button" class="btn btn-success btn-sm" id="EXEC_stop">Stop EXEC</button>
+		</h5>
+		<hr>
+    </div>
+    <div class="col-lg-4">
+    	<hr>
+    	<h5>Scientific Data Management
+		<button type="button" class="btn btn-success btn-sm" id="SDMN_start">Start SDMN</button>
+		<button type="button" class="btn btn-success btn-sm" id="SDMN_stop">Stop SDMN</button>
+		</h5>
+		<hr>
+    </div>
+  </div>
+  
+  <div class="row">
+  	<div class="col-lg-4">
+		
+		<div id="plan" class="fixed" style="color:#FFD700;">
+	
+		</div>
+		<hr>
+	</div>
+	
+	
+	
+	<div class="col-lg-4">
+		
+		<div id="exec" class="fixed" style="color:#FF00FF;">
+	
+		</div>
+		<hr>
+	</div>
+	
+	
+	<div class="col-lg-4">
+		
+		<div id="sdmn" class="fixed" style="color:#FF9933;">
+	
+		</div>
+		<hr>
+	</div>
+  
+  </div>
+  
+  
+  
+  
+  
+  
+  
+</div>
+
+
+
+
+  	
+  <script type="text/javascript">
+  
+  
+  	function pageScroll() {
+	  	//window.scrollBy(0,50); // horizontal and vertical scroll increments
+	  	//scrolldelay = setTimeout('pageScroll()',100); // scrolls every 100 milliseconds
+  		window.setInterval(function() {
+  			var div1 = document.getElementById('almn');
+  	    	var div2 = document.getElementById('romn');
+  	    	var div3 = document.getElementById('plan');
+  	    	var div4 = document.getElementById('moni');
+  	    	var div5 = document.getElementById('exec');
+  	    	var div6 = document.getElementById('sdmn');
+  		  	div1.scrollTop = div1.scrollHeight;
+  		  	div2.scrollTop = div2.scrollHeight;
+  			div3.scrollTop = div3.scrollHeight;
+  			div4.scrollTop = div4.scrollHeight;
+  			div5.scrollTop = div5.scrollHeight;
+  			div6.scrollTop = div6.scrollHeight;  			
+  		}, 500);
+	  	
+	}
+  	
+  	
+  
+    var ws = new WebSocket('ws://localhost:8001/ws');
+    var xmlHttp = null;
+
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", "http://localhost:8001/console", false );
+    xmlHttp.send( null );
+
+    var $message = $('#message');
+    
+    ws.onopen = function(){
+      $message.attr("class", 'label label-success');
+      $message.text('open');
+    };
+    
+    ws.onmessage = function(ev){
+    	var json = JSON.parse(ev.data);
+
+    	var div1 = document.getElementById('almn');
+    	var div2 = document.getElementById('romn');
+    	var div3 = document.getElementById('plan');
+    	var div4 = document.getElementById('moni');
+    	var div5 = document.getElementById('exec');
+    	var div6 = document.getElementById('sdmn');
+
+    	if (json.moni) {
+    		div4.innerHTML = div4.innerHTML + json.moni + "<br>";
+    	}
+    	else {
+    		if (json.plan) {
+    			div3.innerHTML = div3.innerHTML + json.plan + "<br>";
+    		}
+    		else {
+    			if (json.almn){
+    				div1.innerHTML = div1.innerHTML + json.almn + "<br>";
+    			}
+    			else {
+    				if (json.romn) {
+    					div2.innerHTML = div2.innerHTML + json.romn + "<br>";
+    				}
+    				else {
+    					if (json.exec) {
+        					div5.innerHTML = div5.innerHTML + json.exec + "<br>";
+        				}
+    					else{
+    						if (json.sdmn) {
+    	    					div6.innerHTML = div6.innerHTML + json.sdmn + "<br>";
+    	    				}
+    						else {
+    							$message.text("Unknown message received");
+    							
+    						}
+    					}
+    					
+    					
+    				}
+    			}
+    			
+    		}
+    	}
+    	
+    	
+    	
+    	
+    };
+    
+    ws.onclose = function(ev){
+        $message.attr("class", 'label label-important');
+        $message.text('closed');
+      };
+      
+    ws.onerror = function(ev){
+      $message.attr("class", 'label label-warning');
+      $message.text('error occurred');
+    };
+
+  </script>
+</body>
+</html>

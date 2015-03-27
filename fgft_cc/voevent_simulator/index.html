@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta id="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<style>
+	
+	body { color:black; background-color: #A9A9A9;}
+	hr {height:1px; border-style:solid; border-width:1px 0 0 0;
+		}
+	p,h1,h4,h5,hr { 
+	    color: black;
+	}
+	
+	h4 {
+		color:white;
+		font-weight:bold;
+		font-size: 20px;
+	}
+	
+	#main_container {
+	
+		text-align: left;
+	
+	}
+	.fixed{
+		height:780px;		
+		overflow-x: hidden;
+		text-align: left;
+		background-color: #FFFFFF;
+		
+		
+	}
+	
+	#title_vo {
+	
+		background-color: #062A78;
+		text-color: white;
+		
+	}
+	
+	#footer_vo {
+	
+		background-color: black;
+		text-color: white;
+		position:relative;
+		bottom:0;
+		
+		width:101.7%
+		
+	}
+	
+	.fixed-details{
+		height:780px;
+	
+		overflow-x: hidden;
+		text-align: left;
+		background-color: #FFFFFF;
+		
+		
+	}
+	
+	#voevent{
+		font-weight: bold;
+		padding:1.5px;	
+		vertical-align: middle;	
+	}
+	#voevent:hover {
+	
+		border : 1px dotted;		
+		border-color:orange;
+		
+	}
+	
+	ul
+	{
+	    list-style-type: none;
+	    width: 100%;
+	   
+	    
+	}
+	li {
+		height:30px;		
+		border : .9px solid #C0C0C0;	
+		
+	}
+	
+	
+	
+	
+	</style>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script>
+	
+	$(document).ready(function(){
+	
+	
+	  $("button#go").click(function(){
+	    $.ajax({
+	    	url:"/command",
+	    	data: {"command":"go"},
+	    	success:function(result){
+	      $("#main_container").html(result);
+	    }});
+	  });
+	  
+	 
+
+	 $("ul").on("click", "#voevent", function(event){
+	 	$( this ).css( "font-weight", "normal" );
+	    $.ajax({
+	    	url:"/voevent",
+	    	data: {"title": $(this).text() },
+	    	success:function(result){
+	      $("#details").html(result);
+	    }});
+	    
+	  });
+	  
+	 
+	  
+	  
+	});
+	
+	</script>
+
+
+</head>
+<body>
+
+
+<div class="container-fluid">
+
+  <div class="row" id="title_vo">
+    <div class="col-lg-12 text-center">
+    
+    	<h4>VOEvent Viewer</h4>
+
+    	<h5><button type="button" class="btn btn-success btn-sm" id="go">Subscribe</button></h5> 
+    </div>
+  </div>
+  
+  
+  <div class="row">
+    <div class="col-lg-4 text-left">
+	  	<div id="main_container" class="fixed">
+	  		<ul class="list-unstyled">
+				<li class="insert_before"></li>
+			</ul>
+		</div>
+	</div>  
+
+  
+
+    <div class="col-lg-8 text-center">
+	  	<div id="details" class="fixed-details">
+		
+		</div>
+	</div>  
+
+  </div>  
+  
+  <div class="row" id="footer_vo">
+    <div class="col-lg-12 text-center">
+    	<p style="color:white; font-size:12px;">
+    			9, avenue du Colonel Roche
+				BP 44346 - 31028 Toulouse Cedex 4
+				Tel : 05 61 55 66 66
+				Fax : 05 61 55 86 92
+				Copyright © 2015 IRAP - Tous droits réservés. 
+				
+		</p> 
+    </div>
+  </div>
+  
+  
+  
+  
+  
+</div>
+
+
+
+
+  	
+  <script type="text/javascript">
+  
+  
+  	
+  	
+  	
+  
+    var ws = new WebSocket('ws://localhost:8002/ws');
+    var xmlHttp = null;
+
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", "http://localhost:8002/console", false );
+    xmlHttp.send( null );
+
+    var $message = $('#message');
+    
+    ws.onopen = function(){
+      $message.attr("class", 'label label-success');
+      $message.text('open');
+    };
+    
+    ws.onmessage = function(ev){
+    	var json = JSON.parse(ev.data);
+
+    	var div1 = document.getElementById('main_container');
+    	var div2 = document.getElementById('details');
+
+    			if (json.data){
+    				var initial_li = document.getElementsByClassName('insert_before');
+
+					var elem = document.createElement('li');
+					    elem.innerHTML = json.data;
+					    elem.id = 'voevent';
+					    
+					
+					initial_li[0].parentNode.insertBefore(elem, initial_li[0]);
+					elem.className = 'insert_before';
+					
+					initial_li[0].className = 'insert_before';    				
+    			}
+    			else {
+    				div2.innerHTML = json.details;
+    			}
+    	
+    };
+    
+    ws.onclose = function(ev){
+        $message.attr("class", 'label label-important');
+        $message.text('closed');
+      };
+      
+    ws.onerror = function(ev){
+      $message.attr("class", 'label label-warning');
+      $message.text('error occurred');
+    };
+
+  </script>
+</body>
+</html>
