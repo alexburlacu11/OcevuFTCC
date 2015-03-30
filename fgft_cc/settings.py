@@ -1,5 +1,5 @@
 """
-Django settings for OcevuFTCC project.
+Django settings for fgft_cc project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -7,7 +7,6 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
-
 
 
 
@@ -82,9 +81,9 @@ MIDDLEWARE_CLASSES = (
     
 )
 
-ROOT_URLCONF = 'OcevuFTCC.urls'
+ROOT_URLCONF = 'fgft_cc.urls'
 
-WSGI_APPLICATION = 'OcevuFTCC.wsgi.application'
+WSGI_APPLICATION = 'fgft_cc.wsgi.application'
 
 
 # Database
@@ -94,8 +93,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
         'NAME': 'ocevudb',
-        'USER': 'root',
-        'PASSWORD': '',
+        'USER': 'fgftuser',
+        'PASSWORD': 'fgftcc',
 #         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
 #         'PORT': '3306',
     }
