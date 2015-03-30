@@ -20,7 +20,7 @@ from tornado.web import asynchronous
 clients = []
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "OcevuFTCC.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fgft_cc.settings")
 sys.path.append(BASE_DIR)
 
 import alertManager
@@ -256,7 +256,9 @@ app = web.Application([
 if __name__ == '__main__':
     app.listen(8001)
     print ("Tornado server started on 8001")
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "OcevuFTCC.settings")
+    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fgft_cc.settings")
+    sys.path.append(BASE_DIR)
     ioloop.IOLoop.instance().start()
     
     

@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'fgft_cc.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
-        'NAME': 'ocevudb',
+        'NAME': 'fgftdb',
         'USER': 'fgftuser',
         'PASSWORD': 'fgftcc',
 #         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on

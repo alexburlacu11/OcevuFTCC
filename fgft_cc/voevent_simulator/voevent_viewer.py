@@ -23,7 +23,7 @@ import copy
 clients = []
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "OcevuFTCC.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fgft_cc.settings")
 sys.path.append(BASE_DIR)
 
 import alertManager
@@ -258,7 +258,9 @@ app = web.Application([
 if __name__ == '__main__':
     app.listen(8002)
     print ("VoEvent simulator started on 8002")
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "OcevuFTCC.settings")
+    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fgft_cc.settings")
+    sys.path.append(BASE_DIR)
     ioloop.IOLoop.instance().start()
     
     
