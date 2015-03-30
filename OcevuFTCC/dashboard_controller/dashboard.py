@@ -256,9 +256,7 @@ app = web.Application([
 if __name__ == '__main__':
     app.listen(8001)
     print ("Tornado server started on 8001")
-    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "OcevuFTCC.settings")
-    sys.path.append(BASE_DIR)
     ioloop.IOLoop.instance().start()
     
     
