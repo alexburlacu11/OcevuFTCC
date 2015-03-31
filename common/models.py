@@ -1,6 +1,6 @@
 import socket
 
-import configparser as ConfigParser
+import configparser
 from threading import Thread, Event
 import os
 import time
@@ -186,7 +186,7 @@ class Agent(Thread):
     def initFromConfigFile(self):
         """initiate agent from the ini file in common"""
         agentSection = self.agentName
-        config = ConfigParser.ConfigParser()
+        config = configparser.ConfigParser()
         config.read(self.configFile)
         self.agentName = config.get(agentSection,'agentName')
         self.ip = config.get(agentSection,'ip')
@@ -195,7 +195,7 @@ class Agent(Thread):
         
     def getAgentFromConfigFile(self, name):
         agentSection = name
-        config = ConfigParser.ConfigParser()
+        config = configparser.ConfigParser()
         config.read(self.configFile)
         ip = config.get(agentSection,'ip')
         port = int(config.get(agentSection,'receivePort'))

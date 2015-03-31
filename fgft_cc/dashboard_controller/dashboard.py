@@ -12,7 +12,7 @@ import subprocess
 from threading import Thread
 import socket
 import datetime
-import configparser as ConfigParser
+import configparser
 from tornado.web import asynchronous
 
 
@@ -23,6 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fgft_cc.settings")
 sys.path.append(BASE_DIR)
 
+import common
+common_path = os.path.abspath(common.__path__[0])
 import alertManager
 almn_path = os.path.abspath(alertManager.__path__[0])
 import routineManager
@@ -179,7 +181,7 @@ class CommandHandler(web.RequestHandler):
     @web.asynchronous
     def get(self, *args):
         self.finish()
-        configFile = BASE_DIR+"\\"+"common\oft_config.ini"
+        configFile = os.path.join(common_path,"oft_config.ini")
         command = self.get_argument("command")
 
         print ("["+str(datetime.datetime.now())+"]"+"Received ajax command: "+command)
@@ -213,7 +215,7 @@ class CommandHandler(web.RequestHandler):
         
     def getAgentFromConfigFile(self, name, configFile):
         agentSection = name
-        config = ConfigParser.ConfigParser()
+        config = configparser.ConfigParser()
         config.read(configFile)
         ip = config.get(agentSection,'ip')
         port = int(config.get(agentSection,'receivePort'))
@@ -255,7 +257,7 @@ app = web.Application([
 
 if __name__ == '__main__':
     app.listen(8001)
-    print ("Tornado server started on 8001")
+    print ("Dashboard control server started on 8001")
     BASE_DIR = os.path.dirname(os.path.dirname(__file__))
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fgft_cc.settings")
     sys.path.append(BASE_DIR)
