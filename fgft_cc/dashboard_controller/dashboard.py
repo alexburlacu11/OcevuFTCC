@@ -19,9 +19,9 @@ from tornado.web import asynchronous
 
 clients = []
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+parent_path = os.sep.join(os.getcwd().split(os.sep)[:-2])
+sys.path.append(parent_path)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fgft_cc.settings")
-sys.path.append(BASE_DIR)
 
 import common
 common_path = os.path.abspath(common.__path__[0])
@@ -258,9 +258,7 @@ app = web.Application([
 if __name__ == '__main__':
     app.listen(8001)
     print ("Dashboard control server started on 8001")
-    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fgft_cc.settings")
-    sys.path.append(BASE_DIR)
+    
     ioloop.IOLoop.instance().start()
     
     

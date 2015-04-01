@@ -22,9 +22,11 @@ import copy
 
 clients = []
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+parent_path = os.sep.join(os.getcwd().split(os.sep)[:-2])
+sys.path.append(parent_path)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fgft_cc.settings")
-sys.path.append(BASE_DIR)
+
 
 import alertManager
 almn_path = os.path.abspath(alertManager.__path__[0])
@@ -257,10 +259,8 @@ app = web.Application([
 
 if __name__ == '__main__':
     app.listen(8002)
-    print ("VoEvent viewer started on 8002")
-    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fgft_cc.settings")
-    sys.path.append(BASE_DIR)
+    print ("VOEvent viewer started on 8002")
+    
     ioloop.IOLoop.instance().start()
     
     
