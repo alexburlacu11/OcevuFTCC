@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'fgft_cc.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql.connector.django',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'fgftdb',
         'USER': 'fgftuser',
         'PASSWORD': 'fgftcc',
@@ -99,6 +99,20 @@ DATABASES = {
 #         'PORT': '3306',
     }
 }
+
+
+if (os.name == 'nt'):
+    DATABASES = {
+    'default': {
+        'ENGINE': 'mysql.connector.django',
+        'NAME': 'fgftdb',
+        'USER': 'fgftuser',
+        'PASSWORD': 'fgftcc',
+#         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+#         'PORT': '3306',
+        }
+    }
+    
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
