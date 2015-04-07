@@ -69,6 +69,7 @@ class SuperSTDOUTThread(Thread):
             while True:
                 try:                    
                     client.write_message(data)
+                    
                     break
                 except Exception:
                     print ("Exception in sending data to web page") 
@@ -76,7 +77,7 @@ class SuperSTDOUTThread(Thread):
             
 class MonitoringThread(SuperSTDOUTThread):
     def run(self):             
-        monitoring = subprocess.Popen(["python", os.path.join(moni_path,"start.py")], stdout=subprocess.PIPE)
+        monitoring = subprocess.Popen(["python3.4", os.path.join(moni_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(monitoring.stdout.readline, b''):            
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]
             data = {"moni": line}
@@ -84,7 +85,7 @@ class MonitoringThread(SuperSTDOUTThread):
                 
 class PlanningThread(SuperSTDOUTThread):
     def run(self):             
-        planning = subprocess.Popen(["python", os.path.join(plan_path,"start.py")], stdout=subprocess.PIPE)
+        planning = subprocess.Popen(["python3.4", os.path.join(plan_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(planning.stdout.readline, b''):  
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]          
             data = {"plan": line}
@@ -92,7 +93,7 @@ class PlanningThread(SuperSTDOUTThread):
             
 class AlertThread(SuperSTDOUTThread):
     def run(self):             
-        alertManager = subprocess.Popen(["python", os.path.join(almn_path,"start.py")], stdout=subprocess.PIPE)
+        alertManager = subprocess.Popen(["python3.4", os.path.join(almn_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(alertManager.stdout.readline, b''):            
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]
             data = {"almn": line}
@@ -100,7 +101,7 @@ class AlertThread(SuperSTDOUTThread):
                 
 class RoutineThread(SuperSTDOUTThread):
     def run(self):             
-        routineManager = subprocess.Popen(["python", os.path.join(romn_path,"start.py")], stdout=subprocess.PIPE)
+        routineManager = subprocess.Popen(["python3.4", os.path.join(romn_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(routineManager.stdout.readline, b''): 
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]           
             data = {"romn": line}
@@ -108,7 +109,7 @@ class RoutineThread(SuperSTDOUTThread):
             
 class ExecThread(SuperSTDOUTThread):
     def run(self):             
-        execution = subprocess.Popen(["python", os.path.join(exec_path,"start.py")], stdout=subprocess.PIPE)
+        execution = subprocess.Popen(["python3.4", os.path.join(exec_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(execution.stdout.readline, b''):          
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]  
             data = {"exec": line}
@@ -116,7 +117,7 @@ class ExecThread(SuperSTDOUTThread):
             
 class ScientificDataManagementThread(SuperSTDOUTThread):
     def run(self):             
-        sdmn = subprocess.Popen(["python", os.path.join(sdmn_path,"start.py")], stdout=subprocess.PIPE)
+        sdmn = subprocess.Popen(["python3.4", os.path.join(sdmn_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(sdmn.stdout.readline, b''):  
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]          
             data = {"sdmn": line}
@@ -127,6 +128,7 @@ class AlertHandler(web.RequestHandler):
     
     @web.asynchronous
     def get (self, *args):
+        self.finish()
         command = self.get_argument("command")
         if command=="start":
             alert = AlertThread()
@@ -138,6 +140,7 @@ class MonitoringHandler(web.RequestHandler):
     
     @web.asynchronous
     def get (self, *args):
+        self.finish()
         moni = MonitoringThread()
         moni.start()
         time.sleep(.1)  
@@ -146,16 +149,17 @@ class RoutineHandler(web.RequestHandler):
     
     @web.asynchronous
     def get (self, *args):
+        self.finish()
         routine = RoutineThread()
         routine.start()
-        time.sleep(.1)
-        
+        time.sleep(.1)        
 
         
 class ExecHandler(web.RequestHandler):
     
     @web.asynchronous
     def get (self, *args):
+        self.finish()
         execution = ExecThread()
         execution.start()
         time.sleep(.1)
@@ -164,6 +168,7 @@ class PlanHandler(web.RequestHandler):
     
     @web.asynchronous
     def get (self, *args):
+        self.finish()
         plani = PlanningThread()      
         plani.start()
         time.sleep(.1)
@@ -172,6 +177,7 @@ class SDMNHandler(web.RequestHandler):
     
     @web.asynchronous
     def get (self, *args):
+        self.finish()
         sdmn = ScientificDataManagementThread()
         sdmn.start()
         time.sleep(.1)

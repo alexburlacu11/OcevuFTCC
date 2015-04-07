@@ -78,7 +78,7 @@ class SuperSTDOUTThread(Thread):
  
 class SimulatorThread(SuperSTDOUTThread):
     def run(self):             
-        sim = subprocess.Popen(["python", "file_listener.py"], stdout=subprocess.PIPE)
+        sim = subprocess.Popen(["python3.4", "file_listener.py"], stdout=subprocess.PIPE)
         for line in iter(sim.stdout.readline, b''):            
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]
             data = {"data": line}
@@ -107,7 +107,9 @@ class VOEventHandler(web.RequestHandler, SuperSTDOUTThread):
         print ("["+str(datetime.datetime.now())+"]"+"Received request for voevent: "+title)
         
         """ search for the file by id in the directory and output it to the page """
-        v = 'D:\\shared\\voevents_received\\saved\\'+title        
+        
+        v = 'voevents_to_send/'+title   
+             
         
 #         self.display_info(v)    
         

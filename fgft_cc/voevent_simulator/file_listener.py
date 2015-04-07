@@ -47,7 +47,7 @@ class FileListener:
 
 if __name__ == '__main__':
        
-    path = "D:\\shared\\voevents_received\\saved"
+    path = "voevents_to_send/"
     interval = .1
     
     file_listener = FileListener(path, interval)   

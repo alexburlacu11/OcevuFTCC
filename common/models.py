@@ -7,7 +7,10 @@ import time
 import datetime
 from random import randint
 from decimal import Decimal
-PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+
+import common
+common_path = os.path.abspath(common.__path__[0])
+os.path.join(common_path,"oft_config.ini")
 
 
 
@@ -74,7 +77,7 @@ class Agent(Thread):
         self.receivePort = 0
         self.sendBufferSize = 8192
         self.receiveBufferSize = 8192
-        self.configFile = PROJECT_PATH + '\\'+'oft_config.ini'
+        self.configFile = os.path.join(os.path.abspath(common.__path__[0]),"oft_config.ini")
         self.initFromConfigFile()
         self.sender = Sender(agentName+" Sender", self.ip, self.sendPort, self.sendBufferSize)
         self._stopevent = Event()
