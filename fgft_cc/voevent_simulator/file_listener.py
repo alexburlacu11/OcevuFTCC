@@ -47,7 +47,8 @@ class FileListener:
 
 if __name__ == '__main__':
        
-    path = "voevents_to_send/"
+    #path = "voevents_received/saved/"
+    path = "/projects/f-gft-cc/SOFT/eclipse_workspace/fgft_cc/fgft_cc/voevent_simulator/voevents_received/saved/"
     interval = .1
     
     file_listener = FileListener(path, interval)   
