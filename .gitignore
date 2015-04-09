@@ -190,4 +190,5 @@ $RECYCLE.BIN/
 
 # PYC
 *.pyc
+__pycache__/
 *.cpython-34.pyc
