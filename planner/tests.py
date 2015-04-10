@@ -23,16 +23,24 @@ class Test_Suite_for_Planner(unittest.TestCase):
 
 
         """
+        print("SETUP")
+        try:
+            if self.s1: print("S1 EXISTE !!!")
+            else: print("s1 non existante")
+        except:
+            print("coucou")
         self.planning = Planning( 0.0, [] , 0.0, 0.0, 0.0, 0.0)
-        self.planStart = 2456959.18000000
-        self.planEnd =   2456959.99000000
+#         self.planStart = 2456959.18000000
+#         self.planEnd =   2456959.99000000
+        self.planStart = 1
+        self.planEnd =   10
         self.owner1 = Owner(name="John", affiliation='France', priority=60)
         self.owner1.save()
         self.quota1 = Quota(owner=self.owner1, quotaNightTotal=100, quotaNightLeft=60)
         self.quota1.save()
         """simple database sequences for performance testing"""
         self.s1 = Sequence(id=1, owner=self.owner1, jd1Owner=3, jd2Owner=5, duration=2, priority=12, tPrefered=-1)
-        self.s2 = Sequence(id=2, owner=self.owner1, jd1Owner=7, jd2Owner=12, duration=5, priority=12, tPrefered=-1)        
+        self.s2 = Sequence(id=2, owner=self.owner1, jd1Owner=8, jd2Owner=12, duration=4, priority=12, tPrefered=9)        
         
         """delay tests"""
         """both left and right"""
@@ -48,14 +56,18 @@ class Test_Suite_for_Planner(unittest.TestCase):
     """Reusable tests and other functions"""   
     def subtest_PLAN_unit_planner_Planning_schedule_orderNSequences(self):
         """Check that all sequences are in the proper order"""
+        
         numberOfSequences = len(self.planning.sequences)
+        print("Nr of seq:" +str(numberOfSequences))
         for i in range(0, numberOfSequences-1):
-            self.assertLess(self.planning.sequences[i].TSP, self.planning.sequences[i+1].TSP)
-            self.assertLess(self.planning.sequences[i].TEP, self.planning.sequences[i+1].TEP)
+            self.assertLessEqual(self.planning.sequences[i].TSP, self.planning.sequences[i+1].TSP)
+            self.assertLessEqual(self.planning.sequences[i].TEP, self.planning.sequences[i+1].TEP)
             self.assertLessEqual(self.planning.sequences[i].TEP, self.planning.sequences[i+1].TSP)
             
     def subtest_PLAN_unit_planner_Planning_schedule_order3SequencesAfterShift(self):
         """Checks that the sequence following a shift is correctly placed"""
+        numberOfSequences = len(self.planning.sequences)
+        print("Nr of seq:" +str(numberOfSequences))
         self.assertTrue(self.planning.sequences[2].TSP >= self.planning.sequences[0].TSP)
         self.assertTrue(self.planning.sequences[2].TEP >= self.planning.sequences[0].TEP)
         self.assertTrue(self.planning.sequences[2].TSP <= self.planning.sequences[1].TSP)
@@ -98,7 +110,7 @@ class Test_Suite_for_Planner(unittest.TestCase):
 #         f.write("\nmax: \n"+str(max(myList)))
 #         f.close()      
 #         self.planning.display()
-#         self.planning.displayGUI()    
+#         #self.planning.displayGUI()    
 
  
 #     def test_PLAN_planner_Planning_schedule_planningKlotz(self):
@@ -183,32 +195,34 @@ class Test_Suite_for_Planner(unittest.TestCase):
         self.s1.save()
         self.s2.save()
         self.planning.initFromDB(self.planStart, self.planEnd)
+        self.planning.sequences = [self.s1, self.s2]
         self.planning.schedule()
-#         self.planning.display()
-#         self.planning.displayGUI()
+        self.planning.display()
+        #self.planning.displayGUI()
         self.subtest_PLAN_unit_planner_Planning_schedule_orderNSequences()
         
     
     
     """Complex delay tests"""
     
-#     def test_PLAN_unit_planner_Planning_schedule_scheduleWithShiftLeftRight(self):
-#         """
-#         precond: 2 sequences
-#         action: Test if a third sequence can be inserted between two others
-#         postcond: the third sequence is planned between the first and second. The first and second must both move
-#          
-#         """  
-#         self.s1.delete()
-#         self.s2.delete()
-#         self.s17.save()
-#         self.s18.save()
-#         self.s1718.save()   
-#         self.planning.initFromDB(self.planStart, self.planEnd)
-#         self.planning.schedule()
-#         self.planning.display()
-#         self.planning.displayGUI()
-#         self.subtest_PLAN_unit_planner_Planning_schedule_order3SequencesAfterShift()         
+    def test_PLAN_unit_planner_Planning_schedule_scheduleWithShiftLeftRight(self):
+        """
+        precond: 2 sequences
+        action: Test if a third sequence can be inserted between two others
+        postcond: the third sequence is planned between the first and second. The first and second must both move
+          
+        """  
+        self.s1.delete()
+        self.s2.delete()
+        self.s17.save()
+        self.s18.save()
+        self.s1718.save()   
+        self.planning.initFromDB(self.planStart, self.planEnd)
+        self.planning.sequences = [self.s17, self.s18, self.s1718]
+        self.planning.schedule()
+        self.planning.display()
+        #self.planning.displayGUI()
+        self.subtest_PLAN_unit_planner_Planning_schedule_order3SequencesAfterShift()         
              
     
     """Non functional tests (ex: performance) """
