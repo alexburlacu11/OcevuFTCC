@@ -3,11 +3,24 @@ import copy
 from os import listdir
 from os.path import isfile, join
 # import voeventparse
+import os
 
 
 
+MODE_NASA = True
 
-""" script which reads a folder and each time a voevent occurs it outputs it to the browser"""
+PATH_WINDOWS = "voevents_received/saved/"
+PATH_MAC = "/projects/f-gft-cc/SOFT/eclipse_workspace/fgft_cc/fgft_cc/voevent_simulator/voevents_received/saved/"
+PATH_LINUX = "voevents_received/saved/"
+
+
+if os.name == "nt":
+    PATH = PATH_WINDOWS
+else:
+    if os.name == "mac":
+        PATH = PATH_MAC
+    else:
+        PATH = PATH_LINUX
 
     
 class FileListener:
@@ -47,11 +60,10 @@ class FileListener:
 
 if __name__ == '__main__':
        
-    #path = "voevents_received/saved/"
-    path = "/projects/f-gft-cc/SOFT/eclipse_workspace/fgft_cc/fgft_cc/voevent_simulator/voevents_received/saved/"
+    
     interval = .1
     
-    file_listener = FileListener(path, interval)   
+    file_listener = FileListener(PATH, interval)   
     file_listener.start()   
         
     
