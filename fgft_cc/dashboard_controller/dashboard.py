@@ -98,7 +98,7 @@ class PlanningThread(SuperSTDOUTThread):
             
 class AlertThread(SuperSTDOUTThread):
     def run(self):             
-        alertManager = subprocess.Popen(["python", os.path.join(almn_path,"start.py")], stdout=subprocess.PIPE)
+        alertManager = subprocess.Popen([PYTHON_EXECUTABLE, os.path.join(almn_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(alertManager.stdout.readline, b''):            
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]
             data = {"almn": line}
