@@ -77,7 +77,7 @@ class MyUser(AbstractBaseUser):
     ('Scientific_Manager', '1'),
     ('Administrator', '2'),    
     )   
-    level_admin = models.IntegerField(max_length=20, choices=ADMIN_LEVEL, default=0)     
+    level_admin = models.IntegerField(choices=ADMIN_LEVEL, default=0)     
     last_connect = models.DateTimeField(auto_now_add=True)    
     valid_from = models.DateTimeField(auto_now_add=True)    
     valid_to = models.DateTimeField(auto_now_add=True) 

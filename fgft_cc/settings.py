@@ -28,7 +28,7 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'dashboard.MyUser'
+AUTH_USER_MODEL = 'ismn.MyUser'
 
 LOGIN_URL = '/' 
  
@@ -48,7 +48,7 @@ INSTALLED_APPS = (
     'common',
     'routineManager',
     'alertManager',
-    'dashboard',
+    'ismn',
     'monitoring',
     'planner',
     'scientificDataManager',

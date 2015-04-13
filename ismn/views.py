@@ -10,10 +10,10 @@ from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
 
-from dashboard.admin import UserCreationForm, UserChangeForm
+from ismn.admin import UserCreationForm, UserChangeForm
 from common.models import OFTThreadManager
 
-from dashboard.models import MyUserManager
+from ismn.models import MyUserManager
 
 
 # from forms import RegistrationForm, LoginForm
@@ -43,7 +43,7 @@ from dashboard.models import MyUserManager
 # Create your views here.
 # def console(request):
 #     """redirect to console page"""
-#     template = loader.get_template('dashboard/console.html')
+#     template = loader.get_template('ismn/console.html')
 #     context = RequestContext(request, {          
 #                 
 #     })
@@ -62,7 +62,7 @@ from dashboard.models import MyUserManager
 def index(request):
     """redirect to index page for logging in"""
     state = "Please log in or create a new account."
-    template = loader.get_template('dashboard/index.html')    
+    template = loader.get_template('ismn/index.html')    
     
     context = RequestContext(request, {          
         'info': "info",  
@@ -76,7 +76,7 @@ def new_user(request):
     """redirect to page for creation of a new user"""
     state = "Submit your request for account creation"
     registrationform = UserCreationForm()
-    template = loader.get_template('dashboard/new_user.html')        
+    template = loader.get_template('ismn/new_user.html')        
     context = RequestContext(request, {          
         'info': "info",  
         'form': registrationform,     
@@ -90,7 +90,7 @@ def profile(request):
     
     form = UserChangeForm(instance=request.user)
     
-    template = loader.get_template('dashboard/profile.html')        
+    template = loader.get_template('ismn/profile.html')        
     context = RequestContext(request, {          
         'form':form
     })
@@ -107,7 +107,7 @@ def create(request):
            
             if registrationform.is_valid():
                     registrationform.save() 
-                    template = loader.get_template('dashboard/index.html')
+                    template = loader.get_template('ismn/index.html')
                     state = "Account creation successful ! Login to continue"                   
                     context = RequestContext(request, { 'state':state, 'info':'ok'})   
                              
@@ -118,7 +118,7 @@ def create(request):
     else:
           state = "The system encountered an error. Please try again"    
 
-    template = loader.get_template('dashboard/new_user.html')
+    template = loader.get_template('ismn/new_user.html')
     context = RequestContext(request, 
             {
              'state':state, 
@@ -140,7 +140,7 @@ def updateSequenceForConditions(request):
                     logout(request)                     
                     
                     state = "Modifications successful, please login in order for changes to take effect"
-                    template = loader.get_template('dashboard/index.html')    
+                    template = loader.get_template('ismn/index.html')    
                     registrationform = UserCreationForm()
                     context = RequestContext(request, {          
                         'info': "info",  
@@ -155,7 +155,7 @@ def updateSequenceForConditions(request):
     else:
           state = "The system encountered an error. Please try again"    
 
-    template = loader.get_template('dashboard/profile.html')
+    template = loader.get_template('ismn/profile.html')
     context = RequestContext(request, 
             {
              'state':state, 
@@ -180,7 +180,7 @@ def login_user(request):
                 login(request, user)
                 request.session['user'] = email
                 state = "You have successfully logged in, Welcome !"
-                template = loader.get_template('dashboard/main.html')
+                template = loader.get_template('ismn/main.html')
                 context = RequestContext(request, { 'state':state, 'success':'success'})            
                 return HttpResponse(template.render(context))                
             else:
@@ -188,7 +188,7 @@ def login_user(request):
         else:
             state = "Your email and/or password were incorrect."
 
-    template = loader.get_template('dashboard/index.html')
+    template = loader.get_template('ismn/index.html')
     context = RequestContext(request, 
             {
              'state':state, 
@@ -200,10 +200,10 @@ def login_user(request):
 
 
 def main(request):
-     """dashboard home page redirect """
-     template = loader.get_template('dashboard/main.html')
-     context = RequestContext(request, {  }) 
-     return HttpResponse(template.render(context))
+    """ismn home page redirect """
+    template = loader.get_template('ismn/main.html')
+    context = RequestContext(request, {  }) 
+    return HttpResponse(template.render(context))
 
 
 
@@ -211,7 +211,7 @@ def logout_user(request):
     """logout a user"""
     logout(request)
     state = "Logout successful !"
-    template = loader.get_template('dashboard/index.html')    
+    template = loader.get_template('ismn/index.html')    
     registrationform = UserCreationForm()
     context = RequestContext(request, {          
         'info': "info",  
@@ -220,6 +220,12 @@ def logout_user(request):
     })
 
     return HttpResponse(template.render(context))
+
+def dashboard(request):
+    return redirect('http://localhost:8001')
+
+def voevent_viewer(request):
+    return redirect('http://localhost:8002')
 
     
     

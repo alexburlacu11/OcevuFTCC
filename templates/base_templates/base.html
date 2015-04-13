@@ -38,7 +38,7 @@
       <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-          <a class="navbar-brand" href="/dashboard/">SVOM French GFT Control Center</a>
+          <a class="navbar-brand" href="/ismn/">SVOM French GFT Control Center</a>
         </div>
         
         
@@ -46,25 +46,22 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse">
         
           <ul class="nav navbar-nav side-nav">
-            <li><a href="/dashboard/">Dashboard</a></li>
+            <li><a href="/ismn/">Home</a></li>
             <li><a href="/alertmanager/">Alert Manager</a></li>
             <li><a href="/routinemanager/">Routine Manager</a></li>
             <li><a href="/planner/">Planner</a></li> 
-            <li><a href="#">Weather Manager</a></li>    
-            <li><a href="#">System Information Manager</a></li>       
-            <li><a href="#">Scientific Data Management</a></li>
-            <li><a href="#">Observation System</a></li>
-            <li><a href="#">Global Status</a></li>
-            <li><a href="/console/">Console</a></li>
+            <li><a href="#">Monitoring</a></li>    
+            <li><a href="/dashboard/">Dashboard</a></li>
+            <li><a href="/voevent_viewer/">VOEvent Viewer</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right navbar-user">
             
             <li class="dropdown alerts-dropdown">
-              <a href="/dashboard/profile"><i class="fa fa-user"></i> {{ user.firstname }} <b class="caret"></b></a>              
+              <a href="/ismn/profile"><i class="fa fa-user"></i> {{ user.firstname }} <b class="caret"></b></a>              
             </li>
             <li class="dropdown user-dropdown">
-              <a href="/dashboard/logout"><i class="fa fa-power-off"></i> Log Out</a>             
+              <a href="/ismn/logout"><i class="fa fa-power-off"></i> Log Out</a>             
             </li>
           </ul>
         
