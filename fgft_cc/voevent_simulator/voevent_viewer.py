@@ -22,6 +22,12 @@ import copy
 
 clients = []
 
+if os.name == "nt":
+    PYTHON_EXECUTABLE = "python"
+else:
+    PYTHON_EXECUTABLE = "python3.4"
+    
+
 
 parent_path = os.sep.join(os.getcwd().split(os.sep)[:-2])
 sys.path.append(parent_path)
@@ -78,7 +84,7 @@ class SuperSTDOUTThread(Thread):
  
 class SimulatorThread(SuperSTDOUTThread):
     def run(self):             
-        sim = subprocess.Popen(["python3.4", "file_listener.py"], stdout=subprocess.PIPE)
+        sim = subprocess.Popen([PYTHON_EXECUTABLE, "file_listener.py"], stdout=subprocess.PIPE)
         for line in iter(sim.stdout.readline, b''):            
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]
             data = {"data": line}

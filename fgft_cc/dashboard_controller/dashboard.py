@@ -23,6 +23,11 @@ parent_path = os.sep.join(os.getcwd().split(os.sep)[:-2])
 sys.path.append(parent_path)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fgft_cc.settings")
 
+if os.name == "nt":
+    PYTHON_EXECUTABLE = "python"
+else:
+    PYTHON_EXECUTABLE = "python3.4"
+
 import common
 common_path = os.path.abspath(common.__path__[0])
 import alertManager
@@ -77,7 +82,7 @@ class SuperSTDOUTThread(Thread):
             
 class MonitoringThread(SuperSTDOUTThread):
     def run(self):             
-        monitoring = subprocess.Popen(["python3.4", os.path.join(moni_path,"start.py")], stdout=subprocess.PIPE)
+        monitoring = subprocess.Popen([PYTHON_EXECUTABLE, os.path.join(moni_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(monitoring.stdout.readline, b''):            
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]
             data = {"moni": line}
@@ -85,7 +90,7 @@ class MonitoringThread(SuperSTDOUTThread):
                 
 class PlanningThread(SuperSTDOUTThread):
     def run(self):             
-        planning = subprocess.Popen(["python3.4", os.path.join(plan_path,"start.py")], stdout=subprocess.PIPE)
+        planning = subprocess.Popen([PYTHON_EXECUTABLE, os.path.join(plan_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(planning.stdout.readline, b''):  
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]          
             data = {"plan": line}
@@ -93,7 +98,7 @@ class PlanningThread(SuperSTDOUTThread):
             
 class AlertThread(SuperSTDOUTThread):
     def run(self):             
-        alertManager = subprocess.Popen(["python3.4", os.path.join(almn_path,"start.py")], stdout=subprocess.PIPE)
+        alertManager = subprocess.Popen([PYTHON_EXECUTABLE, os.path.join(almn_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(alertManager.stdout.readline, b''):            
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]
             data = {"almn": line}
@@ -101,7 +106,7 @@ class AlertThread(SuperSTDOUTThread):
                 
 class RoutineThread(SuperSTDOUTThread):
     def run(self):             
-        routineManager = subprocess.Popen(["python3.4", os.path.join(romn_path,"start.py")], stdout=subprocess.PIPE)
+        routineManager = subprocess.Popen([PYTHON_EXECUTABLE, os.path.join(romn_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(routineManager.stdout.readline, b''): 
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]           
             data = {"romn": line}
@@ -109,7 +114,7 @@ class RoutineThread(SuperSTDOUTThread):
             
 class ExecThread(SuperSTDOUTThread):
     def run(self):             
-        execution = subprocess.Popen(["python3.4", os.path.join(exec_path,"start.py")], stdout=subprocess.PIPE)
+        execution = subprocess.Popen([PYTHON_EXECUTABLE, os.path.join(exec_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(execution.stdout.readline, b''):          
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]  
             data = {"exec": line}
@@ -117,7 +122,7 @@ class ExecThread(SuperSTDOUTThread):
             
 class ScientificDataManagementThread(SuperSTDOUTThread):
     def run(self):             
-        sdmn = subprocess.Popen(["python3.4", os.path.join(sdmn_path,"start.py")], stdout=subprocess.PIPE)
+        sdmn = subprocess.Popen([PYTHON_EXECUTABLE, os.path.join(sdmn_path,"start.py")], stdout=subprocess.PIPE)
         for line in iter(sdmn.stdout.readline, b''):  
             line = str(line).replace('"', '').replace("'", '').rstrip('\\n').rstrip('\\r')[1:]          
             data = {"sdmn": line}
