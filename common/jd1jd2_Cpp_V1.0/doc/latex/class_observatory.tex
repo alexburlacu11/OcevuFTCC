@@ -1,0 +1,200 @@
+\hypertarget{class_observatory}{\section{Observatory Class Reference}
+\label{class_observatory}\index{Observatory@{Observatory}}
+}
+
+
+Constructor\-: Set parameters for choosen observation site.  
+
+
+
+
+{\ttfamily \#include $<$observatory.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_observatory_a9a89c8ebf04bc1720cd303cb0361f685}{{\bfseries Observatory} (string site\-Name)}\label{class_observatory_a9a89c8ebf04bc1720cd303cb0361f685}
+
+\item 
+\hypertarget{class_observatory_af88b6c93904fb5784375672b05c5bc0b}{\hyperlink{class_observatory_af88b6c93904fb5784375672b05c5bc0b}{$\sim$\-Observatory} ()}\label{class_observatory_af88b6c93904fb5784375672b05c5bc0b}
+
+\begin{DoxyCompactList}\small\item\em Destructor \par
+ \end{DoxyCompactList}\item 
+void \hyperlink{class_observatory_af2e5cc35a9a68fc1c36c749ccc015719}{find\-\_\-dst\-\_\-bounds} (int yr, short \hyperlink{class_observatory_a079452085f0d8f7ae727a69973fca866}{stdz}, int \hyperlink{class_observatory_a98979301df0236da8fa1fbb857ef6ee6}{use\-\_\-dst}, double $\ast$jdb, double $\ast$jde)
+\begin{DoxyCompactList}\small\item\em Finds jd's at which daylight savings time begins and ends. \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_a52c25c2c46d3a32f4077bd34793ba071}{void \hyperlink{class_observatory_a52c25c2c46d3a32f4077bd34793ba071}{sun\-Set\-Rise} (double J\-Dmid, double rasun, double decsun, \hyperlink{class_observatory}{Observatory} $\ast$observatory, double \hyperlink{class_observatory_a468d5da03ab3ab792354d1efc9b9c788}{horiz}, double jdb, double jde, double $\ast$jdsunset, double $\ast$jdsunrise, float $\ast$set\-\_\-to\-\_\-rise, double $\ast$jdcent)}\label{class_observatory_a52c25c2c46d3a32f4077bd34793ba071}
+
+\begin{DoxyCompactList}\small\item\em computes \hyperlink{class_sun}{Sun} set \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_ae162aeeecbe8da3eb8a79c229e954b40}{void \hyperlink{class_observatory_ae162aeeecbe8da3eb8a79c229e954b40}{twilights} (double J\-Dmid, double rasun, double decsun, \hyperlink{class_observatory}{Observatory} $\ast$observatory, double jdb, double jde, \hyperlink{struct_twilights}{Twilights} $\ast$twi)}\label{class_observatory_ae162aeeecbe8da3eb8a79c229e954b40}
+
+\begin{DoxyCompactList}\small\item\em Computes twilights. \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_a432974fb788ea00be435b4f33ffec61b}{\hyperlink{struct_twilights}{Twilights} \hyperlink{class_observatory_a432974fb788ea00be435b4f33ffec61b}{evening\-\_\-morning\-\_\-twilights} (double alt, double hatwilight, double rasun, double J\-Dmid, \hyperlink{class_observatory}{Observatory} $\ast$observatory)}\label{class_observatory_a432974fb788ea00be435b4f33ffec61b}
+
+\begin{DoxyCompactList}\small\item\em Computes evening and morning twilights for given altiude of \hyperlink{class_sun}{Sun} below horizon. \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_a8639a25aac7fb0168a034c53e3a7d034}{void \hyperlink{class_observatory_a8639a25aac7fb0168a034c53e3a7d034}{print\-\_\-twilights} (\hyperlink{struct_twilights}{Twilights} twi, double jdb, double jde, double jdcent, \hyperlink{class_observatory}{Observatory} $\ast$observatory)}\label{class_observatory_a8639a25aac7fb0168a034c53e3a7d034}
+
+\begin{DoxyCompactList}\small\item\em Print out twilights. \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_ab84b6d65ea6d7c299fa71c1007bcef6f}{void \hyperlink{class_observatory_ab84b6d65ea6d7c299fa71c1007bcef6f}{print\-\_\-\-Moon\-\_\-coordinates} (double georamoon, double geodecmoon, double toporamoon, double topodecmoon)}\label{class_observatory_ab84b6d65ea6d7c299fa71c1007bcef6f}
+
+\begin{DoxyCompactList}\small\item\em Print out \hyperlink{class_moon}{Moon} coordinates. \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_a10149ab9daaed20dcb077412c07769ac}{void \hyperlink{class_observatory_a10149ab9daaed20dcb077412c07769ac}{print\-\_\-\-Sun\-\_\-coordinates} (double rasun, double decsun, double topora, double topodec, double sundist, double x, double y, double z)}\label{class_observatory_a10149ab9daaed20dcb077412c07769ac}
+
+\begin{DoxyCompactList}\small\item\em Print out \hyperlink{class_sun}{Sun} coordinates. \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_ae9a3b0646ec53cf4a51881abe6889e05}{int \hyperlink{class_observatory_ae9a3b0646ec53cf4a51881abe6889e05}{read\-\_\-from\-\_\-file} (string filename, \hyperlink{class_observatory}{Observatory} $\ast$observatory, \hyperlink{classamzer}{amzer} $\ast$date, double $\ast$ra, double $\ast$dec, string $\ast$equinoxe, double $\ast$min\-\_\-height, double $\ast$Moon\-\_\-lim)}\label{class_observatory_ae9a3b0646ec53cf4a51881abe6889e05}
+
+\begin{DoxyCompactList}\small\item\em Read observatory parameters from ascii file. \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_a3121cf61f411c22997b2af6b1915cf2f}{int {\bfseries get\-\_\-parameter\-\_\-from\-\_\-string} (string str, string param, string $\ast$value)}\label{class_observatory_a3121cf61f411c22997b2af6b1915cf2f}
+
+\item 
+\hypertarget{class_observatory_a98ef1f7b16108ccbb64e8a9d00c17049}{int {\bfseries get\-\_\-parameter\-\_\-from\-\_\-string} (string str, string param, short $\ast$value)}\label{class_observatory_a98ef1f7b16108ccbb64e8a9d00c17049}
+
+\item 
+\hypertarget{class_observatory_a7cb678e1d25f6957e86ad1653250cc9d}{int {\bfseries get\-\_\-parameter\-\_\-from\-\_\-string} (string str, string param, int $\ast$value)}\label{class_observatory_a7cb678e1d25f6957e86ad1653250cc9d}
+
+\item 
+\hypertarget{class_observatory_a189d4521b3ebdcb11a326fc82ad0c18d}{int {\bfseries get\-\_\-parameter\-\_\-from\-\_\-string} (string str, string param, double $\ast$value)}\label{class_observatory_a189d4521b3ebdcb11a326fc82ad0c18d}
+
+\item 
+\hypertarget{class_observatory_a5a752c67a747b36f08aa85e09e75de54}{int {\bfseries get\-\_\-parameter\-\_\-from\-\_\-string} (string str, string param, \hyperlink{classamzer}{amzer} $\ast$date)}\label{class_observatory_a5a752c67a747b36f08aa85e09e75de54}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_observatory_a1fb0f8db9473edad538c3080d667f19f}{string \hyperlink{class_observatory_a1fb0f8db9473edad538c3080d667f19f}{name}}\label{class_observatory_a1fb0f8db9473edad538c3080d667f19f}
+
+\begin{DoxyCompactList}\small\item\em Site name. \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_a32b57815b1b98665f41acca3e0051d40}{double \hyperlink{class_observatory_a32b57815b1b98665f41acca3e0051d40}{longitude}}\label{class_observatory_a32b57815b1b98665f41acca3e0051d40}
+
+\begin{DoxyCompactList}\small\item\em West Longitude (fractional hours) \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_a9db91c4ef46990995123d125a0720a8e}{double \hyperlink{class_observatory_a9db91c4ef46990995123d125a0720a8e}{latitude}}\label{class_observatory_a9db91c4ef46990995123d125a0720a8e}
+
+\begin{DoxyCompactList}\small\item\em Latitude (fractional degrees) \end{DoxyCompactList}\item 
+double \hyperlink{class_observatory_afb7b978a4a804e1f1b7b18355d2bd2be}{elevsea}
+\begin{DoxyCompactList}\small\item\em True elevation above sea level (for absolute location) \end{DoxyCompactList}\item 
+double \hyperlink{class_observatory_acb7be3c8fdae5a921718d7de3e53def8}{elevation}
+\begin{DoxyCompactList}\small\item\em Elevation above the horizon (for rise/set calculations) \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_a468d5da03ab3ab792354d1efc9b9c788}{double \hyperlink{class_observatory_a468d5da03ab3ab792354d1efc9b9c788}{horiz}}\label{class_observatory_a468d5da03ab3ab792354d1efc9b9c788}
+
+\begin{DoxyCompactList}\small\item\em Added zenith distance for rise/set due to elevation. \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_a079452085f0d8f7ae727a69973fca866}{short \hyperlink{class_observatory_a079452085f0d8f7ae727a69973fca866}{stdz}}\label{class_observatory_a079452085f0d8f7ae727a69973fca866}
+
+\begin{DoxyCompactList}\small\item\em standard time zone offset, hours \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_a25a20e3ee29ae7a493d4a96713333df0}{string \hyperlink{class_observatory_a25a20e3ee29ae7a493d4a96713333df0}{zone\-\_\-name}}\label{class_observatory_a25a20e3ee29ae7a493d4a96713333df0}
+
+\begin{DoxyCompactList}\small\item\em Name of time zone, e. g. Eastern. \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_a19e0f8f209803d6df0d7ac3621da9e5d}{string \hyperlink{class_observatory_a19e0f8f209803d6df0d7ac3621da9e5d}{zabr}}\label{class_observatory_a19e0f8f209803d6df0d7ac3621da9e5d}
+
+\begin{DoxyCompactList}\small\item\em Single-\/character abbreviation of time zone. \end{DoxyCompactList}\item 
+int \hyperlink{class_observatory_a98979301df0236da8fa1fbb857ef6ee6}{use\-\_\-dst}
+\begin{DoxyCompactList}\small\item\em Daylight saving time use. \end{DoxyCompactList}\item 
+double \hyperlink{class_observatory_a6e5da8fe4abb0590322d435eeb557758}{magsky} \mbox{[}9\mbox{]}
+\begin{DoxyCompactList}\small\item\em Sky magnitudes. \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_acd64fa9d3020f86a1148ea4c2b3b64e4}{double \hyperlink{class_observatory_acd64fa9d3020f86a1148ea4c2b3b64e4}{moon\-\_\-phase}}\label{class_observatory_acd64fa9d3020f86a1148ea4c2b3b64e4}
+
+\begin{DoxyCompactList}\small\item\em \hyperlink{class_moon}{Moon} phase. \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_adb733981a5dd23328297215e929395fc}{double \hyperlink{class_observatory_adb733981a5dd23328297215e929395fc}{seeing}}\label{class_observatory_adb733981a5dd23328297215e929395fc}
+
+\begin{DoxyCompactList}\small\item\em Seeing. \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_a51fa982e2c863356e0fdbb198609dabe}{double \hyperlink{class_observatory_a51fa982e2c863356e0fdbb198609dabe}{airmass}}\label{class_observatory_a51fa982e2c863356e0fdbb198609dabe}
+
+\begin{DoxyCompactList}\small\item\em Airmass. \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_a7f40eaf1225029ec02125ad067b381d0}{double \hyperlink{class_observatory_a7f40eaf1225029ec02125ad067b381d0}{julian\-Day}}\label{class_observatory_a7f40eaf1225029ec02125ad067b381d0}
+
+\begin{DoxyCompactList}\small\item\em Julian day. \end{DoxyCompactList}\item 
+\hypertarget{class_observatory_a8a86db9fc5ce3dfc5d63641d38a52a45}{double {\bfseries horizon} \mbox{[}N\-\_\-\-H\-O\-R\-I\-Z\-O\-N\mbox{]}}\label{class_observatory_a8a86db9fc5ce3dfc5d63641d38a52a45}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Constructor\-: Set parameters for choosen observation site. 
+
+Predefined sites\-: \par
+ default Default observatory \par
+ Calern Calern \par
+ Pic Du Midi Pic Du Midi \par
+ Toulouse Toulouse, Jolimont \par
+ Hakos Hakos-\/\-Sternwarte, Namibia \par
+ Townsville Townsville ,Australia \par
+ New Mexico New Mexico Skies \par
+ Escalquens Escalquens \par
+ Florida Central Florida \par
+ O\-H\-P O\-H\-P \par
+ Kitt Peak Kitt Peak \mbox{[}M\-D\-M Obs.\mbox{]} \par
+ S\-A\-L\-T/\-S\-A\-A\-O S\-A\-L\-T/\-S\-A\-A\-O, Sutherland, South Africa \par
+ La Silla E\-S\-O, Cerro La Silla \par
+ Paranal V\-L\-T, Cerro Paranal \par
+ Palomar Palomar \hyperlink{class_observatory}{Observatory} \par
+ Cerro Tololo Cerro Tololo \par
+ Las Campanas Las Campanas \hyperlink{class_observatory}{Observatory} \par
+ Mount Hopkins Mount Hopkins, Arizona \par
+ Mc\-Donald Mc\-Donald \hyperlink{class_observatory}{Observatory} \par
+ Siding Spring Anglo-\/\-Australian Tel., Siding Spring \par
+ D\-A\-O D\-A\-O, Victoria, B\-C \par
+ Mauna Kea Mauna Kea, Hawaii \par
+ Lick Lick \hyperlink{class_observatory}{Observatory} \par
+ Roque Roque de los Muchachos \par
+ S\-P\-M San Pedro Martir \par
+ \par
+ 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_observatory_af2e5cc35a9a68fc1c36c749ccc015719}{\index{Observatory@{Observatory}!find\-\_\-dst\-\_\-bounds@{find\-\_\-dst\-\_\-bounds}}
+\index{find\-\_\-dst\-\_\-bounds@{find\-\_\-dst\-\_\-bounds}!Observatory@{Observatory}}
+\subsubsection[{find\-\_\-dst\-\_\-bounds}]{\setlength{\rightskip}{0pt plus 5cm}void Observatory\-::find\-\_\-dst\-\_\-bounds (
+\begin{DoxyParamCaption}
+\item[{int}]{yr, }
+\item[{short}]{stdz, }
+\item[{int}]{use\-\_\-dst, }
+\item[{double $\ast$}]{jdb, }
+\item[{double $\ast$}]{jde}
+\end{DoxyParamCaption}
+)}}\label{class_observatory_af2e5cc35a9a68fc1c36c749ccc015719}
+
+
+Finds jd's at which daylight savings time begins and ends. 
+
+The parameter use\-\_\-dst allows for a number of conventions, namely\-: 0 = don't use it at all (standard time all the time) 1 = use U\-S\-A convention (1st \hyperlink{class_sun}{Sun} in April to last \hyperlink{class_sun}{Sun} in Oct after 1986; last \hyperlink{class_sun}{Sun} in April before) 2 = use Spanish convention (for Canary Islands) -\/1 = use Chilean convention (C\-T\-I\-O). -\/2 = Australian convention (for A\-A\-T). Negative numbers denote sites in the southern hemisphere, where jdb and jde are beginning and end of S\-T\-A\-N\-D\-A\-R\-D time for the year. It's assumed that the time changes at 2\-A\-M local time; so when clock is set ahead, time jumps suddenly from 2 to 3, and when time is set back, the hour from 1 to 2 A\-M local time is repeated. This could be changed in code if need be. 
+
+\subsection{Member Data Documentation}
+\hypertarget{class_observatory_acb7be3c8fdae5a921718d7de3e53def8}{\index{Observatory@{Observatory}!elevation@{elevation}}
+\index{elevation@{elevation}!Observatory@{Observatory}}
+\subsubsection[{elevation}]{\setlength{\rightskip}{0pt plus 5cm}double Observatory\-::elevation}}\label{class_observatory_acb7be3c8fdae5a921718d7de3e53def8}
+
+
+Elevation above the horizon (for rise/set calculations) 
+
+Elevations\-: There are two separate elevation parameters specified. \par
+ Variable elevation is the elevation above the horizon used only in rise/set calculations and adjusts rise/set times assuming the parameter is the elevation above flat surroundings (e. g., an ocean). (following skycalc, John Thorstensen, Dartmouth College.) \hypertarget{class_observatory_afb7b978a4a804e1f1b7b18355d2bd2be}{\index{Observatory@{Observatory}!elevsea@{elevsea}}
+\index{elevsea@{elevsea}!Observatory@{Observatory}}
+\subsubsection[{elevsea}]{\setlength{\rightskip}{0pt plus 5cm}double Observatory\-::elevsea}}\label{class_observatory_afb7b978a4a804e1f1b7b18355d2bd2be}
+
+
+True elevation above sea level (for absolute location) 
+
+Elevations\-: There are two separate elevation parameters specified. \par
+ Variable elevsea is the true elevation above sea level is used (together with an ellipsoidal earth figure) in determining the observatory's geocentric coordinates for use in the topocentric correction of the moon's position and in the calculation of the diurnal rotation part of the barycentric velocity correction. (following skycalc, John Thorstensen, Dartmouth College.) \hypertarget{class_observatory_a6e5da8fe4abb0590322d435eeb557758}{\index{Observatory@{Observatory}!magsky@{magsky}}
+\index{magsky@{magsky}!Observatory@{Observatory}}
+\subsubsection[{magsky}]{\setlength{\rightskip}{0pt plus 5cm}double Observatory\-::magsky\mbox{[}9\mbox{]}}}\label{class_observatory_a6e5da8fe4abb0590322d435eeb557758}
+
+
+Sky magnitudes. 
+
+magnitude per square arc second in 9 visible/near infrared filters (default values are given in constructor) \hypertarget{class_observatory_a98979301df0236da8fa1fbb857ef6ee6}{\index{Observatory@{Observatory}!use\-\_\-dst@{use\-\_\-dst}}
+\index{use\-\_\-dst@{use\-\_\-dst}!Observatory@{Observatory}}
+\subsubsection[{use\-\_\-dst}]{\setlength{\rightskip}{0pt plus 5cm}int Observatory\-::use\-\_\-dst}}\label{class_observatory_a98979301df0236da8fa1fbb857ef6ee6}
+
+
+Daylight saving time use. 
+
+use\-\_\-dst = 0 don't use day save time parameter \par
+ 1 use U\-S\-A convention \par
+ 2 use Spanish convention \par
+ $<$ 0 Southern hemisphere (reserved, unimplimented) \par
+ (following skycalc, John Thorstensen, Dartmouth College.) 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/jean-\/francois/instruments/\-G\-F\-T/\-J\-D1\-J\-D2/jd1jd2\-\_\-\-Cpp/observatory.\-h\item 
+/home/jean-\/francois/instruments/\-G\-F\-T/\-J\-D1\-J\-D2/jd1jd2\-\_\-\-Cpp/observatory.\-cpp\end{DoxyCompactItemize}

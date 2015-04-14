@@ -1,0 +1,14 @@
+date     	1987 3 15 20 0 0
+site name	Trifouilli les Oies
+latitude 	45.67
+longitude	-1.234
+elevation	789
+zone_name	Greenwich
+zabr     	G
+use_dst 	0
+stdz    	0
+ra       	12.3456789
+dec      	9.87654321
+equinoxe	J2000
+min. height	0
+Moon distance	50

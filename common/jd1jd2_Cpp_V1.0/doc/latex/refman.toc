@@ -1,0 +1,83 @@
+\contentsline {chapter}{\numberline {1}Main Page}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Introduction}{1}{section.1.1}
+\contentsline {section}{\numberline {1.2}Installation}{1}{section.1.2}
+\contentsline {section}{\numberline {1.3}Usage}{1}{section.1.3}
+\contentsline {section}{\numberline {1.4}how\discretionary {-}{}{}\_\discretionary {-}{}{}to}{2}{section.1.4}
+\contentsline {chapter}{\numberline {2}Class Index}{3}{chapter.2}
+\contentsline {section}{\numberline {2.1}Class List}{3}{section.2.1}
+\contentsline {chapter}{\numberline {3}Class Documentation}{5}{chapter.3}
+\contentsline {section}{\numberline {3.1}amzer Class Reference}{5}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Detailed Description}{6}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Member Function Documentation}{6}{subsection.3.1.2}
+\contentsline {subsubsection}{\numberline {3.1.2.1}print\discretionary {-}{}{}\_\discretionary {-}{}{}all}{6}{subsubsection.3.1.2.1}
+\contentsline {subsubsection}{\numberline {3.1.2.2}print\discretionary {-}{}{}\_\discretionary {-}{}{}time}{6}{subsubsection.3.1.2.2}
+\contentsline {subsubsection}{\numberline {3.1.2.3}zone}{6}{subsubsection.3.1.2.3}
+\contentsline {section}{\numberline {3.2}Astronomy Class Reference}{6}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Detailed Description}{8}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Member Function Documentation}{8}{subsection.3.2.2}
+\contentsline {subsubsection}{\numberline {3.2.2.1}aberrate}{8}{subsubsection.3.2.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2.2}adj\discretionary {-}{}{}\_\discretionary {-}{}{}time}{8}{subsubsection.3.2.2.2}
+\contentsline {subsubsection}{\numberline {3.2.2.3}barycor}{8}{subsubsection.3.2.2.3}
+\contentsline {subsubsection}{\numberline {3.2.2.4}eclipt}{9}{subsubsection.3.2.2.4}
+\contentsline {subsubsection}{\numberline {3.2.2.5}etcorr}{9}{subsubsection.3.2.2.5}
+\contentsline {subsubsection}{\numberline {3.2.2.6}galact}{9}{subsubsection.3.2.2.6}
+\contentsline {subsubsection}{\numberline {3.2.2.7}geocent}{9}{subsubsection.3.2.2.7}
+\contentsline {subsubsection}{\numberline {3.2.2.8}ha\discretionary {-}{}{}\_\discretionary {-}{}{}alt}{9}{subsubsection.3.2.2.8}
+\contentsline {subsubsection}{\numberline {3.2.2.9}helcor}{9}{subsubsection.3.2.2.9}
+\contentsline {subsubsection}{\numberline {3.2.2.10}horiz\discretionary {-}{}{}Coord}{9}{subsubsection.3.2.2.10}
+\contentsline {subsubsection}{\numberline {3.2.2.11}lsrcor}{10}{subsubsection.3.2.2.11}
+\contentsline {subsubsection}{\numberline {3.2.2.12}lst}{10}{subsubsection.3.2.2.12}
+\contentsline {subsubsection}{\numberline {3.2.2.13}near\discretionary {-}{}{}\_\discretionary {-}{}{}hor\discretionary {-}{}{}\_\discretionary {-}{}{}refr}{10}{subsubsection.3.2.2.13}
+\contentsline {subsubsection}{\numberline {3.2.2.14}nutation\discretionary {-}{}{}\_\discretionary {-}{}{}params}{10}{subsubsection.3.2.2.14}
+\contentsline {subsubsection}{\numberline {3.2.2.15}precess}{10}{subsubsection.3.2.2.15}
+\contentsline {subsubsection}{\numberline {3.2.2.16}print\discretionary {-}{}{}\_\discretionary {-}{}{}time}{11}{subsubsection.3.2.2.16}
+\contentsline {subsubsection}{\numberline {3.2.2.17}print\discretionary {-}{}{}\_\discretionary {-}{}{}time}{11}{subsubsection.3.2.2.17}
+\contentsline {subsubsection}{\numberline {3.2.2.18}refract\discretionary {-}{}{}\_\discretionary {-}{}{}corr}{11}{subsubsection.3.2.2.18}
+\contentsline {subsubsection}{\numberline {3.2.2.19}refract\discretionary {-}{}{}\_\discretionary {-}{}{}size}{11}{subsubsection.3.2.2.19}
+\contentsline {subsubsection}{\numberline {3.2.2.20}secant\discretionary {-}{}{}\_\discretionary {-}{}{}z}{11}{subsubsection.3.2.2.20}
+\contentsline {subsubsection}{\numberline {3.2.2.21}subtend}{11}{subsubsection.3.2.2.21}
+\contentsline {subsubsection}{\numberline {3.2.2.22}true\discretionary {-}{}{}\_\discretionary {-}{}{}airmass}{11}{subsubsection.3.2.2.22}
+\contentsline {subsubsection}{\numberline {3.2.2.23}xyz\discretionary {-}{}{}\_\discretionary {-}{}{}cel}{12}{subsubsection.3.2.2.23}
+\contentsline {subsubsection}{\numberline {3.2.2.24}ztwilight}{12}{subsubsection.3.2.2.24}
+\contentsline {section}{\numberline {3.3}Astronomy\discretionary {-}{}{}:\discretionary {-}{}{}:coord Struct Reference}{12}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Detailed Description}{12}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Member Data Documentation}{12}{subsection.3.3.2}
+\contentsline {subsubsection}{\numberline {3.3.2.1}hh}{12}{subsubsection.3.3.2.1}
+\contentsline {subsubsection}{\numberline {3.3.2.2}mm}{12}{subsubsection.3.3.2.2}
+\contentsline {subsubsection}{\numberline {3.3.2.3}sign}{12}{subsubsection.3.3.2.3}
+\contentsline {subsubsection}{\numberline {3.3.2.4}ss}{13}{subsubsection.3.3.2.4}
+\contentsline {section}{\numberline {3.4}Moon Class Reference}{13}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}Detailed Description}{13}{subsection.3.4.1}
+\contentsline {subsection}{\numberline {3.4.2}Member Function Documentation}{14}{subsection.3.4.2}
+\contentsline {subsubsection}{\numberline {3.4.2.1}accumoon}{14}{subsubsection.3.4.2.1}
+\contentsline {subsubsection}{\numberline {3.4.2.2}flmoon}{14}{subsubsection.3.4.2.2}
+\contentsline {subsubsection}{\numberline {3.4.2.3}jd\discretionary {-}{}{}\_\discretionary {-}{}{}moon\discretionary {-}{}{}\_\discretionary {-}{}{}alt}{14}{subsubsection.3.4.2.3}
+\contentsline {subsubsection}{\numberline {3.4.2.4}lunskybright}{14}{subsubsection.3.4.2.4}
+\contentsline {section}{\numberline {3.5}Observatory Class Reference}{14}{section.3.5}
+\contentsline {subsection}{\numberline {3.5.1}Detailed Description}{16}{subsection.3.5.1}
+\contentsline {subsection}{\numberline {3.5.2}Member Function Documentation}{16}{subsection.3.5.2}
+\contentsline {subsubsection}{\numberline {3.5.2.1}find\discretionary {-}{}{}\_\discretionary {-}{}{}dst\discretionary {-}{}{}\_\discretionary {-}{}{}bounds}{17}{subsubsection.3.5.2.1}
+\contentsline {subsection}{\numberline {3.5.3}Member Data Documentation}{17}{subsection.3.5.3}
+\contentsline {subsubsection}{\numberline {3.5.3.1}elevation}{17}{subsubsection.3.5.3.1}
+\contentsline {subsubsection}{\numberline {3.5.3.2}elevsea}{17}{subsubsection.3.5.3.2}
+\contentsline {subsubsection}{\numberline {3.5.3.3}magsky}{17}{subsubsection.3.5.3.3}
+\contentsline {subsubsection}{\numberline {3.5.3.4}use\discretionary {-}{}{}\_\discretionary {-}{}{}dst}{17}{subsubsection.3.5.3.4}
+\contentsline {section}{\numberline {3.6}Planets\discretionary {-}{}{}:\discretionary {-}{}{}:planetary\discretionary {-}{}{}\_\discretionary {-}{}{}elements Struct Reference}{18}{section.3.6}
+\contentsline {subsection}{\numberline {3.6.1}Detailed Description}{18}{subsection.3.6.1}
+\contentsline {section}{\numberline {3.7}Planets Class Reference}{18}{section.3.7}
+\contentsline {subsection}{\numberline {3.7.1}Detailed Description}{19}{subsection.3.7.1}
+\contentsline {subsection}{\numberline {3.7.2}Member Function Documentation}{19}{subsection.3.7.2}
+\contentsline {subsubsection}{\numberline {3.7.2.1}earthview}{19}{subsubsection.3.7.2.1}
+\contentsline {subsubsection}{\numberline {3.7.2.2}planetvel}{19}{subsubsection.3.7.2.2}
+\contentsline {subsubsection}{\numberline {3.7.2.3}planetxyz}{19}{subsubsection.3.7.2.3}
+\contentsline {subsubsection}{\numberline {3.7.2.4}xyz2000}{20}{subsubsection.3.7.2.4}
+\contentsline {subsubsection}{\numberline {3.7.2.5}xyz2000xf}{20}{subsubsection.3.7.2.5}
+\contentsline {section}{\numberline {3.8}Sun Class Reference}{20}{section.3.8}
+\contentsline {subsection}{\numberline {3.8.1}Detailed Description}{21}{subsection.3.8.1}
+\contentsline {subsection}{\numberline {3.8.2}Member Function Documentation}{21}{subsection.3.8.2}
+\contentsline {subsubsection}{\numberline {3.8.2.1}accusun}{21}{subsubsection.3.8.2.1}
+\contentsline {subsubsection}{\numberline {3.8.2.2}jd\discretionary {-}{}{}\_\discretionary {-}{}{}sun\discretionary {-}{}{}\_\discretionary {-}{}{}alt}{21}{subsubsection.3.8.2.2}
+\contentsline {subsubsection}{\numberline {3.8.2.3}lpsun}{21}{subsubsection.3.8.2.3}
+\contentsline {section}{\numberline {3.9}Twilights Struct Reference}{21}{section.3.9}
+\contentsline {subsection}{\numberline {3.9.1}Detailed Description}{22}{subsection.3.9.1}
+\contentsline {part}{Index}{22}{subsection.3.9.1}

@@ -213,7 +213,7 @@ class OFTThreadManager():
         
         import subprocess
 
-        p = subprocess.Popen(["/home/oftcc/git/ext/jd1jd2_Cpp_V1.0/astro", "-o", "Toulouse"], stdout=subprocess.PIPE)
+        p = subprocess.Popen(["jd1jd2_Cpp_V1.0/astro", "-o", "Toulouse"], stdout=subprocess.PIPE)
 
         a =  p.communicate()
 

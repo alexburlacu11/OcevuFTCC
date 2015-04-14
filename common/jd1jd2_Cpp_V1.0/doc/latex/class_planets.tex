@@ -1,0 +1,138 @@
+\hypertarget{class_planets}{\section{Planets Class Reference}
+\label{class_planets}\index{Planets@{Planets}}
+}
+
+
+Classe defining planets.  
+
+
+
+
+{\ttfamily \#include $<$planets.\-h$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_planets_1_1planetary__elements}{planetary\-\_\-elements}
+\begin{DoxyCompactList}\small\item\em Structure defining elements of planetary orbits. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_planets_ad8993cde6df4be7c538b95f543f10baf}{\hyperlink{class_planets_ad8993cde6df4be7c538b95f543f10baf}{Planets} ()}\label{class_planets_ad8993cde6df4be7c538b95f543f10baf}
+
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hypertarget{class_planets_acc22f0f7e028a47458df1651b9439dce}{\hyperlink{class_planets_acc22f0f7e028a47458df1651b9439dce}{$\sim$\-Planets} ()}\label{class_planets_acc22f0f7e028a47458df1651b9439dce}
+
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\hypertarget{class_planets_a9cd1fa6bce61f7c26ab039178b721466}{void \hyperlink{class_planets_a9cd1fa6bce61f7c26ab039178b721466}{comp\-\_\-el} (double jd)}\label{class_planets_a9cd1fa6bce61f7c26ab039178b721466}
+
+\begin{DoxyCompactList}\small\item\em Computes and loads mean elements for planets. \end{DoxyCompactList}\item 
+void \hyperlink{class_planets_affe556f802a6f7788a4956f79a17c38e}{planetxyz} (int p, double jd, double $\ast$x, double $\ast$y, double $\ast$z)
+\begin{DoxyCompactList}\small\item\em Produces ecliptic x,y,z coordinates for planet number 'p' at date jd. \end{DoxyCompactList}\item 
+void \hyperlink{class_planets_acef63742b8b2a08ae1c661fb0dcc25ce}{planetvel} (int p, double jd, double $\ast$vx, double $\ast$vy, double $\ast$vz)
+\begin{DoxyCompactList}\small\item\em Numerically evaluates planet velocity by brute-\/force. \end{DoxyCompactList}\item 
+string \hyperlink{class_planets_a72d643faf2889a444075e30f1b15e1d0}{xyz2000} (double jd, double $\ast$x, double $\ast$y, double $\ast$z)
+\begin{DoxyCompactList}\small\item\em Simply transforms a vector x, y, and z to 2000 coordinates and prints. \end{DoxyCompactList}\item 
+void \hyperlink{class_planets_a7be7ec28b633078e65adbab649435f4b}{xyz2000xf} (double jd, double $\ast$x, double $\ast$y, double $\ast$z)
+\begin{DoxyCompactList}\small\item\em Simply transforms a vector x, y, and z to 2000 coordinates. \end{DoxyCompactList}\item 
+void \hyperlink{class_planets_a25151a9bf62f71ce140a5c64bc3647c6}{earthview} (double $\ast$x, double $\ast$y, double $\ast$z, int i, double $\ast$ra, double $\ast$dec)
+\begin{DoxyCompactList}\small\item\em Computes ra and dec of i-\/th planet as viewed from earth. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_planets_ad1ee0d2896bc3fea9267da61312cd349}{\hyperlink{struct_planets_1_1planetary__elements}{planetary\-\_\-elements} {\bfseries el} \mbox{[}10\mbox{]}}\label{class_planets_ad1ee0d2896bc3fea9267da61312cd349}
+
+\item 
+\hypertarget{class_planets_af55461b142ed737b8778161fa458215c}{double {\bfseries jd\-\_\-el}}\label{class_planets_af55461b142ed737b8778161fa458215c}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Classe defining planets. 
+
+Adapted from c program skycalc by John Thorstensen, Dartmouth College. J\-F\-L\-B 2009/07
+
+Planetary part. The intention of this is to compute low-\/precision planetary positions for general info and to inform user if observation might be interfered with by a planet -- a rarity, but it happens. Also designed to make handy low-\/precision planet positions available for casual planning purposes. Do not try to point blindly right at the middle of a planetary disk with these routines! 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_planets_a25151a9bf62f71ce140a5c64bc3647c6}{\index{Planets@{Planets}!earthview@{earthview}}
+\index{earthview@{earthview}!Planets@{Planets}}
+\subsubsection[{earthview}]{\setlength{\rightskip}{0pt plus 5cm}void Planets\-::earthview (
+\begin{DoxyParamCaption}
+\item[{double $\ast$}]{x, }
+\item[{double $\ast$}]{y, }
+\item[{double $\ast$}]{z, }
+\item[{int}]{i, }
+\item[{double $\ast$}]{ra, }
+\item[{double $\ast$}]{dec}
+\end{DoxyParamCaption}
+)}}\label{class_planets_a25151a9bf62f71ce140a5c64bc3647c6}
+
+
+Computes ra and dec of i-\/th planet as viewed from earth. 
+
+Given computed planet positions for planets 1-\/10, computes ra and dec of i-\/th planet as viewed from earth (3rd); \hypertarget{class_planets_acef63742b8b2a08ae1c661fb0dcc25ce}{\index{Planets@{Planets}!planetvel@{planetvel}}
+\index{planetvel@{planetvel}!Planets@{Planets}}
+\subsubsection[{planetvel}]{\setlength{\rightskip}{0pt plus 5cm}void Planets\-::planetvel (
+\begin{DoxyParamCaption}
+\item[{int}]{p, }
+\item[{double}]{jd, }
+\item[{double $\ast$}]{vx, }
+\item[{double $\ast$}]{vy, }
+\item[{double $\ast$}]{vz}
+\end{DoxyParamCaption}
+)}}\label{class_planets_acef63742b8b2a08ae1c661fb0dcc25ce}
+
+
+Numerically evaluates planet velocity by brute-\/force. 
+
+numerical differentiation. Very unsophisticated algorithm. \hypertarget{class_planets_affe556f802a6f7788a4956f79a17c38e}{\index{Planets@{Planets}!planetxyz@{planetxyz}}
+\index{planetxyz@{planetxyz}!Planets@{Planets}}
+\subsubsection[{planetxyz}]{\setlength{\rightskip}{0pt plus 5cm}void Planets\-::planetxyz (
+\begin{DoxyParamCaption}
+\item[{int}]{p, }
+\item[{double}]{jd, }
+\item[{double $\ast$}]{x, }
+\item[{double $\ast$}]{y, }
+\item[{double $\ast$}]{z}
+\end{DoxyParamCaption}
+)}}\label{class_planets_affe556f802a6f7788a4956f79a17c38e}
+
+
+Produces ecliptic x,y,z coordinates for planet number 'p' at date jd. 
+
+see 1992 Astronomical Almanac, p. E 4 for these formulae. \hypertarget{class_planets_a72d643faf2889a444075e30f1b15e1d0}{\index{Planets@{Planets}!xyz2000@{xyz2000}}
+\index{xyz2000@{xyz2000}!Planets@{Planets}}
+\subsubsection[{xyz2000}]{\setlength{\rightskip}{0pt plus 5cm}string Planets\-::xyz2000 (
+\begin{DoxyParamCaption}
+\item[{double}]{jd, }
+\item[{double $\ast$}]{x, }
+\item[{double $\ast$}]{y, }
+\item[{double $\ast$}]{z}
+\end{DoxyParamCaption}
+)}}\label{class_planets_a72d643faf2889a444075e30f1b15e1d0}
+
+
+Simply transforms a vector x, y, and z to 2000 coordinates and prints. 
+
+for use in diagnostics. answer should be in ecliptic coordinates, in A\-U per day. \hypertarget{class_planets_a7be7ec28b633078e65adbab649435f4b}{\index{Planets@{Planets}!xyz2000xf@{xyz2000xf}}
+\index{xyz2000xf@{xyz2000xf}!Planets@{Planets}}
+\subsubsection[{xyz2000xf}]{\setlength{\rightskip}{0pt plus 5cm}void Planets\-::xyz2000xf (
+\begin{DoxyParamCaption}
+\item[{double}]{jd, }
+\item[{double $\ast$}]{x, }
+\item[{double $\ast$}]{y, }
+\item[{double $\ast$}]{z}
+\end{DoxyParamCaption}
+)}}\label{class_planets_a7be7ec28b633078e65adbab649435f4b}
+
+
+Simply transforms a vector x, y, and z to 2000 coordinates. 
+
+and hands it back through pointers. For really transforming it! 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/jean-\/francois/instruments/\-G\-F\-T/\-J\-D1\-J\-D2/jd1jd2\-\_\-\-Cpp/planets.\-h\item 
+/home/jean-\/francois/instruments/\-G\-F\-T/\-J\-D1\-J\-D2/jd1jd2\-\_\-\-Cpp/planets.\-cpp\end{DoxyCompactItemize}

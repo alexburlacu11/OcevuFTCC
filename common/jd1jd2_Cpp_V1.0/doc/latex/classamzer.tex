@@ -1,0 +1,120 @@
+\hypertarget{classamzer}{\section{amzer Class Reference}
+\label{classamzer}\index{amzer@{amzer}}
+}
+
+
+Class containing parameters and methods defining a time.  
+
+
+
+
+{\ttfamily \#include $<$amzer.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classamzer_ad5dd172e07b806de2ab9a59c17bff1c0}{\hyperlink{classamzer_ad5dd172e07b806de2ab9a59c17bff1c0}{amzer} ()}\label{classamzer_ad5dd172e07b806de2ab9a59c17bff1c0}
+
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hypertarget{classamzer_a5adfef80c7854a3c290385ae4a6d903b}{\hyperlink{classamzer_a5adfef80c7854a3c290385ae4a6d903b}{$\sim$amzer} ()}\label{classamzer_a5adfef80c7854a3c290385ae4a6d903b}
+
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+\hypertarget{classamzer_a447c26e968e1cfe9361e99dccabe9a51}{void \hyperlink{classamzer_a447c26e968e1cfe9361e99dccabe9a51}{J\-D2calendar} ()}\label{classamzer_a447c26e968e1cfe9361e99dccabe9a51}
+
+\begin{DoxyCompactList}\small\item\em Computes calendar date for a given julian date. \end{DoxyCompactList}\item 
+\hypertarget{classamzer_a7aefd80726aa80d5d0ebb60768754451}{void \hyperlink{classamzer_a7aefd80726aa80d5d0ebb60768754451}{calendar2\-J\-D} ()}\label{classamzer_a7aefd80726aa80d5d0ebb60768754451}
+
+\begin{DoxyCompactList}\small\item\em Computes julian date for a given calendar date. \end{DoxyCompactList}\item 
+\hypertarget{classamzer_a99086d2ea8467c2f66e4de033861fb67}{int \hyperlink{classamzer_a99086d2ea8467c2f66e4de033861fb67}{day\-\_\-of\-\_\-week} ()}\label{classamzer_a99086d2ea8467c2f66e4de033861fb67}
+
+\begin{DoxyCompactList}\small\item\em returns day of week for a jd, 0 = Mon, 6 = \hyperlink{class_sun}{Sun}. \end{DoxyCompactList}\item 
+\hypertarget{classamzer_a857caa57e20a4a316475364d15e9e23b}{double \hyperlink{classamzer_a857caa57e20a4a316475364d15e9e23b}{day\-\_\-of\-\_\-year} ()}\label{classamzer_a857caa57e20a4a316475364d15e9e23b}
+
+\begin{DoxyCompactList}\small\item\em returns day of year \end{DoxyCompactList}\item 
+\hypertarget{classamzer_aaa17cf34497804b03e1922f8ac8f4d81}{string \hyperlink{classamzer_aaa17cf34497804b03e1922f8ac8f4d81}{print\-\_\-day} (int d)}\label{classamzer_aaa17cf34497804b03e1922f8ac8f4d81}
+
+\begin{DoxyCompactList}\small\item\em Prints in a string day of week given number 0=Mon,6=\hyperlink{class_sun}{Sun}. \end{DoxyCompactList}\item 
+string \hyperlink{classamzer_a83c30d27eb7e5068f470d2b9971310e7}{print\-\_\-all} (int U\-T, int sec\-Prec)
+\begin{DoxyCompactList}\small\item\em Prints time in a string\-: year, month, day, hour, minute, second. \end{DoxyCompactList}\item 
+\hypertarget{classamzer_a21e2eeb1774d428741d418626496b2d9}{string \hyperlink{classamzer_a21e2eeb1774d428741d418626496b2d9}{print\-\_\-calendar} ()}\label{classamzer_a21e2eeb1774d428741d418626496b2d9}
+
+\begin{DoxyCompactList}\small\item\em Prints in a string a year, month, day. \end{DoxyCompactList}\item 
+string \hyperlink{classamzer_ae04ab4c4e11b6495bf50597bfcf2d371}{print\-\_\-time} (int U\-T, int sec\-Prec)
+\begin{DoxyCompactList}\small\item\em Prints time (h m s) in a string. \end{DoxyCompactList}\item 
+double \hyperlink{classamzer_a6ead4d59a18832d743ee18c92111b3b1}{zone} (int use\-\_\-dst, double stdz, double jd, double jdb, double jde)
+\begin{DoxyCompactList}\small\item\em Returns zone time offset when standard time zone is stdz,. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classamzer_a89ef2e4431b265699e5fc492a20040e4}{double \hyperlink{classamzer_a89ef2e4431b265699e5fc492a20040e4}{J\-D}}\label{classamzer_a89ef2e4431b265699e5fc492a20040e4}
+
+\begin{DoxyCompactList}\small\item\em Julian date. \end{DoxyCompactList}\item 
+\hypertarget{classamzer_aac3c9decc5d31db195c0d57ab61b28b1}{int \hyperlink{classamzer_aac3c9decc5d31db195c0d57ab61b28b1}{day}}\label{classamzer_aac3c9decc5d31db195c0d57ab61b28b1}
+
+\begin{DoxyCompactList}\small\item\em day part \end{DoxyCompactList}\item 
+\hypertarget{classamzer_af389231e2040cc77fa46a0ba3a290a86}{int \hyperlink{classamzer_af389231e2040cc77fa46a0ba3a290a86}{month}}\label{classamzer_af389231e2040cc77fa46a0ba3a290a86}
+
+\begin{DoxyCompactList}\small\item\em month part \end{DoxyCompactList}\item 
+\hypertarget{classamzer_ab41100919229e63daf7aa026dbac0008}{int \hyperlink{classamzer_ab41100919229e63daf7aa026dbac0008}{year}}\label{classamzer_ab41100919229e63daf7aa026dbac0008}
+
+\begin{DoxyCompactList}\small\item\em year part \end{DoxyCompactList}\item 
+\hypertarget{classamzer_a1c082f5edd1446f7c8f4e0fdb4c728ca}{int \hyperlink{classamzer_a1c082f5edd1446f7c8f4e0fdb4c728ca}{hour}}\label{classamzer_a1c082f5edd1446f7c8f4e0fdb4c728ca}
+
+\begin{DoxyCompactList}\small\item\em hour part \end{DoxyCompactList}\item 
+\hypertarget{classamzer_aab2447c03345ad30e56cafe230cf1756}{int \hyperlink{classamzer_aab2447c03345ad30e56cafe230cf1756}{min}}\label{classamzer_aab2447c03345ad30e56cafe230cf1756}
+
+\begin{DoxyCompactList}\small\item\em minute part \end{DoxyCompactList}\item 
+\hypertarget{classamzer_a45fc414b5cd6c9bfcbc3413d49859300}{double \hyperlink{classamzer_a45fc414b5cd6c9bfcbc3413d49859300}{second}}\label{classamzer_a45fc414b5cd6c9bfcbc3413d49859300}
+
+\begin{DoxyCompactList}\small\item\em second part \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class containing parameters and methods defining a time. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classamzer_a83c30d27eb7e5068f470d2b9971310e7}{\index{amzer@{amzer}!print\-\_\-all@{print\-\_\-all}}
+\index{print\-\_\-all@{print\-\_\-all}!amzer@{amzer}}
+\subsubsection[{print\-\_\-all}]{\setlength{\rightskip}{0pt plus 5cm}string amzer\-::print\-\_\-all (
+\begin{DoxyParamCaption}
+\item[{int}]{U\-T, }
+\item[{int}]{sec\-Prec}
+\end{DoxyParamCaption}
+)}}\label{classamzer_a83c30d27eb7e5068f470d2b9971310e7}
+
+
+Prints time in a string\-: year, month, day, hour, minute, second. 
+
+add a statement of whether time is \char`\"{}local\char`\"{} (U\-T=0) or \char`\"{}ut\char`\"{} (U\-T=1) \hypertarget{classamzer_ae04ab4c4e11b6495bf50597bfcf2d371}{\index{amzer@{amzer}!print\-\_\-time@{print\-\_\-time}}
+\index{print\-\_\-time@{print\-\_\-time}!amzer@{amzer}}
+\subsubsection[{print\-\_\-time}]{\setlength{\rightskip}{0pt plus 5cm}string amzer\-::print\-\_\-time (
+\begin{DoxyParamCaption}
+\item[{int}]{U\-T, }
+\item[{int}]{sec\-Prec}
+\end{DoxyParamCaption}
+)}}\label{classamzer_ae04ab4c4e11b6495bf50597bfcf2d371}
+
+
+Prints time (h m s) in a string. 
+
+add a statement of whether time is \char`\"{}local\char`\"{} (U\-T=0) or \char`\"{}ut\char`\"{} (U\-T=1) \hypertarget{classamzer_a6ead4d59a18832d743ee18c92111b3b1}{\index{amzer@{amzer}!zone@{zone}}
+\index{zone@{zone}!amzer@{amzer}}
+\subsubsection[{zone}]{\setlength{\rightskip}{0pt plus 5cm}double amzer\-::zone (
+\begin{DoxyParamCaption}
+\item[{int}]{use\-\_\-dst, }
+\item[{double}]{stdz, }
+\item[{double}]{jd, }
+\item[{double}]{jdb, }
+\item[{double}]{jde}
+\end{DoxyParamCaption}
+)}}\label{classamzer_a6ead4d59a18832d743ee18c92111b3b1}
+
+
+Returns zone time offset when standard time zone is stdz,. 
+
+when daylight time begins (for the year) on jdb, and ends (for the year) on jde. Specifying a negative value of use\-\_\-dst reverses the logic for the Southern hemisphere; then D\-S\-T is assumed for the Southern hemisphere summer (which is the end and beginning$\ast$ of the year. 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/jean-\/francois/instruments/\-G\-F\-T/\-J\-D1\-J\-D2/jd1jd2\-\_\-\-Cpp/amzer.\-h\item 
+/home/jean-\/francois/instruments/\-G\-F\-T/\-J\-D1\-J\-D2/jd1jd2\-\_\-\-Cpp/amzer.\-cpp\end{DoxyCompactItemize}

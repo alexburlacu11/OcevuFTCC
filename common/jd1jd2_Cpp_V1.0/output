@@ -1,0 +1,45 @@
+
+############################################################################'.
+Astronomical calculator program, adaptation of John Thorstensen's 'skycalc'.
+
+Observatory: San Pedro Martir
+geographic coordinates (latitude, longitude): 31.0367, 7.69755 elevation: 2800 m
+Date Mon -1090518785 Jan -20248 -1866244609:-443987883:-22763241602847628832159359549924626310456811593248335607371908342396455120413762189030687711069592693404936699910728351202564825927302968690064485354903469349505375781575609430531623798941586997667305955834664087056755681362355398727504383642757058887219707341524506247168.000 UT
+Julian date   2446492.54167
+
+Local midnight = Mon 3 Mar 1986, 8:0:0.0 UT, or JD 2446492.833
+Local mean sidereal time at 0hUT 	  11:01:22.215
+
+
+Coordinates of Sun at 0hUT  
+Sun RA and dec: 	  22:55:16.9, 	  -6:53:20.6
+Sun RA and dec topo: 	  22:55:16.9, 	  -6:53:24.1
+Sun distance: 	0.991 AU
+Sun x,y,z: 	-0.945 0.274 0.119 AU
+
+Coordinates of Moon at 0hUT  
+Geocentric coordinates:  16.000h31.000m47.930s         25.000°10.000'13.756"
+Topocentric coordinates: 16.000h35.000m31.040s         25.000°40.000'15.112"
+
+Coordinates of Moon at 0hUT  
+Geocentric coordinates:  16.000h31.000m47.930s         25.000°10.000'13.756"
+Topocentric coordinates: 16.000h35.000m31.040s         25.000°40.000'15.112"
+
+18° twilight (astronomical): Evening: 3:1:19.5 UT    Morning:   12:46:6.9 UT
+12° twilight (nautical):     Evening: 2:33:17.7 UT    Morning:   13:14:6.8 UT
+night center: 	23:53:39.8 UT
+
+
+Moonrise: 	0:38:45.8 UT
+Moon at civil midnight: illuminated fraction 0.513
+0.18 days before last quarter
+Moon RA and dec: 	  16:35:31.0, 	 -25:40:15.1
+
+
+The sun is down for 12.4 hr; 
+9.7 hr from eve->morn 18 deg twilight.
+5.6 dark hours after end of twilight and before moonrise.
+
+
+############################################################################'.
+

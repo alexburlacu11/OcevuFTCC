@@ -1,0 +1,30 @@
+\par
+ \section*{C++ Classes for astronomical calculations}
+
+\par
+ A C++ library\par
+ by Jean-\/\-Francois Le Borgne, Astronomer at {\itshape I\-R\-A\-P}, {\itshape Observatoire Midi-\/\-Pyrénées}, Toulouse, F E\-U\par
+ Adapted from c program skycalc by John Thorstensen, Dartmouth College, Hanover, N\-H U\-S\-A. Version 6.\-1, 2005 which uses Jean Meeus' algorithms ({\bfseries Astronomical Formulae For Calculators, pub. Willman-\/\-Bell.}, 1985)\par
+ \href{http://www.dartmouth.edu/~physics/people/faculty/thorstensen.html}{\tt http\-://www.\-dartmouth.\-edu/$\sim$physics/people/faculty/thorstensen.\-html}\par
+\hypertarget{index_intro_sec}{}\section{Introduction}\label{index_intro_sec}
+Most comments in code and documentation are from John Thorstensen's code.\hypertarget{index_install_sec}{}\section{Installation}\label{index_install_sec}
+g++ -\/o astro observatory.\-cpp amzer.\-cpp astronomy.\-cpp sun.\-cpp moon.\-cpp planets.\-cpp main.\-cpp\hypertarget{index_Usage}{}\section{Usage}\label{index_Usage}
+./astro \mbox{[}-\/h\mbox{]} \mbox{[}-\/f filename\mbox{]}\par
+ ./astro \mbox{[}-\/h\mbox{]} \mbox{[}-\/o name\mbox{]} \mbox{[}-\/d date\mbox{]} $|$$|$ \mbox{[}-\/j J\-D\mbox{]} \mbox{[}-\/c ra dec equinoxe -\/m\mbox{]}\par
+ -\/h \-: help\par
+ -\/v \-: verbose\par
+ -\/f filename \-: parameter file\par
+ -\/o name \-: observatory name\par
+ -\/d date \-: calendar date (ex. 2014 6 25 19 35 45.\-6)\par
+ -\/j J\-D \-: julian date (ex. 2456834.\-3165)\par
+ -\/c ra dec equinoxe \-: equatorial coordiantes of object\par
+ -\/m minimum height of object above horizon ($>$0)\par
+ -\/l limit acceptable distance to the \hyperlink{class_moon}{Moon} (degrees)\par
+ \par
+ Examples\-: ./astro -\/o "La Silla"\par
+ ./astro -\/o Toulouse\par
+ ./astro -\/f parameters.\-txt$<$\-B\-R$>$ \par
+ (-\/o -\/d -\/j -\/c) and -\/f options are incompatible. if both are used, -\/f superseed -\/o\par
+ -\/d and -\/j are are 2 options for the same parameter, the date. if both are used, -\/j superseed -\/d\par
+\hypertarget{index_how_to}{}\section{how\-\_\-to}\label{index_how_to}
+How to use this document 

@@ -1,0 +1,114 @@
+\hypertarget{class_sun}{\section{Sun Class Reference}
+\label{class_sun}\index{Sun@{Sun}}
+}
+
+
+Class containing methods concerning the \hyperlink{class_sun}{Sun}.  
+
+
+
+
+{\ttfamily \#include $<$sun.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_sun_aa3e508ffefb0cb76e55c2bdefdc907d1}{\hyperlink{class_sun_aa3e508ffefb0cb76e55c2bdefdc907d1}{Sun} ()}\label{class_sun_aa3e508ffefb0cb76e55c2bdefdc907d1}
+
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hypertarget{class_sun_a4e43fa67eca98adfb1fa900207af6120}{\hyperlink{class_sun_a4e43fa67eca98adfb1fa900207af6120}{$\sim$\-Sun} ()}\label{class_sun_a4e43fa67eca98adfb1fa900207af6120}
+
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \hyperlink{class_sun_aa4c863a1a8b7bcacf9c22b452c5ddae1}{lpsun} (double jd, double $\ast$\hyperlink{class_sun_a0edd085c46f080d5ee0d74b6d02c6882}{ra}, double $\ast$\hyperlink{class_sun_a0b28686e74b71ce04babcca5c366b2f8}{dec})
+\begin{DoxyCompactList}\small\item\em Low precision formulae for the sun,. \end{DoxyCompactList}\item 
+void \hyperlink{class_sun_af16ee9f8ae55645a636b3dafdea4821b}{accusun} (double jd, double lst, double geolat, \hyperlink{class_sun}{Sun} $\ast$sun)
+\begin{DoxyCompactList}\small\item\em More accurate solar ephemeris. \end{DoxyCompactList}\item 
+double \hyperlink{class_sun_a07495ac3dcccae90321aa41758e2de87}{jd\-\_\-sun\-\_\-alt} (double alt, double jdguess, double lat, double longit)
+\begin{DoxyCompactList}\small\item\em Returns jd at which sun is at a given altitude,. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_sun_a0edd085c46f080d5ee0d74b6d02c6882}{double \hyperlink{class_sun_a0edd085c46f080d5ee0d74b6d02c6882}{ra}}\label{class_sun_a0edd085c46f080d5ee0d74b6d02c6882}
+
+\begin{DoxyCompactList}\small\item\em Geocentric equatorial coordinates of the \hyperlink{class_sun}{Sun}\-: right ascension (decimal hours) \end{DoxyCompactList}\item 
+\hypertarget{class_sun_a0b28686e74b71ce04babcca5c366b2f8}{double \hyperlink{class_sun_a0b28686e74b71ce04babcca5c366b2f8}{dec}}\label{class_sun_a0b28686e74b71ce04babcca5c366b2f8}
+
+\begin{DoxyCompactList}\small\item\em Geocentric equatorial coordinates of the \hyperlink{class_sun}{Sun}\-: right declination (decimal degrees) \end{DoxyCompactList}\item 
+\hypertarget{class_sun_a0a3680a99a1434eac81dab077b2ccf61}{double \hyperlink{class_sun_a0a3680a99a1434eac81dab077b2ccf61}{dist}}\label{class_sun_a0a3680a99a1434eac81dab077b2ccf61}
+
+\begin{DoxyCompactList}\small\item\em Geocentric distance of the \hyperlink{class_sun}{Sun} (earth radii. \end{DoxyCompactList}\item 
+\hypertarget{class_sun_ad5481da59fd93209ffabd2ed68d7562b}{double \hyperlink{class_sun_ad5481da59fd93209ffabd2ed68d7562b}{topora}}\label{class_sun_ad5481da59fd93209ffabd2ed68d7562b}
+
+\begin{DoxyCompactList}\small\item\em Topocentric equatorial coordinates of the \hyperlink{class_sun}{Sun}\-: right ascension (decimal hours) \end{DoxyCompactList}\item 
+\hypertarget{class_sun_a6d9237d4bd53837a42de69caa11c4cfd}{double \hyperlink{class_sun_a6d9237d4bd53837a42de69caa11c4cfd}{topodec}}\label{class_sun_a6d9237d4bd53837a42de69caa11c4cfd}
+
+\begin{DoxyCompactList}\small\item\em Topocentric equatorial coordinates of the \hyperlink{class_sun}{Sun}\-: right declination (decimal degrees) \end{DoxyCompactList}\item 
+\hypertarget{class_sun_a7b6ac5d2e2442d5e3cd467050bc282e3}{double \hyperlink{class_sun_a7b6ac5d2e2442d5e3cd467050bc282e3}{x}}\label{class_sun_a7b6ac5d2e2442d5e3cd467050bc282e3}
+
+\begin{DoxyCompactList}\small\item\em x, y, and z are heliocentric equatorial coordinates of the E\-A\-R\-T\-H, referred to mean equator and equinox of date. \end{DoxyCompactList}\item 
+\hypertarget{class_sun_a0d8d19d9018b990b6bc5dc1c138d5d26}{double {\bfseries y}}\label{class_sun_a0d8d19d9018b990b6bc5dc1c138d5d26}
+
+\item 
+\hypertarget{class_sun_a9420be57e98178d64e8d68ab8fa92f90}{double {\bfseries z}}\label{class_sun_a9420be57e98178d64e8d68ab8fa92f90}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class containing methods concerning the \hyperlink{class_sun}{Sun}. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_sun_af16ee9f8ae55645a636b3dafdea4821b}{\index{Sun@{Sun}!accusun@{accusun}}
+\index{accusun@{accusun}!Sun@{Sun}}
+\subsubsection[{accusun}]{\setlength{\rightskip}{0pt plus 5cm}void Sun\-::accusun (
+\begin{DoxyParamCaption}
+\item[{double}]{jd, }
+\item[{double}]{lst, }
+\item[{double}]{geolat, }
+\item[{{\bf Sun} $\ast$}]{sun}
+\end{DoxyParamCaption}
+)}}\label{class_sun_af16ee9f8ae55645a636b3dafdea4821b}
+
+
+More accurate solar ephemeris. 
+
+Implemenataion of Jean Meeus' more accurate solar ephemeris. \par
+ For ultimate use in helio correction! From Astronomical Formulae for Calculators, pp. 79 ff. This gives sun's position wrt {\itshape mean} equinox of date, not {\itshape apparent}. Accuracy is $<$$<$ 1 arcmin. Positions given are geocentric. Parallax due to observer's position on earth is ignored. This is up to 8 arcsec; Routine is usually a little better than that. \par
+ // -- topocentric correction {\itshape is} included now. -- // \par
+ Light travel time is apparently taken into account for the ra and dec, but the author don't know if aberration is and he don't know if distance is simlarly antedated.
+
+x, y, and z are heliocentric equatorial coordinates of the E\-A\-R\-T\-H, referred to mean equator and equinox of date. \hypertarget{class_sun_a07495ac3dcccae90321aa41758e2de87}{\index{Sun@{Sun}!jd\-\_\-sun\-\_\-alt@{jd\-\_\-sun\-\_\-alt}}
+\index{jd\-\_\-sun\-\_\-alt@{jd\-\_\-sun\-\_\-alt}!Sun@{Sun}}
+\subsubsection[{jd\-\_\-sun\-\_\-alt}]{\setlength{\rightskip}{0pt plus 5cm}double Sun\-::jd\-\_\-sun\-\_\-alt (
+\begin{DoxyParamCaption}
+\item[{double}]{alt, }
+\item[{double}]{jdguess, }
+\item[{double}]{lat, }
+\item[{double}]{longit}
+\end{DoxyParamCaption}
+)}}\label{class_sun_a07495ac3dcccae90321aa41758e2de87}
+
+
+Returns jd at which sun is at a given altitude,. 
+
+given jdguess as a starting point. \par
+ Uses low-\/precision sun, which is plenty good enough. \hypertarget{class_sun_aa4c863a1a8b7bcacf9c22b452c5ddae1}{\index{Sun@{Sun}!lpsun@{lpsun}}
+\index{lpsun@{lpsun}!Sun@{Sun}}
+\subsubsection[{lpsun}]{\setlength{\rightskip}{0pt plus 5cm}void Sun\-::lpsun (
+\begin{DoxyParamCaption}
+\item[{double}]{jd, }
+\item[{double $\ast$}]{ra, }
+\item[{double $\ast$}]{dec}
+\end{DoxyParamCaption}
+)}}\label{class_sun_aa4c863a1a8b7bcacf9c22b452c5ddae1}
+
+
+Low precision formulae for the sun,. 
+
+from Almanac p. C24 (1990) \par
+ ra and dec are returned as decimal hours and decimal degrees. 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/home/jean-\/francois/instruments/\-G\-F\-T/\-J\-D1\-J\-D2/jd1jd2\-\_\-\-Cpp/sun.\-h\item 
+/home/jean-\/francois/instruments/\-G\-F\-T/\-J\-D1\-J\-D2/jd1jd2\-\_\-\-Cpp/sun.\-cpp\end{DoxyCompactItemize}
