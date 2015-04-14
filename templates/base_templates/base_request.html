@@ -42,7 +42,7 @@
 				    <!-- in this example the tree is populated from inline HTML -->
 				    <ul>
 				      <li><!--  ROOT NODE 1 : REQUEST  -->
-				      	<form id="form-req" action="/routinemanagerprocedural/edit_request/{{global_summary.0.items.0}}/" method="get"
+				      	<form id="form-req" action="/routinemanager/edit_request/{{global_summary.0.items.0}}/" method="get"
 												enctype="multipart/form-data">
 													{% csrf_token %}
 													<input type="hidden" name="action" value="edit" />												
@@ -56,7 +56,7 @@
 					          <li id="child_node_1"><!--  Sequence element  -->
 					          	{% for sequence, albums in sequence.items %}
 					          	<!--  Sequence form  -->
-					          	 <form id="form-seq" action="/routinemanagerprocedural/edit_sequence/{{sequence.id}}/" method="get"
+					          	 <form id="form-seq" action="/routinemanager/edit_sequence/{{sequence.id}}/" method="get"
 												enctype="multipart/form-data">
 													{% csrf_token %}
 													<input type="hidden" name="action" value="edit" />												
@@ -70,7 +70,7 @@
 					          	   				{% for album_iterator in albums %}									   		
 									   				{% for album, plans in album_iterator.items %}									   				
 									   					<li><!-- Album form -->
-										   					<form id="form-album" action="/routinemanagerprocedural/edit_album/{{album.id}}/" method="get"
+										   					<form id="form-album" action="/routinemanager/edit_album/{{album.id}}/" method="get"
 																enctype="multipart/form-data">
 																	{% csrf_token %}
 																	<input type="hidden" name="action" value="edit" />																	
@@ -83,7 +83,7 @@
 									   						<ul> <!-- unordered list of plans -->
 									   							{% for plan in plans %}
 									   								<li><!-- plan item and form -->
-										   								<form id="form-plan" action="/routinemanagerprocedural/edit_plan/{{plan.id}}/" method="get"
+										   								<form id="form-plan" action="/routinemanager/edit_plan/{{plan.id}}/" method="get"
 																		enctype="multipart/form-data">
 																			{% csrf_token %}
 																			<input type="hidden" name="action" value="edit" />																			
