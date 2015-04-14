@@ -23,17 +23,10 @@ class Test_Suite_for_Planner(unittest.TestCase):
 
 
         """
-        print("SETUP")
-        try:
-            if self.s1: print("S1 EXISTE !!!")
-            else: print("s1 non existante")
-        except:
-            print("coucou")
+       
         self.planning = Planning( 0.0, [] , 0.0, 0.0, 0.0, 0.0)
-#         self.planStart = 2456959.18000000
-#         self.planEnd =   2456959.99000000
-        self.planStart = 1
-        self.planEnd =   10
+        self.planStart = 2456959.18000000
+        self.planEnd =   2456959.99000000
         self.owner1 = Owner(name="John", affiliation='France', priority=60)
         self.owner1.save()
         self.quota1 = Quota(owner=self.owner1, quotaNightTotal=100, quotaNightLeft=60)
@@ -83,7 +76,6 @@ class Test_Suite_for_Planner(unittest.TestCase):
         """Check that all sequences are in the proper order"""
         
         numberOfSequences = len(self.planning.sequences)
-        print("Nr of seq:" +str(numberOfSequences))
         for i in range(0, numberOfSequences-1):
             self.assertLessEqual(self.planning.sequences[i].TSP, self.planning.sequences[i+1].TSP)
             self.assertLessEqual(self.planning.sequences[i].TEP, self.planning.sequences[i+1].TEP)
@@ -91,8 +83,7 @@ class Test_Suite_for_Planner(unittest.TestCase):
             
     def subtest_PLAN_unit_planner_Planning_schedule_order3SequencesAfterShift(self):
         """Checks that the sequence following a shift is correctly placed"""
-        numberOfSequences = len(self.planning.sequences)
-        print("Nr of seq:" +str(numberOfSequences))
+
         self.assertTrue(self.planning.sequences[2].TSP >= self.planning.sequences[0].TSP)
         self.assertTrue(self.planning.sequences[2].TEP >= self.planning.sequences[0].TEP)
         self.assertTrue(self.planning.sequences[2].TSP <= self.planning.sequences[1].TSP)
