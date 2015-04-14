@@ -400,66 +400,66 @@ class Test_Suite_for_Planner(unittest.TestCase):
 #         sequence.display()
 
 
-def test_PLAN_planner_Planning_schedule_planningKlotz_OFFLINE(self):
-        """
-        TODO: 
-        
-        
-        precond: sequences in database, empty planning
-        action: Test if the planning is correctly loaded with the sequences from the db
-        postcond: non empty planning
-        """
-        
-        self.planning.initFromCador(self.owner1, self.quota1, False)   
-        planStart = 2457126.00000001
-        planEnd = 2457128.00000001 
-        self.planning.initFromDB(planStart, planEnd)
-#         self.planning.display()
-        self.planning.schedule()
-#         self.planning.display()
-        listOfSeqInNewPlanning = self.planning.getPlanningSequenceIDs()
-        print( "Total seq in my planning:")
-        print( len(listOfSeqInNewPlanning) )
-        listOfSeqInKlotz= self.planning.getKlotzSequenceIDs(True)
-        print( "Total seq in Klotz planning:")
-        print( len(listOfSeqInKlotz)    )
-         
-        print( "Seq in Klotz that are not in my planning" )
-        print( list(set(listOfSeqInKlotz) - set(listOfSeqInNewPlanning)) )
-        print( len(list(set(listOfSeqInKlotz) - set(listOfSeqInNewPlanning))) )
-        print( "Seq in Planning that are not in Klotz planning")
-        print( list(set(listOfSeqInNewPlanning) - set(listOfSeqInKlotz)))
-        print( len(list(set(listOfSeqInNewPlanning) - set(listOfSeqInKlotz))))
-        print( "Seq in Planning that are both in my planning and in Klotz")
-        print( list(set(listOfSeqInNewPlanning) & set(listOfSeqInKlotz)))
-        print( len(list(set(listOfSeqInNewPlanning) & set(listOfSeqInKlotz))))
-        
-        
-        #Uncomment this to reschedule and simulate a new alert
-        
-        
-        
-#         idSeq = 1
-#         """The owner data will be modified accordingly"""
-#         jd1Owner = "%.8f" % float(2456945.31600001)
-#         jd2Owner = "%.8f" % float(2456945.32000001)
-#         duration = (float(180)/86400.0)
-#         priority = int(1)
-#         sequence = Sequence(id=idSeq, owner=self.owner1, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration)
-#         sequence.save()
-        
-        
-         
-#         print( "New alert received ! Replanning ... ")
-# #         sequence.display()
-#  
-#         self.planning.reschedule(2456945.30000001)
-#          
-#         self.planning.display()
-#  
-#         print( "The alert: ") 
-#         sequence = list(Sequence.objects.filter(pk=1))[0]
-#         sequence.display()
+    def test_PLAN_planner_Planning_schedule_planningKlotz_OFFLINE(self):
+            """
+            TODO: 
+            
+            
+            precond: sequences in database, empty planning
+            action: Test if the planning is correctly loaded with the sequences from the db
+            postcond: non empty planning
+            """
+            
+            self.planning.initFromCador(self.owner1, self.quota1, False)   
+            planStart = 2457126.00000001
+            planEnd = 2457128.00000001 
+            self.planning.initFromDB(planStart, planEnd)
+    #         self.planning.display()
+            self.planning.schedule()
+    #         self.planning.display()
+            listOfSeqInNewPlanning = self.planning.getPlanningSequenceIDs()
+            print( "Total seq in my planning:")
+            print( len(listOfSeqInNewPlanning) )
+            listOfSeqInKlotz= self.planning.getKlotzSequenceIDs(True)
+            print( "Total seq in Klotz planning:")
+            print( len(listOfSeqInKlotz)    )
+             
+            print( "Seq in Klotz that are not in my planning" )
+            print( list(set(listOfSeqInKlotz) - set(listOfSeqInNewPlanning)) )
+            print( len(list(set(listOfSeqInKlotz) - set(listOfSeqInNewPlanning))) )
+            print( "Seq in Planning that are not in Klotz planning")
+            print( list(set(listOfSeqInNewPlanning) - set(listOfSeqInKlotz)))
+            print( len(list(set(listOfSeqInNewPlanning) - set(listOfSeqInKlotz))))
+            print( "Seq in Planning that are both in my planning and in Klotz")
+            print( list(set(listOfSeqInNewPlanning) & set(listOfSeqInKlotz)))
+            print( len(list(set(listOfSeqInNewPlanning) & set(listOfSeqInKlotz))))
+            
+            
+            #Uncomment this to reschedule and simulate a new alert
+            
+            
+            
+    #         idSeq = 1
+    #         """The owner data will be modified accordingly"""
+    #         jd1Owner = "%.8f" % float(2456945.31600001)
+    #         jd2Owner = "%.8f" % float(2456945.32000001)
+    #         duration = (float(180)/86400.0)
+    #         priority = int(1)
+    #         sequence = Sequence(id=idSeq, owner=self.owner1, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration)
+    #         sequence.save()
+            
+            
+             
+    #         print( "New alert received ! Replanning ... ")
+    # #         sequence.display()
+    #  
+    #         self.planning.reschedule(2456945.30000001)
+    #          
+    #         self.planning.display()
+    #  
+    #         print( "The alert: ") 
+    #         sequence = list(Sequence.objects.filter(pk=1))[0]
+    #         sequence.display()
         
         
 
