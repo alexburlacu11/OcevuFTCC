@@ -402,30 +402,43 @@ class Planning:
             sequence.save()
 #             sequence.display()
         
-    def initFromCador(self, owner, quota):
+    def initFromCador(self, owner, quota, offline):
+#         Sequence.objects.all().delete()
         """this function loads the latest sequences from CADOR and uses them in planning"""
-        response = urllib2.urlopen('http://cador.obs-hp.fr/ros/scenes_cador.php/') 
-        data = response.read()
+        if offline == True:
+            response = urllib2.urlopen('file:///D:/git/fgft_cc/planner/scenes_cador.html')
+        else:
+            response = urllib2.urlopen('http://cador.obs-hp.fr/ros/scenes_cador.php/') 
+            
+        data = str(response.read())
+#         print(data)
         parser = MyHTMLParser()
         parser.feed(data)       
         """filter unwanted \n and other data"""
-        filteredList = map(lambda s: s.strip(), parser.data)
-        pageText = filteredList[10]
-        rawSequences = pageText.split("\n")
+        filteredList = list(map(lambda s: s.strip(), parser.data))
+        pageText = filteredList[11]
+#         print(pageText)
+        rawSequences = pageText.split("\\n")
         del rawSequences[0]
+        del rawSequences[len(rawSequences)-1]
+#         print(rawSequences)
         """Create the sequences"""
         for rawSequence in rawSequences:
             sequenceArray = rawSequence.split(" ")
 #             day = int(sequenceArray[5].split(".")[0])
 #             if day >= 2456910 and day <= 2456911:
-            idSeq = int(sequenceArray[0])                       
+            idSeq = sequenceArray[0]    
+#             print(sequenceArray)                   
             jd1Owner = "%.8f" % float(sequenceArray[5])
             jd2Owner = "%.8f" % float(sequenceArray[6])
             duration = (float(sequenceArray[4])/86400.0)
             priority = int(sequenceArray[2])
-            sequence = Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration)
+            sequence = Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration, status="OBSERVABLE")
             sequence.save()
 #             sequence.display()
+        with open ('D:/git/fgft_cc/planner/scenes_cador.html') as to_be_closed:
+            None
+        to_be_closed.close()
 
     def getPlanningSequenceIDs(self):
         """ returned planned sequences from db """
@@ -437,16 +450,22 @@ class Planning:
         filledDuration = sum([seq.duration for seq in self.sequences if seq.status == "PLANNED"])
         return filledDuration * Decimal(100.0) / Decimal(totalDuration)
         
-    def getKlotzSequenceIDs(self):
+    def getKlotzSequenceIDs(self, offline):
         """this function loads the latest sequences from CADOR PLANNING and compares them with my plannification"""
         listReturned = []
-        response = urllib2.urlopen('http://cador.obs-hp.fr/ros/sequenced1.txt')
-        data = response.read()
+        
+        if offline == True:
+            response = urllib2.urlopen('file:///D:/git/fgft_cc/planner/ak_planning_result_offline.html')
+        else:
+            response = urllib2.urlopen('http://cador.obs-hp.fr/ros/sequenced1.txt')
+        
+        data = str(response.read())
         parser = MyHTMLParser()
         parser.feed(data)       
         """filter unwanted \n and other data"""
-        filteredList = map(lambda s: s.strip(), parser.data)
-        pageText = filteredList[0]    
+        filteredList = list(map(lambda s: s.strip(), parser.data))
+        pageText = filteredList[0]  
+        print(pageText)  
         rawSequences = pageText.split("\n")  
         """Create the sequences"""
         for i in range(3, len(rawSequences)):
