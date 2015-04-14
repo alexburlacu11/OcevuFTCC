@@ -61,7 +61,7 @@ def request_save(request):
 #     form = RequestForm(request.POST)     
     
     if choice == 'export':
-        
+        """exporting  to file"""        
         queryset = Request.objects.filter(id=1)        
         XMLSerializer = serializers.get_serializer("xml")
         xml_serializer = XMLSerializer()
