@@ -5,7 +5,7 @@
 			  
               
 		<div class="form-group">
-			<form action="/dashboard/login" method="post" enctype="multipart/form-data">
+			<form action="/ismn/login" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 				{% if next %}
 				<input class="form-control" type="hidden" name="next" value="{{ next }}" />
@@ -29,7 +29,7 @@
 					</div>
 					<div class="row">
 						<input class="btn btn-primary" type="submit" value="Log In" />
-						<a href="/dashboard/new_user" class="btn btn-primary">Create a new user</a>
+						<a href="/ismn/new_user" class="btn btn-primary">Create a new user</a>
 					</div>
 				</div>
 				<div class="row">

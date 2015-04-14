@@ -38,20 +38,45 @@ class Test_Suite_for_Planner(unittest.TestCase):
         self.owner1.save()
         self.quota1 = Quota(owner=self.owner1, quotaNightTotal=100, quotaNightLeft=60)
         self.quota1.save()
+        
+        """ 
+        current sequence format:
+        sequence = Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration, status="") 
+        """
+        
         """simple database sequences for performance testing"""
-        self.s1 = Sequence(id=1, owner=self.owner1, jd1Owner=3, jd2Owner=5, duration=2, priority=12, tPrefered=-1)
-        self.s2 = Sequence(id=2, owner=self.owner1, jd1Owner=8, jd2Owner=12, duration=4, priority=12, tPrefered=9)        
-        
+        self.s1 = Sequence(id=1, owner=self.owner1, jd1Owner=2456959.18000001, jd2Owner=2456959.19000001, priority=12, duration=0.01000000, status="OBSERVABLE")
+        self.s2 = Sequence(id=2, owner=self.owner1, jd1Owner=2456959.20000000, jd2Owner=2456959.21000000, priority=12, duration=0.01000000, status="OBSERVABLE")       
+        self.s100 = Sequence(id=100, owner=self.owner1, jd1Owner=2456959.18000001, jd2Owner=2456959.19000001, priority=11, duration=0.01000000, status="OBSERVABLE")
+        self.s101 = Sequence(id=101, owner=self.owner1, jd1Owner=2456959.20000000, jd2Owner=2456959.21000000, priority=12, duration=0.01000000, status="OBSERVABLE")       
+                
         """delay tests"""
-        """both left and right"""
-        self.s17 = Sequence(id=17, owner=self.owner1, jd1Owner=1, jd2Owner=8, duration=6, priority=12, tPrefered=5)
-        self.s18 = Sequence(id=18, owner=self.owner1, jd1Owner=14, jd2Owner=20, duration=4, priority=12, tPrefered=16)
-        self.s1718 = Sequence(id=1718, owner=self.owner1, jd1Owner=1, jd2Owner=20, duration=9, priority=12, tPrefered=12 )
         
-        """complex tests"""
-        self.s20 = Sequence(id=20, owner=self.owner1, jd1Owner=1, jd2Owner=8, duration=6, priority=12, tPrefered=5)
-        self.s21 = Sequence(id=21, owner=self.owner1, jd1Owner=3, jd2Owner=5, duration=2, priority=12, tPrefered=-1)
-        self.s22 = Sequence(id=22, owner=self.owner1, jd1Owner=7, jd2Owner=12, duration=5, priority=12, tPrefered=-1)
+        """no delay"""
+        self.s17 = Sequence(id=17, owner=self.owner1, jd1Owner=2456959.20000000, jd2Owner=2456959.21000000, priority=12, duration=0.01000000, status="OBSERVABLE")
+        self.s18 = Sequence(id=18, owner=self.owner1, jd1Owner=2456959.22000000, jd2Owner=2456959.23000000, priority=12, duration=0.01000000, status="OBSERVABLE")
+        self.s1718 = Sequence(id=1718, owner=self.owner1, jd1Owner=2456959.21000000, jd2Owner=2456959.22000000, priority=12, duration=0.01000000, status="OBSERVABLE")
+        
+        """delay both left and right"""
+        self.s19 = Sequence(id=19, owner=self.owner1, jd1Owner=2456959.19000000, jd2Owner=2456959.21000000, priority=12, duration=0.01000000, status="OBSERVABLE")
+        self.s20 = Sequence(id=20, owner=self.owner1, jd1Owner=2456959.22000000, jd2Owner=2456959.24000000, priority=12, duration=0.01000000, status="OBSERVABLE")
+        self.s1920 = Sequence(id=1920, owner=self.owner1, jd1Owner=2456959.21000000, jd2Owner=2456959.22500000, priority=12, duration=0.01500000, status="OBSERVABLE")
+        
+        """delay left"""
+        self.s21 = Sequence(id=21, owner=self.owner1, jd1Owner=2456959.19000000, jd2Owner=2456959.21000000, priority=12, duration=0.01000000, status="OBSERVABLE")
+        self.s22 = Sequence(id=22, owner=self.owner1, jd1Owner=2456959.21000000, jd2Owner=2456959.24000000, priority=12, duration=0.01000000, status="OBSERVABLE")
+        self.s2122 = Sequence(id=2122, owner=self.owner1, jd1Owner=2456959.20000000, jd2Owner=2456959.21000000, priority=12, duration=0.01000000, status="OBSERVABLE")
+        
+        """delay right"""
+        self.s23 = Sequence(id=23, owner=self.owner1, jd1Owner=2456959.20000000, jd2Owner=2456959.21000000, priority=12, duration=0.01000000, status="OBSERVABLE")
+        self.s24 = Sequence(id=24, owner=self.owner1, jd1Owner=2456959.22000000, jd2Owner=2456959.24000000, priority=12, duration=0.01000000, status="OBSERVABLE")
+        self.s2324 = Sequence(id=2324, owner=self.owner1, jd1Owner=2456959.21000000, jd2Owner=2456959.22500000, priority=12, duration=0.01500000, status="OBSERVABLE")
+        
+        """planned and not observable sequences"""
+        self.s25 = Sequence(id=25, owner=self.owner1, jd1Owner=2456959.20000000, jd2Owner=2456959.21000000, priority=12, duration=0.01000000, status="PLANNED")
+        self.s26 = Sequence(id=26, owner=self.owner1, jd1Owner=2456959.22000000, jd2Owner=2456959.24000000, priority=12, duration=0.01000000, status="PLANNED")
+        self.s2526 = Sequence(id=2526, owner=self.owner1, jd1Owner=2456959.21000000, jd2Owner=2456959.22500000, priority=12, duration=0.01500000, status="PLANNED")
+        
         
     """Reusable tests and other functions"""   
     def subtest_PLAN_unit_planner_Planning_schedule_orderNSequences(self):
@@ -83,6 +108,183 @@ class Test_Suite_for_Planner(unittest.TestCase):
         return str(s/(len(myList)*1.0))
         
                 
+     
+    """Tests"""
+    
+    def test_PLAN_unit_planner_Planning_statusOfSequencePlanned(self):
+        """
+        precond: 3 sequences in planning from db with status planned
+        action: Test if the two sequences are NOT going to be scheduled
+        postcond: empty Observable sequences in planning
+                
+        """
+        self.s25.save()
+        self.s26.save()
+        self.s2526.save()
+        self.planning.initFromDB(self.planStart, self.planEnd)
+        self.planning.schedule()
+#         self.planning.display()
+#         self.planning.displayGUI()
+        self.assertTrue(len(self.planning.sequences) == 0, None)
+        
+        
+    def test_PLAN_unit_planner_Planning_schedule_differentPriorities(self):
+        """
+        precond: 2 immediate sequences in planning from db
+        action: Test if two simple immediate sequences are sorted in order according to PRIORITY
+        postcond: sequence 1 is planned before sequence 2
+         
+        note:
+        seq1.TSP < seq2.TSP and seq1.TEP < seq2.TEP and seq1.TEP <= seq2.TSP
+        """
+        self.s100.save()
+        self.s101.save()
+        self.planning.initFromDB(self.planStart, self.planEnd)
+        self.planning.schedule()
+#         self.planning.display()
+#         self.planning.displayGUI()
+        self.subtest_PLAN_unit_planner_Planning_schedule_orderNSequences()
+     
+        
+    def test_PLAN_unit_planner_Planning_schedule_initFromDB(self):
+        """
+        precond: 2 immediate sequences in planning from db
+        action: Test if two simple immediate sequences are sorted in order
+        postcond: sequence 1 is planned before sequence 2
+         
+        note:
+        seq1.TSP < seq2.TSP and seq1.TEP < seq2.TEP and seq1.TEP <= seq2.TSP
+        """
+        self.s1.save()
+        self.s2.save()
+        self.planning.initFromDB(self.planStart, self.planEnd)
+        self.planning.schedule()
+#         self.planning.display()
+#         self.planning.displayGUI()
+        self.subtest_PLAN_unit_planner_Planning_schedule_orderNSequences()
+        
+    
+    def test_PLAN_unit_planner_Planning_schedule_insertSequenceBetween2Sequences(self):
+        """
+        precond: 2 sequences
+        action: Test if a third sequence can be inserted between two others
+        postcond: the third sequence is planned between the first and second.
+          
+        """  
+
+        self.s17.save()
+        self.s18.save()
+        self.s1718.save()
+        self.planning.initFromDB(self.planStart, self.planEnd)
+        self.planning.schedule()
+#         self.planning.display()
+#         self.planning.displayGUI()
+        self.subtest_PLAN_unit_planner_Planning_schedule_orderNSequences()
+    
+    def test_PLAN_unit_planner_Planning_schedule_scheduleWithShiftLeftANDRight(self):
+        """
+        precond: 2 sequences
+        action: Test if a third sequence can be inserted between two others
+        postcond: the third sequence is planned between the first and second. The first and second must both shift
+          
+        """  
+
+        self.s19.save()
+        self.s20.save()
+        self.s1920.save()   
+        self.planning.initFromDB(self.planStart, self.planEnd)
+        self.planning.schedule()
+#         self.planning.display()
+#         self.planning.displayGUI()
+        self.subtest_PLAN_unit_planner_Planning_schedule_orderNSequences()
+    
+    def test_PLAN_unit_planner_Planning_schedule_scheduleWithShiftLeftNOTRight(self):
+        """
+        precond: 2 sequences
+        action: Test if a third sequence can be inserted between two others
+        postcond: the third sequence is planned between the first and second. The left must shift
+          
+        """  
+
+        self.s21.save()
+        self.s22.save()
+        self.s2122.save()   
+        self.planning.initFromDB(self.planStart, self.planEnd)
+        self.planning.schedule()
+#         self.planning.display()
+#         self.planning.displayGUI()
+        self.subtest_PLAN_unit_planner_Planning_schedule_orderNSequences()
+        
+    def test_PLAN_unit_planner_Planning_schedule_scheduleWithShiftRightNOTLeft(self):
+        """
+        precond: 2 sequences
+        action: Test if a third sequence can be inserted between two others
+        postcond: the third sequence is planned between the first and second. The right must shift
+          
+        """  
+
+        self.s23.save()
+        self.s24.save()
+        self.s2324.save()   
+        self.planning.initFromDB(self.planStart, self.planEnd)
+        self.planning.schedule()
+#         self.planning.display()
+#         self.planning.displayGUI()
+        self.subtest_PLAN_unit_planner_Planning_schedule_orderNSequences()   
+        
+        
+    def test_PLAN_planner_Planning_schedule_planSequencesFromFile(self):
+        """
+        precond: sequences in database, empty planning
+        action: Test if the planning is correctly loaded with the sequences from a file with planStart and planEnd
+        postcond: non empty planning
+        """
+        self.planning.initFromFile("planning.txt", self.owner1, self.quota1, True)  
+        self.planning.schedule()
+#         self.planning.display()
+#         self.planning.displayGUI()
+        self.subtest_PLAN_unit_planner_Planning_schedule_orderNSequences()
+          
+             
+    
+    """Non functional tests (ex: performance) """
+    
+    def test_PLAN_nonfunc_planner_Planning_schedule_durationOfScheduling(self):   
+        """
+        precond: non empty planning
+        action: Test if the duration of schedule falls within requirements parameters
+        postcond: the executor time of the schedule function must be < X (TO DEFINE)
+            
+        note: 
+        This non functional test computes executor times and checks average, max and min of the durations
+        """ 
+              
+        myList = [] 
+        f = open('workfile.txt', 'r+')
+        self.planning.generateSequencesToFile(10)   
+        
+        for i in range(0,10):           
+            self.planning.initFromFile("generated_sequences.txt", self.owner1, self.quota1, False)
+            self.planning.planStart = 1
+            self.planning.planEnd = 30
+            t0 = t.clock()
+            self.planning.schedule()
+            t1 = t.clock() 
+            del self.planning.intervals[:]
+            self.planning.intervals.append(Interval(self.planStart, self.planEnd, self.planEnd-self.planStart))        
+            del self.planning.sequences[:]
+#             del self.planning.sequencesHistory[:]
+            myList.append(t1-t0)           
+            f.write("Try: "+str(i)+" "+str(t0) + " " + str(t1) + " " + str(t1-t0) + "\n")      
+        f.write("\naverage: \n"+self.avg(myList))
+        f.write("\nmin: \n"+str(min(myList)))
+        f.write("\nmax: \n"+str(max(myList)))
+        f.close()
+        
+    
+          
+        
+        
         
     """CADOR sequences tests"""
     
@@ -161,138 +363,7 @@ class Test_Suite_for_Planner(unittest.TestCase):
 #         sequence = list(Sequence.objects.filter(pk=1))[0]
 #         sequence.display()
         
-        
-#     def test_PLAN_planner_Planning_schedule_planSequencesFromFile(self):
-#         """
-#         precond: sequences in database, empty planning
-#         action: Test if the planning is correctly loaded with the sequences from the db
-#         postcond: non empty planning
-#         """
-#         self.planning.initFromFile("planning.txt", self.owner1, self.quota1)  
-#         self.planning.initFromDB(0, 3000000)
-#         print( "Before"
-#         self.planning.display()
-#         self.planning.schedule()
-# #         self.subtest_PLAN_unit_planner_Planning_schedule_orderNSequences()
-#         print( "After"
-#         self.planning.display()
-# #         self.planning.displayGUI()        
-        
-        
-        
-    """Simple get from db tests"""    
-     
-        
-    def test_PLAN_nonfunc_planner_Planning_schedule_initFromDB(self):
-        """
-        precond: 2 immediate sequences in planning from db
-        action: Test if two simple immediate sequences are sorted in order
-        postcond: sequence 1 is planned before sequence 2
-         
-        note:
-        seq1.TSP < seq2.TSP and seq1.TEP < seq2.TEP and seq1.TEP <= seq2.TSP
-        """
-        self.s1.save()
-        self.s2.save()
-        self.planning.initFromDB(self.planStart, self.planEnd)
-        self.planning.sequences = [self.s1, self.s2]
-        self.planning.schedule()
-        self.planning.display()
-        #self.planning.displayGUI()
-        self.subtest_PLAN_unit_planner_Planning_schedule_orderNSequences()
-        
-    
-    
-    """Complex delay tests"""
-    
-    def test_PLAN_unit_planner_Planning_schedule_scheduleWithShiftLeftRight(self):
-        """
-        precond: 2 sequences
-        action: Test if a third sequence can be inserted between two others
-        postcond: the third sequence is planned between the first and second. The first and second must both move
-          
-        """  
-        self.s1.delete()
-        self.s2.delete()
-        self.s17.save()
-        self.s18.save()
-        self.s1718.save()   
-        self.planning.initFromDB(self.planStart, self.planEnd)
-        self.planning.sequences = [self.s17, self.s18, self.s1718]
-        self.planning.schedule()
-        self.planning.display()
-        #self.planning.displayGUI()
-        self.subtest_PLAN_unit_planner_Planning_schedule_order3SequencesAfterShift()         
-             
-    
-    """Non functional tests (ex: performance) """
-    
-#     def test_PLAN_nonfunc_planner_Planning_schedule_durationOfScheduling(self):   
-#         """
-#         precond: non empty planning
-#         action: Test if the duration of schedule falls within requirements parameters
-#         postcond: the executor time of the schedule function must be < X (TO DEFINE)
-#           
-#         note: 
-#         This non functional test computes executor times and checks average, max and min of the durations
-#         """ 
-#             
-#         myList = [] 
-#         f = open('workfile.txt', 'r+')
-#         for i in range(0,1000): 
-# #             self.planning.initFromFile("planning.txt", self.owner1, self.quota1)    
-#             self.planning.generateSequencesToFile(100)    
-#             self.planning.planStart = 1
-#             self.planning.planEnd = 1500
-#             t0 = t.clock()
-#             self.planning.schedule()
-#             t1 = t.clock() 
-#             del self.planning.intervals[:]
-#             self.planning.intervals.append(Interval(self.planStart, self.planEnd, self.planEnd-self.planStart))        
-#             del self.planning.sequences[:]
-# #             del self.planning.sequencesHistory[:]
-#             myList.append(t1-t0)           
-#             f.write("Try: "+str(i)+" "+str(t0) + " " + str(t1) + " " + str(t1-t0) + "\n")      
-#         f.write("\naverage: \n"+self.avg(myList))
-#         f.write("\nmin: \n"+str(min(myList)))
-#         f.write("\nmax: \n"+str(max(myList)))
-#         f.close()
-        
-    
-    """Multiple situation complex tests"""   
-    
-#     def test_PLAN_func_planner_Planning_schedule_multipleSequencesStatusPLANNED(self):
-#         """
-#         precond: non empty planning with lots of sequences of any type
-#         action: Test if the duration of schedule falls within requirements parameters
-#         postcond: The sequences must be all planned
-#           
-#         note: 
-#         This tests checks to see if the various types of sequences are all planned
-#         """        
-#           
-#         """clean up"""
-#         self.s1.delete()
-#         self.s2.delete()
-#         self.s17.delete()
-#         self.s18.delete()
-#         self.s1718.delete()
-#           
-#         """set up """
-#         self.s20.save()
-#         self.s21.save()
-#         self.s22.save()        
-#         self.planning.initFromDB(1, 20)
-#           
-#         """scheduling"""
-#         self.planning.schedule()
-#           
-#         """display results"""
-#         self.planning.display()
-#         self.planning.displayGUI()
-#           
-#         """assertions"""
-        
+
     
 
 if __name__ == '__main__':

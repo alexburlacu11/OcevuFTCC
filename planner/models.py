@@ -17,7 +17,7 @@ parameter : 5 seconds delay between plannifications
     
 quota affiliation : fr / mx 50 % de temps restant sauf pour les alerts
 
-add to dashboard configuration for quota
+add to ismn configuration for quota
 
 delta_time : delay after manual interrupt 6000s 
 
@@ -463,7 +463,7 @@ class Planning:
         return [int(i) for i in listReturned]
         
         
-    def initFromFile(self, fileName, owner, quota): 
+    def initFromFile(self, fileName, owner, quota, withPlanStartAndEnd): 
         with open(fileName, 'r') as f:
 #             print( "["+str(datetime.datetime.now())+"]"+"Reading data in file "
             data = f.readlines()
@@ -473,20 +473,25 @@ class Planning:
             parsedData2 = [i for i in parsedData1 if i != '\n']
             """instantiate objects"""
 #             mode = str(parsedData2[0].split('=')[1]).rstrip()
-#             planStart = "%.8f" % float(parsedData2[1].split('=')[1])
-#             planEnd = "%.8f" % float(parsedData2[2].split('=')[1]) 
+            if (withPlanStartAndEnd == True):
+                planStart = "%.8f" % float(parsedData2[1].split('=')[1])
+                planEnd = "%.8f" % float(parsedData2[2].split('=')[1])
+                self.planStart = planStart
+                self.planEnd = planEnd
             for i in range(3,len(parsedData2)):
                 sequenceParameters = parsedData2[i].split(',')
                 idSeq = int(sequenceParameters[0])
                 """The owner data will be modified accordingly"""
                 jd1Owner = "%.8f" % float(sequenceParameters[2])
                 jd2Owner = "%.8f" % float(sequenceParameters[3])
-                duration = (float(sequenceParameters[4])/86400.0)
-                priority = int(sequenceParameters[5])
-                sequence = Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration)
+                priority = int(sequenceParameters[4])
+                duration = float(sequenceParameters[5])
+                status = sequenceParameters[6]
+                sequence = Sequence(id=idSeq, owner=owner, jd1Owner=jd1Owner, jd2Owner=jd2Owner, priority=priority, duration=duration, status=status)
                 sequence.save()
+                self.sequences.append(sequence)
 #                 sequence.display()
-        f.closed               
+        f.close()               
                    
     def schedule(self):   
             
@@ -877,9 +882,11 @@ class Planning:
  
     def generateSequencesToFile(self, numberOfSequences):
         """this function generates sequences and inserts them into a file"""
-        for i in range(1, numberOfSequences, 2):            
-            with open('planning.txt', 'a') as f:
-                f.write(str(i)+","+"\"alex\""+","+str(i)+","+str(i+2)+",2,12,-1\n")
+        with open('generated_sequences.txt', 'r+') as f:
+            for i in range(1, numberOfSequences, 2):
+                f.write(str(i)+", "+"\"alex\""+", "+str(i)+", "+str(i+2)+", 12, 2, OBSERVABLE\n")
+        
+        f.close()
     
     
 
