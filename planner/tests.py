@@ -467,6 +467,8 @@ def test_PLAN_planner_Planning_schedule_planningKlotz_OFFLINE(self):
 
 if __name__ == '__main__':
     unittest.main()
+    
+    print("Planner tests started")
 
 
 
